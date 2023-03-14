@@ -97,15 +97,12 @@ public class PlayerSidescrollerMovement : MonoBehaviour
             FallMulti();
         }
     }
-
+    
     private void MoveCharacter()
     {
-        _playerRigidBody.AddForce(new Vector2(_horizontalDirection, 0f) * movementAcceleration);
-        if (Mathf.Abs(_playerRigidBody.velocity.x) > maxMovementSpeed)
-        {
-            _playerRigidBody.velocity = new Vector2(Mathf.Sign(_playerRigidBody.velocity.x) * maxMovementSpeed,
-                _playerRigidBody.velocity.y);
-        }
+        float _quickAccelerateFactor = (1.2f - Mathf.Abs(_playerRigidBody.velocity.x) / maxMovementSpeed);
+        _playerRigidBody.AddForce(new Vector2(_horizontalDirection, 0f) * movementAcceleration * _quickAccelerateFactor);
+
     }
 
     private void ApplyLinearDrag()
