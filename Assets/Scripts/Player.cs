@@ -11,8 +11,42 @@ public class Player :
     IPhysical,
     IPickupper
 {
+    [SerializeField]
+    PlayerHealth health;
+
+    [SerializeField]
+    PlayerMovement movement;
+
+    PlayerInventory inventory;
+    PlayerController controls;
+
+    new Rigidbody2D rigidbody;
+
+    class PlayerHealth : Health
+    {
+        public PlayerHealth(Player player)
+        {
+            //
+        }
+    }
+
+    class PlayerMovement : Movement
+    {
+        public PlayerMovement(Player player)
+        {
+
+        }
+
+        public override Rigidbody2D GetRigidbody() => player.GetRigidbody();
+    }
+
     class PlayerInventory : Inventory
     {
+        public PlayerInventory(Player player)
+        {
+
+        }
+
         // impl
         void OpenInventory()
         {
@@ -22,7 +56,7 @@ public class Player :
 
     class PlayerController : Controller
     {
-        public PlayerController(PlayerInputActions actions)
+        public PlayerController(Player player)
         {
             var onFoot = actions.NinjaOnFoot;
             onFoot.Jump.performed += Jump_performed;
@@ -40,38 +74,19 @@ public class Player :
         }
     }
 
-    struct PlayerHealth
-    {
-        int max;
-        int current;
-    }
-
-    struct PlayerMovement
-    {
-        int speed;
-        int jumpHeigth;
-    }
-
-    PlayerHealth health;
-    PlayerMovement movement;
-
-    PlayerInventory inventory;
-    PlayerController controls;
-
     void Start()
     {
-        PlayerInputActions actions = new PlayerInputActions();
-        actions.Enable();
-        controls = new PlayerController(actions);
-    }
+        rigidbody = GetComponent<Rigidbody2D>();
 
+        health = new(this);
+        movement = new(this);
+        controls = new(this);
+        inventory = new(this);
+    }
 
     public Inventory GetInventory() => inventory;
-
-    public Rigidbody2D GetRigidbody()
-    {
-        throw new System.NotImplementedException();
-    }
+    
+    public Rigidbody2D GetRigidbody() => rigidbody;
 
     public void Damage(int dmg)
     {
