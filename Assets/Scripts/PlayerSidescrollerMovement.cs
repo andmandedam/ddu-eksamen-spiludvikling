@@ -19,8 +19,7 @@ public class PlayerSidescrollerMovement : MonoBehaviour
     [SerializeField, Min(0.1f)]
     private float maxMovementSpeed = 40f;
 
-    [Tooltip(
-        "The smaller the number, the longer the player slides after not pressing any button to move. (Ice glide effect)")]
+    [Tooltip("The smaller the number, the longer the player slides after not pressing any button to move. (Ice glide effect)")]
     [SerializeField]
     private float linearDrag = 15f;
 
@@ -37,8 +36,10 @@ public class PlayerSidescrollerMovement : MonoBehaviour
     [SerializeField, Min(0.1f)] private float fallMultiplier = 3f;
     [SerializeField, Min(0.1f)] private float lowJumpFallMultiplier = 1f;
     [SerializeField, Min(0.1f)] private float airLinearDrag = 1f;
-    [Tooltip("The amount of times the player can midair")]
+
+    [Tooltip("The amount of times the player can jump midair")]
     [SerializeField, Min(0)] private int extraJumps = 0;
+
     private int _remainingJumps;
 
     [Space]
