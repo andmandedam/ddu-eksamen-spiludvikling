@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 840214360}
   - component: {fileID: 840214359}
   - component: {fileID: 840214358}
+  - component: {fileID: 840214361}
   m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
@@ -234,6 +235,26 @@ Transform:
   m_Father: {fileID: 1360418454}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &840214361
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840214357}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1e779c3bf1e16f247ba5f04ab06f62f0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1341739184
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,6 +514,7 @@ GameObject:
   - component: {fileID: 1813353018}
   - component: {fileID: 1813353022}
   - component: {fileID: 1813353023}
+  - component: {fileID: 1813353024}
   m_Layer: 0
   m_Name: Ninja
   m_TagString: Untagged
@@ -630,6 +652,26 @@ MonoBehaviour:
   groundRaycastLength: 0.2
   groundRaycastOffset: {x: 0, y: -1, z: 0}
   showRaycastLength: 1
+--- !u!95 &1813353024
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813353017}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b6e09e266f3849c41937de5d1d226b9e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &73877103384582533
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -637,6 +679,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 73877104643779240, guid: b4b073e2888674c4dba122322cff2051, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 73877104643779240, guid: b4b073e2888674c4dba122322cff2051, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2273980002743336127, guid: b4b073e2888674c4dba122322cff2051, type: 3}
       propertyPath: m_RootOrder
       value: 3
