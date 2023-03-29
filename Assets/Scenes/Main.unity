@@ -228,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 840214357}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 100, y: 2, z: 1}
+  m_LocalScale: {x: 10000, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1360418454}
@@ -334,7 +334,7 @@ MonoBehaviour:
   targets:
   - {fileID: 1813353021}
   cameraOffset: {x: 0, y: 0, z: -1}
-  cameraSpeed: 1.01
+  cameraSpeed: 10
   resetMargin: 0
 --- !u!1 &1360418453
 GameObject:
@@ -492,6 +492,8 @@ GameObject:
   - component: {fileID: 1813353020}
   - component: {fileID: 1813353018}
   - component: {fileID: 1813353022}
+  - component: {fileID: 1813353024}
+  - component: {fileID: 1813353025}
   - component: {fileID: 1813353023}
   m_Layer: 0
   m_Name: Ninja
@@ -613,23 +615,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1813353017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf22eb31832f8340b1dab9f42b3b0db, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ff76f8886022cb44ac19baba20649e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementAcceleration: 15
-  maxMovementSpeed: 10
-  linearDrag: 5
-  jumpForce: 12
-  fallMultiplier: 3
-  lowJumpFallMultiplier: 2
-  airLinearDrag: 1
-  extraJumps: 1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundRaycastLength: 0.2
-  groundRaycastOffset: {x: 0, y: -1, z: 0}
-  showRaycastLength: 1
+--- !u!114 &1813353024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813353017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9099da0d92837904ebedf5fed1cdfae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementVector: {x: 0, y: 0}
+  acceleration: 15
+  maxSpeed: 40
+  linearDrag: 1
+--- !u!114 &1813353025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813353017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b0631593c9c649809e3fd3065f1da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minJumpHeigth: 1
+  jumpForce: 10
+  downForceScale: 0.1
 --- !u!1001 &73877103384582533
 PrefabInstance:
   m_ObjectHideFlags: 0
