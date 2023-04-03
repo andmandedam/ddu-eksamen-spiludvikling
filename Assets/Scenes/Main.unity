@@ -513,8 +513,8 @@ GameObject:
   - component: {fileID: 1813353020}
   - component: {fileID: 1813353018}
   - component: {fileID: 1813353022}
-  - component: {fileID: 1813353023}
   - component: {fileID: 1813353024}
+  - component: {fileID: 1813353025}
   m_Layer: 0
   m_Name: Ninja
   m_TagString: Untagged
@@ -626,32 +626,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &1813353023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813353017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf22eb31832f8340b1dab9f42b3b0db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementAcceleration: 15
-  maxMovementSpeed: 10
-  linearDrag: 5
-  jumpForce: 12
-  fallMultiplier: 3
-  lowJumpFallMultiplier: 2
-  airLinearDrag: 1
-  extraJumps: 1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundRaycastLength: 0.2
-  groundRaycastOffset: {x: 0, y: -1, z: 0}
-  showRaycastLength: 1
 --- !u!95 &1813353024
 Animator:
   serializedVersion: 4
@@ -672,6 +646,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1813353025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813353017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291213e10217f2245b4675cc797aa18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement:
+    _moveAcceleration: 20
+    _moveMaxSpeed: 20
+  jump:
+    _jumpForce: 8
+    _minJumpHeigth: 65.75
+    _downForceScale: 0.15
 --- !u!1001 &73877103384582533
 PrefabInstance:
   m_ObjectHideFlags: 0

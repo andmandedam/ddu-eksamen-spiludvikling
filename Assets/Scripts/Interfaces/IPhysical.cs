@@ -10,8 +10,7 @@ using UnityEngine;
 public interface IPhysical 
 {
     // impl
-    public Rigidbody2D GetRigidbody();
-
+	public Rigidbody2D rigidbody {get;}
 }
 
 
