@@ -26,7 +26,7 @@ public class Player :
     }
 
     [Serializable]
-    private class PlayerJump : Jump
+        private class PlayerJump : Jump
     {
         private Player player;
         private int remainingJumps;

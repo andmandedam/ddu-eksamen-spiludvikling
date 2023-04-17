@@ -59,7 +59,7 @@ public abstract class Jump
     {
         if (jumping)
         {
-            ResetVerticalVelocity();
+            // ResetVerticalVelocity();
 
             var force = downForceScale * jumpHeigthDelta * jumpForce * Vector2.down;
             rigidbody.AddForce(force, ForceMode2D.Impulse);

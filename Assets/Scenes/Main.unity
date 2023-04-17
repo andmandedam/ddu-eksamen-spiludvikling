@@ -662,9 +662,13 @@ MonoBehaviour:
     _moveAcceleration: 20
     _moveMaxSpeed: 20
   jump:
+    _jumpCount: 1
     _jumpForce: 8
-    _minJumpHeigth: 65.75
+    _minJumpHeigth: 2
     _downForceScale: 0.15
+    _groundLayer:
+      serializedVersion: 2
+      m_Bits: 64
 --- !u!1001 &73877103384582533
 PrefabInstance:
   m_ObjectHideFlags: 0
