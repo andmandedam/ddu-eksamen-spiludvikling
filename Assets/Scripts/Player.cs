@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player :
-    MonoBehaviour
+public class Player : MonoBehaviour
 {
     [Serializable]
     private class PlayerMovement : Movement
@@ -13,10 +12,11 @@ public class Player :
         private Player player;
         [SerializeField] private float _moveAcceleration;
         [SerializeField] private float _moveMaxSpeed;
-
         public override float moveAcceleration =>
                         _moveAcceleration * (player.jump.jumping ? 0.5f : 1f);
         public override float moveMaxSpeed => _moveMaxSpeed;
+        public override float dynamicDrag => player.dynamicDrag;
+        public override float staticDrag => player.jump.jumping ? player.dynamicDrag : player.staticDrag;
         public override Rigidbody2D rigidbody => player.rigidbody;
 
         public void Enable(Player player)
@@ -35,27 +35,34 @@ public class Player :
         [SerializeField] private float _minJumpHeigth;
         [SerializeField] private float _downForceScale;
         [SerializeField] private LayerMask _groundLayer;
-
+        [SerializeField] private Collider2D footCollider;
+        public float dynamicDrag => player.dynamicDrag;
+        public float staticDrag => player.movement.moving ? player.dynamicDrag : player.staticDrag;
         public override float jumpForce => _jumpForce;
         public override float minJumpHeigth => _minJumpHeigth;
         public override float downForceScale => _downForceScale;
         public override bool canJump => remainingJumps > 0;
         public override Rigidbody2D rigidbody => player.rigidbody;
 
+
         private void Reset()
         {
             remainingJumps = _jumpCount;
+            Debug.LogFormat("{0} set drag to {1}", this, rigidbody.drag);
         }
 
         public override void Start()
         {
             if (canJump)
             {
-                remainingJumps = remainingJumps - 1;
+                remainingJumps--;
+                rigidbody.drag = dynamicDrag;
+                Debug.LogFormat("{0} set drag to {1}", this, rigidbody.drag); 
                 DoJump();
             }
         }
 
+        
         // Poor implementation of multiple jumps.
         // Currently the players jumps get reset whenever they touch the ground layer
         // Potentially the players jumps will get reset even though their feet aren't touching the ground
@@ -63,7 +70,7 @@ public class Player :
         // 		Seperate colliders for player feet?
         public override void FixedUpdate()
         {
-            if (!jumping && rigidbody.IsTouchingLayers(_groundLayer))
+            if (footCollider.IsTouchingLayers(_groundLayer))
             {
                 Reset();
             }
@@ -96,6 +103,8 @@ public class Player :
     }
 
 
+    [SerializeField] private float staticDrag;
+    [SerializeField] private float dynamicDrag;
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
     private PlayerControls controls = new();
@@ -112,11 +121,11 @@ public class Player :
 
     void FixedUpdate()
     {
-        movement.FixedUpdate();
         jump.FixedUpdate();
-    }
+        movement.FixedUpdate();
 
-    public Rigidbody2D GetRigidbody() => rigidbody;
+   
+    }
 
     public void Damage(int dmg)
     {

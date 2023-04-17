@@ -3,8 +3,11 @@ using UnityEngine;
 public abstract class Movement
 {
     public abstract Rigidbody2D rigidbody { get; }
+    public abstract float staticDrag { get;  }
+    public abstract float dynamicDrag { get; }
     public abstract float moveAcceleration { get; }
     public abstract float moveMaxSpeed { get; }
+    public bool moving => movementVector != Vector2.zero;
 
     public Vector2 movementVector { get; private set; }
 
@@ -12,6 +15,8 @@ public abstract class Movement
     {
         dir.y = 0;
         movementVector = dir;
+        rigidbody.drag = dynamicDrag;
+        Debug.LogFormat("{0} set drag to {1}", this, rigidbody.drag);
     }
 
     public void FixedUpdate()
@@ -31,5 +36,7 @@ public abstract class Movement
     public void End()
     {
         movementVector = Vector2.zero;
+        rigidbody.drag = staticDrag;
+        Debug.LogFormat("{0} set drag to {1}", this, rigidbody.drag);
     }
 }

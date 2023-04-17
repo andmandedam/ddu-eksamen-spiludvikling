@@ -35,7 +35,6 @@ public abstract class Jump
 
         ResetVerticalVelocity();
 
-        var force = jumpForce * Vector2.up;
         rigidbody.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
     }
 
@@ -43,7 +42,7 @@ public abstract class Jump
     {
         if (
             jumping &&
-            ((jumpEndRequested && canEndJump) || rigidbody.velocity.y < 0)
+            ((jumpEndRequested && canEndJump)) // || rigidbody.velocity.y < 0)
             )
         {
             JumpHardEnd();
@@ -59,10 +58,14 @@ public abstract class Jump
     {
         if (jumping)
         {
-            // ResetVerticalVelocity();
+            //ResetVerticalVelocity();
 
-            var force = downForceScale * jumpHeigthDelta * jumpForce * Vector2.down;
-            rigidbody.AddForce(force, ForceMode2D.Impulse);
+            // When the player jumps far the downwards force should be smaller
+            // When the player jumps low the downwards force should be greater
+            // The downwards force is inversily proportional to the heigth(jumpHeigthDelta) for the player.
+
+            var forceScale = downForceScale * jumpForce / jumpHeigthDelta;
+            rigidbody.AddForce(forceScale * Vector3.down, ForceMode2D.Impulse);
         }
         jumpEndRequested = false;
         jumping = false;
