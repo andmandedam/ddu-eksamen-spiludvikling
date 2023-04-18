@@ -60,6 +60,12 @@ public class Player : Entity
         }
     }
 
+    [Serializable]
+    private class PlayerCrouch : Crouch
+    {
+
+    }
+
     private class PlayerControls : Controls
     {
         public void Enable(Player player)
@@ -69,6 +75,7 @@ public class Player : Entity
 
             var movement = player.movement;
             var jump = player.jump;
+            var crouch = player.crouch;
 
             var onFoot = actions.NinjaOnFoot;
 
@@ -76,23 +83,38 @@ public class Player : Entity
             onFoot.Move.canceled += (ctx) => movement.End();
             onFoot.Jump.performed += (ctx) => jump.Start();
             onFoot.Jump.canceled += (ctx) => jump.End();
+            onFoot.Passthrough.performed += (ctx) =>
+            {
+                foreach (var trigger in player._passthroughTriggers) {
+                    trigger.AllowPassthroughFor(player.bodyCollider);
+                    trigger.AllowPassthroughFor(player.feetCollider);
+                }
+            };
+            onFoot.Crouch.performed += (ctx) => crouch.Start();
+            onFoot.Crouch.canceled += (ctx) => crouch.End();
         }
     }
 
 
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
+    [SerializeField] private PlayerCrouch crouch;
+    [SerializeField] private Collider2D _bodyCollider;
     [SerializeField] private Collider2D _feetCollider;
     [SerializeField] private float _staticDrag;
     [SerializeField] private float _dynamicDrag;
     [SerializeField] private LayerMask _platformLayer;
-
-    private PlayerControls controls = new();
+    [SerializeField] private LayerMask _passthroughPlatformLayer;
     
+    private HashSet<PassthroughTrigger> _passthroughTriggers = new();
+    private PlayerControls controls = new();
+
+    public override Collider2D bodyCollider => _bodyCollider;
     public override Collider2D feetCollider => _feetCollider;
     public override float staticDrag => _staticDrag;
     public override float dynamicDrag => _dynamicDrag;
     public override LayerMask platformLayer => _platformLayer;
+    public override LayerMask passthroughPlatformLayer => _passthroughPlatformLayer;
 
     void Start()
     {
@@ -107,8 +129,22 @@ public class Player : Entity
     {
         jump.FixedUpdate();
         movement.FixedUpdate();
-
    
+    }
+
+    public void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out PassthroughTrigger trigger)) {
+            _passthroughTriggers.Add(trigger);
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out PassthroughTrigger trigger))
+        {
+            _passthroughTriggers.Remove(trigger);
+        }
     }
 
     public void Damage(int dmg)
