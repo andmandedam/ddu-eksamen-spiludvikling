@@ -1,5 +1,5 @@
 {
-    "name": "InputActions",
+    "name": "PlayerInputActions",
     "maps": [
         {
             "name": "NinjaOnFoot",
@@ -27,6 +27,24 @@
                     "name": "Dash",
                     "type": "Button",
                     "id": "b3053d16-4afb-44bc-ad5e-93f4749a7f1d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "3c99c38c-4e96-44c1-ad63-7cdfffa5c53d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Passthrough",
+                    "type": "Button",
+                    "id": "9d613550-0021-465d-b16b-dc6827f9f351",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -141,6 +159,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ab07873-f799-4190-9531-be73c7cc298f",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e15f3af2-1b71-4d1d-9d7d-58e38ce84f6e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Passthrough",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
