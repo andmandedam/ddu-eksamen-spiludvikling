@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SampleRoomObject", menuName = "LevelDesign/RoomObject", order = 1)]
-public class RoomObject : ScriptableObject
+public class RoomObject
 {
-
-
-
     [Header("Spawnables")]
     public GameObject enemyPrefab;
     public int baseEnemyAmount;
