@@ -4,20 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
+    
     [Serializable]
     private class PlayerMovement : Movement
     {
         private Player player;
         [SerializeField] private float _moveAcceleration;
         [SerializeField] private float _moveMaxSpeed;
-        public override float moveAcceleration =>
+
+        public override Entity entity => player;
+        public override float moveAccel =>
                         _moveAcceleration * (player.jump.jumping ? 0.5f : 1f);
         public override float moveMaxSpeed => _moveMaxSpeed;
         public override float dynamicDrag => player.dynamicDrag;
-        public override float staticDrag => player.jump.jumping ? player.dynamicDrag : player.staticDrag;
-        public override Rigidbody2D rigidbody => player.rigidbody;
+        public override float staticDrag => !player.grounded ? player.dynamicDrag : player.staticDrag;
 
         public void Enable(Player player)
         {
@@ -34,53 +36,34 @@ public class Player : MonoBehaviour
         [SerializeField] private float _jumpForce;
         [SerializeField] private float _minJumpHeigth;
         [SerializeField] private float _downForceScale;
-        [SerializeField] private LayerMask _groundLayer;
-        [SerializeField] private Collider2D footCollider;
-        public float dynamicDrag => player.dynamicDrag;
-        public float staticDrag => player.movement.moving ? player.dynamicDrag : player.staticDrag;
+
+        public override Entity entity => player;
         public override float jumpForce => _jumpForce;
         public override float minJumpHeigth => _minJumpHeigth;
         public override float downForceScale => _downForceScale;
         public override bool canJump => remainingJumps > 0;
-        public override Rigidbody2D rigidbody => player.rigidbody;
 
 
-        private void Reset()
+        protected override void Reset()
         {
             remainingJumps = _jumpCount;
-            Debug.LogFormat("{0} set drag to {1}", this, rigidbody.drag);
         }
 
-        public override void Start()
+        protected override void OnJump()
         {
-            if (canJump)
-            {
-                remainingJumps--;
-                rigidbody.drag = dynamicDrag;
-                Debug.LogFormat("{0} set drag to {1}", this, rigidbody.drag); 
-                DoJump();
-            }
-        }
-
-        
-        // Poor implementation of multiple jumps.
-        // Currently the players jumps get reset whenever they touch the ground layer
-        // Potentially the players jumps will get reset even though their feet aren't touching the ground
-        // FIX:
-        // 		Seperate colliders for player feet?
-        public override void FixedUpdate()
-        {
-            if (footCollider.IsTouchingLayers(_groundLayer))
-            {
-                Reset();
-            }
-            base.FixedUpdate();
+            remainingJumps--;
         }
 
         public void Enable(Player player)
         {
             this.player = player;
         }
+    }
+
+    [Serializable]
+    private class PlayerCrouch : Crouch
+    {
+
     }
 
     private class PlayerControls : Controls
@@ -92,6 +75,7 @@ public class Player : MonoBehaviour
 
             var movement = player.movement;
             var jump = player.jump;
+            var crouch = player.crouch;
 
             var onFoot = actions.NinjaOnFoot;
 
@@ -99,16 +83,38 @@ public class Player : MonoBehaviour
             onFoot.Move.canceled += (ctx) => movement.End();
             onFoot.Jump.performed += (ctx) => jump.Start();
             onFoot.Jump.canceled += (ctx) => jump.End();
+            onFoot.Passthrough.performed += (ctx) =>
+            {
+                foreach (var trigger in player._passthroughTriggers) {
+                    trigger.AllowPassthroughFor(player.bodyCollider);
+                    trigger.AllowPassthroughFor(player.feetCollider);
+                }
+            };
+            onFoot.Crouch.performed += (ctx) => crouch.Start();
+            onFoot.Crouch.canceled += (ctx) => crouch.End();
         }
     }
 
 
-    [SerializeField] private float staticDrag;
-    [SerializeField] private float dynamicDrag;
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
+    [SerializeField] private PlayerCrouch crouch;
+    [SerializeField] private Collider2D _bodyCollider;
+    [SerializeField] private Collider2D _feetCollider;
+    [SerializeField] private float _staticDrag;
+    [SerializeField] private float _dynamicDrag;
+    [SerializeField] private LayerMask _platformLayer;
+    [SerializeField] private LayerMask _passthroughPlatformLayer;
+    
+    private HashSet<PassthroughTrigger> _passthroughTriggers = new();
     private PlayerControls controls = new();
-    new public Rigidbody2D rigidbody { get; private set; }
+
+    public override Collider2D bodyCollider => _bodyCollider;
+    public override Collider2D feetCollider => _feetCollider;
+    public override float staticDrag => _staticDrag;
+    public override float dynamicDrag => _dynamicDrag;
+    public override LayerMask platformLayer => _platformLayer;
+    public override LayerMask passthroughPlatformLayer => _passthroughPlatformLayer;
 
     void Start()
     {
@@ -123,8 +129,22 @@ public class Player : MonoBehaviour
     {
         jump.FixedUpdate();
         movement.FixedUpdate();
-
    
+    }
+
+    public void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out PassthroughTrigger trigger)) {
+            _passthroughTriggers.Add(trigger);
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.TryGetComponent(out PassthroughTrigger trigger))
+        {
+            _passthroughTriggers.Remove(trigger);
+        }
     }
 
     public void Damage(int dmg)
