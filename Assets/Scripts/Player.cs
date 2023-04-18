@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
-    
+
     [Serializable]
     private class PlayerMovement : Movement
     {
@@ -28,7 +28,7 @@ public class Player : Entity
     }
 
     [Serializable]
-        private class PlayerJump : Jump
+    private class PlayerJump : Jump
     {
         private Player player;
         private int remainingJumps;
@@ -85,7 +85,8 @@ public class Player : Entity
             onFoot.Jump.canceled += (ctx) => jump.End();
             onFoot.Passthrough.performed += (ctx) =>
             {
-                foreach (var trigger in player._passthroughTriggers) {
+                foreach (var trigger in player._passthroughTriggers)
+                {
                     trigger.AllowPassthroughFor(player.bodyCollider);
                     trigger.AllowPassthroughFor(player.feetCollider);
                 }
@@ -105,7 +106,7 @@ public class Player : Entity
     [SerializeField] private float _dynamicDrag;
     [SerializeField] private LayerMask _platformLayer;
     [SerializeField] private LayerMask _passthroughPlatformLayer;
-    
+
     private HashSet<PassthroughTrigger> _passthroughTriggers = new();
     private PlayerControls controls = new();
 
@@ -129,12 +130,13 @@ public class Player : Entity
     {
         jump.FixedUpdate();
         movement.FixedUpdate();
-   
+
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.TryGetComponent(out PassthroughTrigger trigger)) {
+        if (collider.TryGetComponent(out PassthroughTrigger trigger))
+        {
             _passthroughTriggers.Add(trigger);
         }
     }

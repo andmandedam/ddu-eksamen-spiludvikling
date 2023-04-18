@@ -20,6 +20,7 @@ public abstract class Movement
         dir.y = 0;
         movementVector = dir;
         rigidbody.drag = dynamicDrag;
+        entity.transform.rotation = Quaternion.Euler(0, dir.x < 0 ? 180 : 0, 0);
     }
 
     public void FixedUpdate()

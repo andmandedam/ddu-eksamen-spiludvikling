@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 818332719681259626}
   - component: {fileID: 8959653180646374660}
-  - component: {fileID: 4007003019963064559}
+  - component: {fileID: 9075100633524910867}
   m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
@@ -59,7 +59,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4007003019963064559
+--- !u!114 &9075100633524910867
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2475292496523977486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7512febfcb05c98498fb022b4f3a33cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a62e242d3e1d9a44b3797221f073f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentCollider: {fileID: 4184002927570025985}
@@ -118,7 +118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 759108061188623923, guid: 697b908125d10f342b5a454aee6f8a3e, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1211213282656140323, guid: 697b908125d10f342b5a454aee6f8a3e, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
