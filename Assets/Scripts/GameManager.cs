@@ -33,9 +33,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] giantRooms;
     [SerializeField] GameObject[] elevatorRooms;
 
-    Dictionary<Enum, GameObject[]> prefabDictionary;
-    Dictionary<Enum, float> enemySpawnStatsDictionary;
-    Dictionary<Enum, float> placeableStatsDictionary;
+    [Header("  Decorations")]
+    [SerializeField] GameObject[] tables;
+    [SerializeField] GameObject[] chairs;
+    [SerializeField] GameObject[] tableTops;
+
+    Dictionary<Enum, GameObject[]> prefabDictionary = new Dictionary<Enum, GameObject[]>();
+    Dictionary<Enum, float> enemySpawnStatsDictionary = new Dictionary<Enum, float>();
+    Dictionary<Enum, float> placeableStatsDictionary = new Dictionary<Enum, float>();
 
 
     void Start()
