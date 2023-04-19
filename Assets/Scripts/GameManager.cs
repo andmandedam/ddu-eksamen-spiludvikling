@@ -6,8 +6,10 @@ using UnityEngine;
  
 public class GameManager : MonoBehaviour
 {
+    public GameObject player;
     public GameObject[] rooms;
     public GameObject levelBorder;
+    public GameObject nextLevelDoor;
 
     [Header("  Spawning")]
     public float hardRoomMultiplier;
@@ -55,6 +57,7 @@ public class GameManager : MonoBehaviour
     Dictionary<Enum, float> enemySpawnStatsDictionary = new Dictionary<Enum, float>();
     Dictionary<Enum, float> spawnChanceDictionary = new Dictionary<Enum, float>();
 
+    private float levelNumber = 0;
 
     void Start()
     {
@@ -135,11 +138,21 @@ public class GameManager : MonoBehaviour
             return (T)v.GetValue(_R.Next(v.Length));
         }
     }
-
+    public void NextLevel()
+    {
+        Destroy(roomParent.gameObject);
+        levelNumber++;
+        roomParent = new GameObject("House" + levelNumber).transform;
+        enemyParent = new GameObject("EnemyParent").transform;
+        enemyParent.parent = roomParent;
+        HouseFactory.GenerateHouse(this);
+        player.transform.position = new Vector3(2, 0, 0);
+    }
     class HouseFactory
     {
         private const float EnemyEdgeMargin = 1f; //The minimum distance an enemy can be placed from edge of a room
         private const float SmashableSpawnRate = 0.6f; // F.x. Barrels or vases
+        private const float WallWidth = 4f / 32f;
 
         public static void GenerateHouse(GameManager gameManager)
         {
@@ -166,7 +179,7 @@ public class GameManager : MonoBehaviour
             topEdge.transform.position = new Vector3(houseSize.x / 2, houseSize.y + 1, 0);
 
             GameObject bottomEdge = Instantiate(gameManager.levelBorder, gameManager.roomParent);
-            bottomEdge.transform.localScale = new Vector3(houseSize.x, 1, 1);
+            bottomEdge.transform.localScale = new Vector3(houseSize.x, 2, 1);
             bottomEdge.transform.position = new Vector3(houseSize.x / 2, -1, 1);
         }
 
@@ -175,6 +188,16 @@ public class GameManager : MonoBehaviour
             var roomObject = Instantiate(room.roomPrefab, gameManager.roomParent, true);
             roomObject.transform.position = (Vector3Int)room.placement;
             PlaceEnemies(room, gameManager);
+
+            if ((room.tags & RoomTag.Exit) != 0)
+            {
+                GameObject nextLevelDoor = Instantiate(gameManager.nextLevelDoor, roomObject.transform);
+                nextLevelDoor.transform.localPosition = new Vector3(GetRoomTypeSize(room.roomType).x - WallWidth, nextLevelDoor.transform.localScale.y/2); //
+                
+                nextLevelDoor.TryGetComponent<NextLevelScript>(out var script);
+                script.gameManager = gameManager;
+            }
+
             RoomInfo roomInfo;
             
             if (!roomObject.TryGetComponent<RoomInfo>(out roomInfo))
@@ -227,7 +250,6 @@ public class GameManager : MonoBehaviour
 
             return roomObject;
         }
-
         private static void PlaceSpawnables(Enum @enum, Transform[] decorationSpawnPoint, GameObject roomObject, GameManager gameManager)
         {
             for (int i = 0; i < decorationSpawnPoint.Length; i++)
@@ -254,7 +276,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    
     public static Vector2 GetRoomTypeSize(RoomType roomType)
     {
         switch (roomType)
@@ -271,7 +292,6 @@ public class GameManager : MonoBehaviour
             case RoomType.ElevatorRoom:
                 return new Vector2(2, 4);
         }
-
         throw new ArgumentException("Invalid RoomType");
     }    
     public static Vector2 GetHouseTemplateSize(HouseTemplate template)
@@ -280,8 +300,10 @@ public class GameManager : MonoBehaviour
         {
             case HouseTemplate.RegularHouse:
                 return new Vector2(34f, 12f);
-        }
 
+            case HouseTemplate.Outside:
+                return new Vector2(32f, 16f);
+        }
         throw new ArgumentException("Invalid RoomType");
     }
     public static RoomObject[] GetRoomsInHouseTemplate(HouseTemplate template, GameManager gameManager)
@@ -299,15 +321,15 @@ public class GameManager : MonoBehaviour
                     new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(0,4), gameManager),
                     new RoomObject(RoomType.Hallway, RoomTag.Hard, new Vector2Int(18,8), gameManager),
                     new RoomObject(RoomType.Hallway, RoomTag.Loot | RoomTag.Hard, new Vector2Int(26,8), gameManager),
-                    new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(18,0), gameManager),
+                    new RoomObject(RoomType.BigRoom, RoomTag.Exit, new Vector2Int(18,0), gameManager),
                 };
-                /*
+                
             case HouseTemplate.Outside:
                 return new RoomObject[]
                 {
-                    new RoomObject(RoomType.GiantRoom, RoomTag.None, new Vector2Int(0,0), gameManager),
+                    new RoomObject(RoomType.GiantRoom, RoomTag.Exit, new Vector2Int(0,0), gameManager),
                 };
-                */
+                
         }
         throw new ArgumentException("Invalid HouseTemplate");
     }
@@ -320,11 +342,12 @@ public class GameManager : MonoBehaviour
         Loot = 1 << 1,
         Hard = 1 << 2,
         BigEnemies = 1 << 3,
+        Exit = 1 << 4,
     }
     public enum HouseTemplate
     {
         RegularHouse,
-        //Outside,
+        Outside,
         //TreasureTrove,
         //EnemyNest
     }

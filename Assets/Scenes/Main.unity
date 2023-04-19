@@ -168,8 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cae279515c93464ebf15c5435cef626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 922527966}
   rooms: []
   levelBorder: {fileID: 3231183468423531149, guid: 853807e8dccfd504fb5d1756b99a0d6d, type: 3}
+  nextLevelDoor: {fileID: 4282494981674310070, guid: bc4eb5af7505adb49b10f15b097b3aaa, type: 3}
   hardRoomMultiplier: 2
   roomParent: {fileID: 1758564030}
   enemyParent: {fileID: 445553209}
@@ -308,7 +310,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &186356851 stripped
 Transform:
@@ -338,13 +340,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445553208}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1758564030}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &889119894
 PrefabInstance:
@@ -451,6 +453,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+--- !u!1 &922527966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8190676746574411201, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+  m_PrefabInstance: {fileID: 889119894}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1341739184
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +587,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 445553209}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -15,7 +15,7 @@ TagManager:
   - PassthroughPlatform
   - 
   - Player
-  - 
+  - LevelTrigger
   - LevelBorder
   - 
   - 
