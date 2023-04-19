@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[Serializable]
 public abstract class Entity : MonoBehaviour
 {
-    public new Rigidbody2D rigidbody;
+    [SerializeField] private Rigidbody2D _rigidbody;
 
+    public new Rigidbody2D rigidbody => _rigidbody;
     public abstract Collider2D bodyCollider { get; }
     public abstract Collider2D feetCollider { get; }
     public abstract float staticDrag { get; }

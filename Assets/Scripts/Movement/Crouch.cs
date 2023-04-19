@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Crouch 
 {
-    public void Start() { }
-    public void End() { }
+    public virtual void Start() {
+    }
+    public virtual void End() {
+    }
 }

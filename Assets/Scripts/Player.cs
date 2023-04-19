@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
-
     [Serializable]
     private class PlayerMovement : Movement
     {
@@ -63,7 +62,18 @@ public class Player : Entity
     [Serializable]
     private class PlayerCrouch : Crouch
     {
+        [SerializeField] private Animator animator;
 
+        public override void Start()
+        {
+            Debug.Log("Crouching");
+            animator.SetBool("crouching", true);
+        }
+
+        public override void End()
+        {
+            animator.SetBool("crouching", false);
+        }
     }
 
     private class PlayerControls : Controls
@@ -97,9 +107,7 @@ public class Player : Entity
     }
 
 
-    [SerializeField] private PlayerMovement movement;
-    [SerializeField] private PlayerJump jump;
-    [SerializeField] private PlayerCrouch crouch;
+
     [SerializeField] private Collider2D _bodyCollider;
     [SerializeField] private Collider2D _feetCollider;
     [SerializeField] private float _staticDrag;
@@ -107,6 +115,10 @@ public class Player : Entity
     [SerializeField] private LayerMask _platformLayer;
     [SerializeField] private LayerMask _passthroughPlatformLayer;
 
+    [SerializeField] private PlayerMovement movement;
+    [SerializeField] private PlayerJump jump;
+    [SerializeField] private PlayerCrouch crouch;
+    
     private HashSet<PassthroughTrigger> _passthroughTriggers = new();
     private PlayerControls controls = new();
 
@@ -119,8 +131,6 @@ public class Player : Entity
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
-
         movement.Enable(this);
         controls.Enable(this);
         jump.Enable(this);
