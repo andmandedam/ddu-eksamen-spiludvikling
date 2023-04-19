@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
@@ -15,10 +13,8 @@ public class Player : Entity
 
         public override Entity entity => player;
         public override float moveAccel =>
-                        _moveAcceleration * (player.jump.jumping ? 0.5f : 1f);
+                        _moveAcceleration * (player.grounded ? 1f : 0.5f);
         public override float moveMaxSpeed => _moveMaxSpeed;
-        public override float dynamicDrag => player.dynamicDrag;
-        public override float staticDrag => !player.grounded ? player.dynamicDrag : player.staticDrag;
 
         public void Enable(Player player)
         {
@@ -27,31 +23,25 @@ public class Player : Entity
     }
 
     [Serializable]
-    private class PlayerJump : Jump
+    private class PlayerJump : InteractiveJump
     {
         private Player player;
-        private int remainingJumps;
+        [SerializeField] private int remainingJumps;
         [SerializeField] private int _jumpCount;
         [SerializeField] private float _jumpForce;
-        [SerializeField] private float _minJumpHeigth;
+        [SerializeField] private float _iterForce;
+        [SerializeField] private float _minJumpTime;
         [SerializeField] private float _downForceScale;
+        [SerializeField] private int _maxIteration;
 
         public override Entity entity => player;
         public override float jumpForce => _jumpForce;
-        public override float minJumpHeigth => _minJumpHeigth;
+        // public override float iterForce => _iterForce;
+        public override float minJumpTime => _minJumpTime;
         public override float downForceScale => _downForceScale;
         public override bool canJump => remainingJumps > 0;
+        public override int maxIteration => _maxIteration;
 
-
-        protected override void Reset()
-        {
-            remainingJumps = _jumpCount;
-        }
-
-        protected override void OnJump()
-        {
-            remainingJumps--;
-        }
 
         public void Enable(Player player)
         {
@@ -80,42 +70,7 @@ public class Player : Entity
     private class PlayerAttack : HitscanAttack
     {
         private Player _player;
-        [SerializeField] Rect _hitRect;
-        [SerializeField] private int _attackDamage;
-        [SerializeField] private float _attackKnockback;
-        [SerializeField] private LayerMask _attackLayer;
-        [SerializeField] private float _windupTime;
-        [SerializeField] private float _attackTime;
-        [SerializeField] private float _cooldownTime;
-
-        public override Rect hitRect
-        {
-            get
-            {
-                var sign = _player.transform.rotation == Quaternion.identity ? 1 : -1;
-                var pos = _hitRect.position;
-                pos.x = sign * pos.x;
-                pos = pos + (Vector2)_player.transform.position;
-
-                return 
-                new(
-                    pos,
-                    new Vector2(sign * _hitRect.width, _hitRect.height)
-                    );
-            }
-        }
-        public override int attackDamage => _attackDamage;
-        public override float attackKnockback => _attackKnockback;
-        public override LayerMask attackLayer => _attackLayer;
         public override Entity entity => _player;
-        public override float windupTime => _windupTime;
-        public override float attackTime => _attackTime;
-        public override float cooldownTime => _cooldownTime;
-    
-        public void Enable(Player player)
-        {
-            _player = player;
-        }
 
         public override void Start()
         {
@@ -151,18 +106,10 @@ public class Player : Entity
 
             var onFoot = actions.NinjaOnFoot;
 
-            onFoot.Move.performed += (ctx) => movement.Start(ctx.ReadValue<Vector2>());
+            onFoot.Move.performed += (ctx) => movement.Begin(ctx.ReadValue<Vector2>());
             onFoot.Move.canceled += (ctx) => movement.End();
-            onFoot.Jump.performed += (ctx) => jump.Start();
+            onFoot.Jump.performed += (ctx) => jump.Begin();
             onFoot.Jump.canceled += (ctx) => jump.End();
-            onFoot.Passthrough.performed += (ctx) =>
-            {
-                foreach (var trigger in player._passthroughTriggers)
-                {
-                    trigger.AllowPassthroughFor(player.bodyCollider);
-                    trigger.AllowPassthroughFor(player.feetCollider);
-                }
-            };
             onFoot.Crouch.performed += (ctx) => crouch.Start();
             onFoot.Crouch.canceled += (ctx) => crouch.End();
             onFoot.Attack.performed += (ctx) => attack.Start();
@@ -179,8 +126,7 @@ public class Player : Entity
     [SerializeField] private PlayerJump jump;
     [SerializeField] private PlayerCrouch crouch;
     [SerializeField] private PlayerAttack attack;
-    
-    private HashSet<PassthroughTrigger> _passthroughTriggers = new();
+
     private PlayerControls controls = new();
 
     public override float staticDrag => _staticDrag;
@@ -200,23 +146,19 @@ public class Player : Entity
 
     void FixedUpdate()
     {
-        jump.FixedUpdate();
-        movement.FixedUpdate();
+        if (grounded && !jump.jumping && !movement.isHorizontal)
+        {
+            rigidbody.drag = staticDrag;
+        }
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.TryGetComponent(out PassthroughTrigger trigger))
-        {
-            _passthroughTriggers.Add(trigger);
-        }
+        movement.OnTriggerEnter2D(collider);
     }
 
     public void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.TryGetComponent(out PassthroughTrigger trigger))
-        {
-            _passthroughTriggers.Remove(trigger);
-        }
+        movement.OnTriggerEnter2D(collider);
     }
 }

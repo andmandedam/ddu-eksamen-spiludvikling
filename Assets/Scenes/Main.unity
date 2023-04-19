@@ -386,6 +386,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: jump._iterForce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
       propertyPath: attack._hitRect.x
       value: 0.5
       objectReference: {fileID: 0}
@@ -394,12 +398,24 @@ PrefabInstance:
       value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: jump._minJumpTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
       propertyPath: attack._attackTime
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
       propertyPath: attack._windupTime
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: jump._maxIteration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: jump.remainingJumps
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
       propertyPath: attack._attackKnockback
