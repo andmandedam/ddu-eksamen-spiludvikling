@@ -71,6 +71,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cdfe77a-428b-4124-93d4-aea5134cf800"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -205,6 +214,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Passthrough"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ebc7b40b-190c-47d1-b528-b01a97f1a886"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -241,6 +261,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_NinjaOnFoot_Dash = m_NinjaOnFoot.FindAction("Dash", throwIfNotFound: true);
         m_NinjaOnFoot_Crouch = m_NinjaOnFoot.FindAction("Crouch", throwIfNotFound: true);
         m_NinjaOnFoot_Passthrough = m_NinjaOnFoot.FindAction("Passthrough", throwIfNotFound: true);
+        m_NinjaOnFoot_Attack = m_NinjaOnFoot.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -305,6 +326,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_NinjaOnFoot_Dash;
     private readonly InputAction m_NinjaOnFoot_Crouch;
     private readonly InputAction m_NinjaOnFoot_Passthrough;
+    private readonly InputAction m_NinjaOnFoot_Attack;
     public struct NinjaOnFootActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -314,6 +336,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_NinjaOnFoot_Dash;
         public InputAction @Crouch => m_Wrapper.m_NinjaOnFoot_Crouch;
         public InputAction @Passthrough => m_Wrapper.m_NinjaOnFoot_Passthrough;
+        public InputAction @Attack => m_Wrapper.m_NinjaOnFoot_Attack;
         public InputActionMap Get() { return m_Wrapper.m_NinjaOnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -338,6 +361,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Passthrough.started -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnPassthrough;
                 @Passthrough.performed -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnPassthrough;
                 @Passthrough.canceled -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnPassthrough;
+                @Attack.started -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_NinjaOnFootActionsCallbackInterface = instance;
             if (instance != null)
@@ -357,6 +383,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Passthrough.started += instance.OnPassthrough;
                 @Passthrough.performed += instance.OnPassthrough;
                 @Passthrough.canceled += instance.OnPassthrough;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -386,5 +415,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnPassthrough(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }
