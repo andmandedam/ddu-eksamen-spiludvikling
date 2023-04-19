@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
             
             for (int i = 0; i < roomInfo.placeableSpawnPoint.Length; i++)
             {
-                if (UnityEngine.Random.value < SmashableSpawnRate)
+                if (UnityEngine.Random.value < gameManager.placeableStatsDictionary[PlaceableType.Smashable])
                 {
                     Instantiate(ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Smashable])).transform.position = 
                         roomInfo.placeableSpawnPoint[i] + (Vector3Int)room.placement;
@@ -145,11 +145,8 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < roomInfo.tableTopDecorationSpawnPoint.Length; i++)
             {
-                if (UnityEngine.Random.value < SmashableSpawnRate)
-                {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.TableTop])).transform.position = 
-                        roomInfo.tableTopDecorationSpawnPoint[i] + (Vector3Int)room.placement;
-                }
+                Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.TableTop])).transform.position = 
+                    roomInfo.tableTopDecorationSpawnPoint[i] + (Vector3Int)room.placement;
             }
             return roomObject;
         }
