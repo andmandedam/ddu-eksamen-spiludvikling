@@ -76,6 +76,33 @@ public class Player : Entity
         }
     }
 
+    [Serializable]
+    private class PlayerAttack : HitscanAttack
+    {
+        private Player _player;
+        [SerializeField] Rect _hitRect;
+        [SerializeField] private int _attackDamage;
+        [SerializeField] private float _attackKnockback;
+        [SerializeField] private LayerMask _attackLayer;
+        [SerializeField] private float _windupTime;
+        [SerializeField] private float _attackTime;
+        [SerializeField] private float _cooldownTime;
+
+        public override Rect hitRect => _hitRect;
+        public override int attackDamage => _attackDamage;
+        public override float attackKnockback => _attackKnockback;
+        public override LayerMask attackLayer => _attackLayer;
+        public override Entity entity => _player;
+        public override float windupTime => _windupTime;
+        public override float attackTime => _attackTime;
+        public override float cooldownTime => _cooldownTime;
+    
+        public void Enable(Player player)
+        {
+            _player = player;
+        }
+    }
+
     private class PlayerControls : Controls
     {
         public void Enable(Player player)
@@ -86,6 +113,7 @@ public class Player : Entity
             var movement = player.movement;
             var jump = player.jump;
             var crouch = player.crouch;
+            var attack = player.attack;
 
             var onFoot = actions.NinjaOnFoot;
 
@@ -103,37 +131,35 @@ public class Player : Entity
             };
             onFoot.Crouch.performed += (ctx) => crouch.Start();
             onFoot.Crouch.canceled += (ctx) => crouch.End();
+            onFoot.Attack.performed += (ctx) => attack.Start();
         }
     }
 
 
-
-    [SerializeField] private Collider2D _bodyCollider;
-    [SerializeField] private Collider2D _feetCollider;
+    [Header("Player")]
     [SerializeField] private float _staticDrag;
     [SerializeField] private float _dynamicDrag;
     [SerializeField] private LayerMask _platformLayer;
-    [SerializeField] private LayerMask _passthroughPlatformLayer;
 
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
     [SerializeField] private PlayerCrouch crouch;
+    [SerializeField] private PlayerAttack attack;
     
     private HashSet<PassthroughTrigger> _passthroughTriggers = new();
     private PlayerControls controls = new();
 
-    public override Collider2D bodyCollider => _bodyCollider;
-    public override Collider2D feetCollider => _feetCollider;
     public override float staticDrag => _staticDrag;
     public override float dynamicDrag => _dynamicDrag;
     public override LayerMask platformLayer => _platformLayer;
-    public override LayerMask passthroughPlatformLayer => _passthroughPlatformLayer;
+
 
     void Start()
     {
         movement.Enable(this);
         controls.Enable(this);
         jump.Enable(this);
+        attack.Enable(this);
     }
 
     void FixedUpdate()
@@ -158,22 +184,4 @@ public class Player : Entity
             _passthroughTriggers.Remove(trigger);
         }
     }
-
-    public void Damage(int dmg)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Kill()
-    {
-        throw new System.NotImplementedException();
-    }
 }
-
-//public class Sword : MonoBehaviour
-//{
-//    private void OnCollisionEnter2D(Collision2D collision)
-//    {
-//        collision.gameObject.GetComponent<IDamageable>().Damage(10);
-//    }
-//}
