@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RoomInfo : MonoBehaviour
 {
-    [SerializeField] public Vector3[] placeableSpawnPoint;
-    [SerializeField] public Vector3[] tableTopDecorationSpawnPoint;
+    [SerializeField] public Transform[] placeableSpawnPoint;
+    [SerializeField] public Transform[] tableSpawnPoint;
+    [SerializeField] public Transform[] tableTopDecorationSpawnPoint;
 }

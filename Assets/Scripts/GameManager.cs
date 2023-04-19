@@ -9,8 +9,14 @@ public class GameManager : MonoBehaviour
     public float hardRoomMultiplier;
     public GameObject[] rooms;
     [Header("  Spawning")]
+    [SerializeField] Transform roomParent;
+    [SerializeField] Transform placeableParent;
+    [SerializeField] Transform decorationParent;
+    [SerializeField] Transform enemyParent;
+
     [SerializeField] float smashableSpawnChance;
     [SerializeField] float treasureSpawnChance;
+    [SerializeField] float tableSpawnChance;
 
     [SerializeField] float hallwayBaseEnemyAmount;
     [SerializeField] float bigRoomBaseEnemyAmount;
@@ -40,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     Dictionary<Enum, GameObject[]> prefabDictionary = new Dictionary<Enum, GameObject[]>();
     Dictionary<Enum, float> enemySpawnStatsDictionary = new Dictionary<Enum, float>();
-    Dictionary<Enum, float> placeableStatsDictionary = new Dictionary<Enum, float>();
+    Dictionary<Enum, float> spawnChanceDictionary = new Dictionary<Enum, float>();
 
 
     void Start()
@@ -53,14 +59,19 @@ public class GameManager : MonoBehaviour
         prefabDictionary.Add(RoomType.BigRoom, bigRooms);
         prefabDictionary.Add(RoomType.GiantRoom, giantRooms);
         prefabDictionary.Add(RoomType.ElevatorRoom, elevatorRooms);
+        prefabDictionary.Add(DecorationType.Table, tables);
+        prefabDictionary.Add(DecorationType.Chair, chairs);
+        prefabDictionary.Add(DecorationType.TableTop, tableTops);
 
         enemySpawnStatsDictionary.Add(RoomType.Hallway, hallwayBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.BigRoom, bigRoomBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.GiantRoom, giantRoomBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.ElevatorRoom, elevatorRoomBaseEnemyAmount);
 
-        placeableStatsDictionary.Add(PlaceableType.Treasure, treasureSpawnChance);
-        placeableStatsDictionary.Add(PlaceableType.Smashable, smashableSpawnChance);
+        spawnChanceDictionary.Add(PlaceableType.Treasure, treasureSpawnChance);
+        spawnChanceDictionary.Add(PlaceableType.Smashable, smashableSpawnChance);
+
+        spawnChanceDictionary.Add(DecorationType.Table, tableSpawnChance);
 
         HouseFactory.GenerateHouse(this);
     }
@@ -126,9 +137,9 @@ public class GameManager : MonoBehaviour
         }
         public static GameObject CreateRoom(RoomObject room, GameManager gameManager)
         {
-            var roomObject = Instantiate(room.roomPrefab);
+            var roomObject = Instantiate(room.roomPrefab, gameManager.roomParent, true);
             roomObject.transform.position = (Vector3Int)room.placement;
-            PlaceEnemies(room);
+            PlaceEnemies(room, gameManager);
             RoomInfo roomInfo;
             
             if (!roomObject.TryGetComponent<RoomInfo>(out roomInfo))
@@ -139,22 +150,34 @@ public class GameManager : MonoBehaviour
             
             for (int i = 0; i < roomInfo.placeableSpawnPoint.Length; i++)
             {
-                if (UnityEngine.Random.value < gameManager.placeableStatsDictionary[PlaceableType.Smashable])
+                if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[PlaceableType.Smashable])
                 {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Smashable])).transform.position = 
-                        roomInfo.placeableSpawnPoint[i] + (Vector3Int)room.placement;
+                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Smashable]), roomObject.transform).transform.position = 
+                        roomInfo.placeableSpawnPoint[i].position;
                 }
             }
 
-            for (int i = 0; i < roomInfo.tableTopDecorationSpawnPoint.Length; i++)
+            for (int i = 0; i < roomInfo.tableSpawnPoint.Length; i++)
             {
-                Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.TableTop])).transform.position = 
-                    roomInfo.tableTopDecorationSpawnPoint[i] + (Vector3Int)room.placement;
+                if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[DecorationType.Table])
+                {
+                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.Table]), roomObject.transform).transform.position =
+                    roomInfo.tableSpawnPoint[i].position;
+
+                    for (int j = 0; j < roomInfo.tableTopDecorationSpawnPoint.Length; j++)
+                    {
+                        Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.TableTop]), roomObject.transform).transform.position =
+                            roomInfo.tableTopDecorationSpawnPoint[j].position;
+                    }
+                }
             }
+            
+
+            
             return roomObject;
         }
 
-        private static void PlaceEnemies(RoomObject room)
+        private static void PlaceEnemies(RoomObject room, GameManager gameManager)
         {
             var roomSize = GetRoomTypeSize(room.roomType);
 
@@ -165,7 +188,7 @@ public class GameManager : MonoBehaviour
                     Math.Clamp(UnityEngine.Random.value * roomSize.y, EnemyEdgeMargin, roomSize.y - EnemyEdgeMargin)
                         );
 
-                Instantiate(room.enemyPrefab).transform.position = (Vector3Int)room.placement + enemyPosition;
+                Instantiate(room.enemyPrefab, gameManager.enemyParent, true).transform.position = (Vector3Int)room.placement + enemyPosition;
             }
         }
     }
@@ -206,12 +229,13 @@ public class GameManager : MonoBehaviour
                     new RoomObject(RoomType.Hallway, RoomTag.Loot | RoomTag.Hard, new Vector2Int(26,8), gameManager),
                     new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(18,0), gameManager),
                 };
-
+                /*
             case HouseTemplate.Outside:
                 return new RoomObject[]
                 {
                     new RoomObject(RoomType.GiantRoom, RoomTag.None, new Vector2Int(0,0), gameManager),
                 };
+                */
         }
         throw new ArgumentException("Invalid HouseTemplate");
     }
@@ -228,7 +252,7 @@ public class GameManager : MonoBehaviour
     public enum HouseTemplate
     {
         RegularHouse,
-        Outside,
+        //Outside,
         //TreasureTrove,
         //EnemyNest
     }
