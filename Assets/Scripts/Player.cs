@@ -88,7 +88,22 @@ public class Player : Entity
         [SerializeField] private float _attackTime;
         [SerializeField] private float _cooldownTime;
 
-        public override Rect hitRect => _hitRect;
+        public override Rect hitRect
+        {
+            get
+            {
+                var sign = _player.transform.rotation == Quaternion.identity ? 1 : -1;
+                var pos = _hitRect.position;
+                pos.x = sign * pos.x;
+                pos = pos + (Vector2)_player.transform.position;
+
+                return 
+                new(
+                    pos,
+                    new Vector2(sign * _hitRect.width, _hitRect.height)
+                    );
+            }
+        }
         public override int attackDamage => _attackDamage;
         public override float attackKnockback => _attackKnockback;
         public override LayerMask attackLayer => _attackLayer;
@@ -101,13 +116,32 @@ public class Player : Entity
         {
             _player = player;
         }
+
+        public override void Start()
+        {
+            var onFoot = _player.controls.actions.NinjaOnFoot;
+            _player.movement.End();
+            onFoot.Move.Disable();
+            onFoot.Jump.Disable();
+            base.Start();
+        }
+
+        public override void End()
+        {
+            var onFoot = _player.controls.actions.NinjaOnFoot;
+            onFoot.Move.Enable();
+            onFoot.Jump.Enable();
+            base.End();
+        }
     }
 
     private class PlayerControls : Controls
     {
+        public PlayerInputActions actions;
         public void Enable(Player player)
+
         {
-            PlayerInputActions actions = new PlayerInputActions();
+            actions = new PlayerInputActions();
             actions.Enable();
 
             var movement = player.movement;
@@ -151,6 +185,8 @@ public class Player : Entity
 
     public override float staticDrag => _staticDrag;
     public override float dynamicDrag => _dynamicDrag;
+
+
     public override LayerMask platformLayer => _platformLayer;
 
 
@@ -166,7 +202,6 @@ public class Player : Entity
     {
         jump.FixedUpdate();
         movement.FixedUpdate();
-
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

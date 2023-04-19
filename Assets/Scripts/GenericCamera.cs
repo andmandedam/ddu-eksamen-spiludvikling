@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GenericCamera : MonoBehaviour
@@ -9,35 +10,35 @@ public class GenericCamera : MonoBehaviour
     [SerializeField] private float cameraSpeed;
     [SerializeField] private float resetMargin;
 
-    private Vector3 _target;
 
     private void Update()
     {
         Follow();            
     }
 
-    private void CameraMove()
+    private void CameraMove(Vector3 target)
     {
-        if (Vector3.Distance(_target, transform.position) < resetMargin)
+        if (Vector3.Distance(target, transform.position) < resetMargin)
         {
-            transform.position = _target;
+            transform.position = target;
             return;
         }
-            transform.position = Vector3.Lerp(transform.position, _target, Time.smoothDeltaTime * cameraSpeed);
+        transform.position = Vector3.Lerp(transform.position, target, Time.smoothDeltaTime * cameraSpeed);
     }
 
     private void Follow()
     {
-        _target = cameraOffset;
+        Vector3 target = cameraOffset;
 
         for (var i = 0; i < targets.Length; i++) 
         { 
-            _target += targets[i].position; 
+            target += targets[i].position; 
         }
+        target.z = 0;
+        target /= targets.Length;
+        target.z = transform.position.z;
 
-        _target /= targets.Length;
-
-        CameraMove();
+        CameraMove(target);
     }
 
 

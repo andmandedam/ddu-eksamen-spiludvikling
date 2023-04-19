@@ -385,6 +385,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: attack._hitRect.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: attack._hitRect.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: attack._attackTime
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: attack._windupTime
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: attack._attackKnockback
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: attack._attackLayer.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6470390828818119524, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
       propertyPath: m_RootOrder
       value: 1

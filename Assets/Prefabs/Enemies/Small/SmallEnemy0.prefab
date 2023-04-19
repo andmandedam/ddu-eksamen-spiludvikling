@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2849357945348939362}
   - component: {fileID: -3193459405259638563}
   - component: {fileID: 3149790529674819176}
+  - component: {fileID: 8978385076675252461}
   m_Layer: 0
   m_Name: SmallEnemy0
   m_TagString: Untagged
@@ -123,3 +124,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!114 &8978385076675252461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539378388184951660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc99f5e54e0b55d42843a692ad6df54a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: -3193459405259638563}
+  _bodyCollider: {fileID: 3149790529674819176}
+  _feetCollider: {fileID: 3149790529674819176}
+  _maxHealth: 100
+  _curHealth: 50

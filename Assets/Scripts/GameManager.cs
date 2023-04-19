@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
             return (T)v.GetValue(_R.Next(v.Length));
         }
     }
+
     class HouseFactory
     {
         private const float EnemyEdgeMargin = 1f; //The minimum distance an enemy can be placed from edge of a room
@@ -135,6 +136,7 @@ public class GameManager : MonoBehaviour
                 gameManager.rooms[i] = CreateRoom(rooms[i], gameManager);
             }
         }
+
         public static GameObject CreateRoom(RoomObject room, GameManager gameManager)
         {
             var roomObject = Instantiate(room.roomPrefab, gameManager.roomParent, true);
