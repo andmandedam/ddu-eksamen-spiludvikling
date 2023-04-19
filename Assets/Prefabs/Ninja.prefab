@@ -115,9 +115,8 @@ MonoBehaviour:
   _platformLayer:
     serializedVersion: 2
     m_Bits: 64
-  _passthroughPlatformLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  _maxHealth: 10
+  _curHealth: 10
   movement:
     _moveAcceleration: 20
     _moveMaxSpeed: 12
@@ -128,6 +127,21 @@ MonoBehaviour:
     _downForceScale: 0.7
   crouch:
     animator: {fileID: 8175518094923376424}
+  attack:
+    _hitRect:
+      serializedVersion: 2
+      x: 1
+      y: 0
+      width: 1
+      height: 1
+    _attackDamage: 10
+    _attackKnockback: 10
+    _attackLayer:
+      serializedVersion: 2
+      m_Bits: 1
+    _windupTime: 300
+    _attackTime: 200
+    _cooldownTime: 500
 --- !u!212 &2560287754202576149
 SpriteRenderer:
   m_ObjectHideFlags: 0

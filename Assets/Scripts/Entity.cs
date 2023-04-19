@@ -10,18 +10,21 @@ public abstract class Entity : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Collider2D _bodyCollider;
     [SerializeField] private Collider2D _feetCollider;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _curHealth;
     
 
     public new Rigidbody2D rigidbody => _rigidbody;
  
-    public virtual int maxHealth { get; protected set; }
-    public virtual int curHealth { get; protected set; }
+    public int maxHealth { get => _maxHealth; protected set => _maxHealth = value; }
+    public int curHealth { get => _curHealth; protected set => _curHealth = value; }
 
     public Collider2D bodyCollider => _bodyCollider;
     public Collider2D feetCollider => _feetCollider;
-    
-    public abstract float staticDrag { get; }
-    public abstract float dynamicDrag { get; }
+
+    public virtual float staticDrag => 10;
+    public virtual float dynamicDrag => 0;
+    public virtual int grav => 1;
     
     public abstract LayerMask platformLayer { get; }
 
@@ -35,6 +38,8 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void Damage(Entity source, int damage)
     {
+        if (source == this) return;
+
         curHealth = curHealth - damage;
         if (curHealth < 0)
         {
