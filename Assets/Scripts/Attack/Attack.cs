@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Attack 
+public abstract class Attack
 {
-    public enum Phase
+    enum State
     {
         Ready,
         Windup,
@@ -17,23 +17,23 @@ public abstract class Attack
     public abstract float windupTime { get; }
     public abstract float attackTime { get; }
     public abstract float cooldownTime { get; }
-    public Phase state { get; private set; }
 
-    public bool isReady => state == Phase.Ready;
-    public bool isInWindup => state == Phase.Windup;
-    public bool isAttacking => state == Phase.Attack;
-    public bool isOnCooldown => state == Phase.Cooldown;
-    
+    public bool isReady => state == State.Ready;
+    public bool isInWindup => state == State.Windup;
+    public bool isAttacking => state == State.Attack;
+    public bool isOnCooldown => state == State.Cooldown;
+
     private Coroutine currentRoutine = null;
+    private State state = State.Ready;
 
     public virtual void OnReady() { }
     public virtual void OnWindup() { }
     public virtual void OnAttack() { }
     public virtual void OnCooldown() { }
 
-    public virtual CustomYieldInstruction DuringWindup() => null;
-    public virtual CustomYieldInstruction DuringAttack() => null;
-    public virtual CustomYieldInstruction DuringCooldown() => null;
+    public virtual object DuringWindup() => null;
+    public virtual object DuringAttack() => null;
+    public virtual object DuringCooldown() => null;
 
     public virtual void Start()
     {
@@ -62,44 +62,32 @@ public abstract class Attack
         entity.rigidbody.gravityScale = entity.grav;
     }
 
-    private IEnumerator TimedCoroutine(float time, Func<CustomYieldInstruction> during)
-    {
-        float start = Time.time;
-        Func<bool> timedout = () => Time.time - start >= time / 1000;
-        while(!timedout())
-        {
-            var x = during();
-            if (x == null) yield return new WaitUntil(timedout);
-            else yield return x;
-        }
-    }
-
     private IEnumerator WindupRoutine()
     {
-        state = Phase.Windup;
+        state = State.Windup;
         OnWindup();
-        var enumerator = TimedCoroutine(windupTime, DuringWindup);
+        var enumerator = Util.TimedRoutine(windupTime, DuringWindup);
         while (enumerator.MoveNext()) yield return enumerator.Current;
-        currentRoutine = entity.StartCoroutine(AttackRoutine()); 
+        currentRoutine = entity.StartCoroutine(AttackRoutine());
     }
 
     private IEnumerator AttackRoutine()
     {
-        state = Phase.Attack;
+        state = State.Attack;
         OnAttack();
-        var enumerator = TimedCoroutine(attackTime, DuringAttack);
+        var enumerator = Util.TimedRoutine(attackTime, DuringAttack);
         while (enumerator.MoveNext()) yield return enumerator.Current;
         currentRoutine = entity.StartCoroutine(CooldownRoutine());
     }
 
     private IEnumerator CooldownRoutine()
     {
-        state = Phase.Cooldown;
+        state = State.Cooldown;
         OnCooldown();
-        var enumerator = TimedCoroutine(cooldownTime, DuringCooldown);
+        var enumerator = Util.TimedRoutine(cooldownTime, DuringCooldown);
         while (enumerator.MoveNext()) yield return enumerator.Current;
         currentRoutine = null;
-        state = Phase.Ready;
+        state = State.Ready;
         End();
         OnReady();
     }
