@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
 
             this.roomPrefab = GetPrefab(roomType);
             this.enemyAmount = GetBaseEnemyAmount(roomType);
-
             if ((this.tags & RoomTag.Hard) != 0)
             {
                 this.enemyAmount = (int)(HardRoomMultiplier * this.enemyAmount) + 1;
@@ -43,7 +42,9 @@ public class GameManager : MonoBehaviour
             if ((this.tags & RoomTag.BigEnemies) != 0)
             {
                 this.enemyPrefab = GetPrefab(EnemyType.Big);
-            }
+            } else {
+                this.enemyPrefab = GetPrefab(EnemyType.Small);            }
+
         }
 
     }
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
         public static void GenerateHouse()
         {
             var rooms = GetRoomsInHouseTemplate(RandomEnum.RandomEnumValue<HouseTemplate>());
+            GameManager.rooms = new GameObject[rooms.Length];
             for (int i = 0; i < rooms.Length; i++)
             {
                 GameManager.rooms[i] = CreateRoom(rooms[i]);
@@ -207,25 +209,25 @@ public class GameManager : MonoBehaviour
             case RoomType.Hallway:
                 return new string[] 
                 { 
-                    "Assets/Prefabs/Rooms/Hallway/Dev" 
+                    "Rooms/Hallway/Dev" 
                 };
 
             case RoomType.BigRoom:
                 return new string[] 
                 {
-                    "Assets/Prefabs/Rooms/BigRoom/Dev" 
+                    "Rooms/BigRoom/Dev" 
                 };
 
             case RoomType.GiantRoom:
                 return new string[] 
                 {
-                    "Assets/Prefabs/Rooms/GiantRoom/Dev",
+                    "Rooms/GiantRoom/Dev",
                 };
 
             case RoomType.ElevatorRoom:
                 return new string[] 
                 {
-                    "Assets/Prefabs/Rooms/ElevatorRoom/Dev" 
+                    "Rooms/ElevatorRoom/Dev" 
                 };
         }
 
@@ -238,14 +240,14 @@ public class GameManager : MonoBehaviour
             case PlaceableType.Treasure:
                 return new string[] 
                 { 
-                    "Assets/Prefabs/Placeables/Treasure/Chest0",
+                    "Placeables/Treasure/Chest0",
                 };
 
             case PlaceableType.Smashable:
                 return new string[] 
                 { 
-                    "Assets/Prefabs/Placeables/Smashable/Barrel0", 
-                    "Assets/Prefabs/Placeables/Smashable/Barrel1",
+                    "Placeables/Smashable/Barrel0", 
+                    "Placeables/Smashable/Barrel1",
                 };
         }
 
@@ -257,14 +259,14 @@ public class GameManager : MonoBehaviour
         {
             case EnemyType.Small:
                 return new string[] 
-                { 
-                    "Assets/Prefabs/Enemies/Small/SmallEnemy0", 
+                {
+                    "Enemies/Small/SmallEnemy0", 
                 };
 
             case EnemyType.Big:
                 return new string[] 
                 { 
-                    "Assets/Prefabs/Enemies/Big/BigEnemy0" 
+                    "Enemies/Big/BigEnemy0" 
                 };
         }
 
@@ -277,25 +279,25 @@ public class GameManager : MonoBehaviour
             case DecorationType.Table:
                 return new string[] 
                 { 
-                    "Assets/Prefabs/Decorations/Table/Table0" 
+                    "Decorations/Table/Table0" 
                 };
 
             case DecorationType.Chair:
                 return new string[] 
                 {
-                    "Assets/Prefabs/Decorations/Chair/"//Missing
+                    "Decorations/Chair/"//Missing
                 }; 
 
             case DecorationType.TableTop:
                 return new string[] {
-                    "Assets/Prefabs/Decorations/TableTop/BottleBlue",
-                    "Assets/Prefabs/Decorations/TableTop/BottleGreen",
-                    "Assets/Prefabs/Decorations/TableTop/BottleRed",
-                    "Assets/Prefabs/Decorations/TableTop/BottleYellow",
-                    "Assets/Prefabs/Decorations/TableTop/FlowerVase0",
-                    "Assets/Prefabs/Decorations/TableTop/Light0",
-                    "Assets/Prefabs/Decorations/TableTop/Teapot",
-                    "Assets/Prefabs/Decorations/TableTop/WaterTub",
+                    "Decorations/TableTop/BottleBlue",
+                    "Decorations/TableTop/BottleGreen",
+                    "Decorations/TableTop/BottleRed",
+                    "Decorations/TableTop/BottleYellow",
+                    "Decorations/TableTop/FlowerVase0",
+                    "Decorations/TableTop/Light0",
+                    "Decorations/TableTop/Teapot",
+                    "Decorations/TableTop/WaterTub",
                 };
         }
 
