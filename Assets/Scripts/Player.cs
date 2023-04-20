@@ -29,14 +29,12 @@ public class Player : Entity
         [SerializeField] private int remainingJumps;
         [SerializeField] private int _jumpCount;
         [SerializeField] private float _jumpForce;
-        [SerializeField] private float _iterForce;
         [SerializeField] private float _minJumpTime;
         [SerializeField] private float _downForceScale;
         [SerializeField] private int _maxIteration;
 
         public override Entity entity => player;
         public override float jumpForce => _jumpForce;
-        // public override float iterForce => _iterForce;
         public override float minJumpTime => _minJumpTime;
         public override float downForceScale => _downForceScale;
         public override bool canJump => remainingJumps > 0;
