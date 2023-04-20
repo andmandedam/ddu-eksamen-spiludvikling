@@ -206,6 +206,7 @@ MonoBehaviour:
   - {fileID: 156148022035249787, guid: 6c103b1f1be0b1f468c0b926f418ddc0, type: 3}
   giantRooms:
   - {fileID: 156148022035249787, guid: 51547bcc0d15c5f44a7c25a7af9f8a05, type: 3}
+  - {fileID: 156148022035249787, guid: 1396f8c2e372a0743bbb735b677fb03c, type: 3}
   elevatorRooms:
   - {fileID: 156148022035249787, guid: 6e4543f6f0fb9fc4db073f68dc65d93b, type: 3}
   ground:
