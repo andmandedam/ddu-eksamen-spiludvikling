@@ -4,8 +4,8 @@ public abstract class InteractiveJump : Jump
 {
     public abstract int maxIteration { get; }
 
-    [SerializeField] private int iteration = 0;
-    [SerializeField] private float yvel = 0;
+    private int iteration = 0;
+    private float yvel = 0;
 
     protected override void OnJump()
     {
@@ -24,7 +24,7 @@ public abstract class InteractiveJump : Jump
 
             return new WaitForFixedUpdate();
         }
-        return null;
+        return base.DuringJump();
     }
 
     protected override void EndJump()

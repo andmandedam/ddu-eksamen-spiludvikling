@@ -27,7 +27,7 @@ public abstract class Attack
     public bool isOnCooldown => state == State.Cooldown;
     public State state => _state;
 
-    private Coroutine currentRoutine = null;
+    private Coroutine routine = null;
     private State _state = State.Ready;
 
     public virtual void OnReady() => animator.SetInteger("attackState", StateAsInt(State.Ready));
@@ -55,51 +55,76 @@ public abstract class Attack
                 entity.rigidbody.gravityScale = 0;
                 entity.rigidbody.velocity = Vector3.zero;
             }
-
-            entity.StartCoroutine(WindupRoutine());
-        }
-    }
-
-    public virtual void Cancel()
-    {
-        if (entity != null)
-        {
-            entity.StopCoroutine(currentRoutine);
+            _state = State.Windup;
+            OnWindup();
+            routine = entity.StartCoroutine(
+                Util.TimedRoutine(
+                    windupTime,
+                    DuringWindup,
+                    () => {
+                        _state = State.Attack;
+                        OnAttack();
+                        routine = entity.StartCoroutine(Util.TimedRoutine(
+                            attackTime,
+                            DuringAttack,
+                            () =>
+                            {
+                                _state = State.Cooldown;
+                                OnCooldown();
+                                routine = entity.StartCoroutine(Util.TimedRoutine(
+                                    cooldownTime,
+                                    DuringCooldown,
+                                    () =>
+                                    {
+                                        _state = State.Ready;
+                                        routine = null;
+                                        End();
+                                        OnReady();
+                                    })
+                                );
+                            })
+                        );
+                    })
+            );
         }
     }
 
     public virtual void End()
     {
+        if (routine != null)
+        {
+            entity.StopCoroutine(routine);
+        }
         entity.rigidbody.gravityScale = entity.grav;
     }
 
-    private IEnumerator WindupRoutine()
-    {
-        _state = State.Windup;
-        OnWindup();
-        var enumerator = Util.TimedRoutine(windupTime, DuringWindup);
-        while (enumerator.MoveNext()) yield return enumerator.Current;
-        currentRoutine = entity.StartCoroutine(AttackRoutine());
-    }
+    //private IEnumerator WindupRoutine()
+    //{
+    //    _state = State.Windup;
+    //    OnWindup();
+    //    var enumerator = Util.TimedRoutine(windupTime, DuringWindup);
+    //    while (enumerator.MoveNext()) yield return enumerator.Current;
+    //    currentRoutine = entity.StartCoroutine(AttackRoutine());
+    //}
 
-    private IEnumerator AttackRoutine()
-    {
-        _state = State.Attack;
-        OnAttack();
-        var enumerator = Util.TimedRoutine(attackTime, DuringAttack);
-        while (enumerator.MoveNext()) yield return enumerator.Current;
-        currentRoutine = entity.StartCoroutine(CooldownRoutine());
-    }
+    //private IEnumerator AttackRoutine()
+    //{
+    //    _state = State.Attack;
+    //    OnAttack();
+    //    var enumerator = Util.TimedRoutine(attackTime, DuringAttack);
+    //    while (enumerator.MoveNext()) yield return enumerator.Current;
+    //    currentRoutine = entity.StartCoroutine(CooldownRoutine());
+    //}
 
-    private IEnumerator CooldownRoutine()
-    {
-        _state = State.Cooldown;
-        OnCooldown();
-        var enumerator = Util.TimedRoutine(cooldownTime, DuringCooldown);
-        while (enumerator.MoveNext()) yield return enumerator.Current;
-        currentRoutine = null;
-        _state = State.Ready;
-        End();
-        OnReady();
-    }
+    //private IEnumerator CooldownRoutine()
+    //{
+    //    _state = State.Cooldown;
+    //    OnCooldown();
+    //    var enumerator = Util.TimedRoutine(cooldownTime, DuringCooldown);
+    //    while (enumerator.MoveNext()) yield return enumerator.Current;
+    //    currentRoutine = null;
+    //    _state = State.Ready;
+    //    End();
+    //    OnReady();
+    //}
 }

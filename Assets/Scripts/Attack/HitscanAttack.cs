@@ -29,8 +29,6 @@ public abstract class HitscanAttack : Attack
     public override float cooldownTime => _cooldownTime;
     public virtual Vector2 attackPoint => entity.transform.position;
 
-
-
     public static void DrawRect(Rect r)
     {
         Vector2[] verticies =

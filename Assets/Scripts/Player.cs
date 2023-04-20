@@ -42,12 +42,14 @@ public class Player : Entity
         [SerializeField] private int _jumpCount;
         [SerializeField] private float _jumpForce;
         [SerializeField] private float _minJumpTime;
+        [SerializeField] private float _windupTime;
         [SerializeField] private float _downForceScale;
         [SerializeField] private int _maxIteration;
 
         public override Entity entity => player;
         public override float jumpForce => _jumpForce;
         public override float minJumpTime => _minJumpTime;
+        public override float windupTime => _windupTime;
         public override float downForceScale => _downForceScale;
         public override bool canJump => remainingJumps > 0;
         public override int maxIteration => _maxIteration;
@@ -67,6 +69,11 @@ public class Player : Entity
         {
             base.OnJump();
             remainingJumps--;
+        }
+
+        protected override void EndJump()
+        {
+            base.EndJump();
         }
     }
 
@@ -158,7 +165,8 @@ public class Player : Entity
 
             onFoot.Move.performed += (ctx) => movement.Begin(ctx.ReadValue<Vector2>());
             onFoot.Move.canceled += (ctx) => movement.End();
-            onFoot.Jump.performed += (ctx) => jump.Begin();
+            onFoot.Jump.performed += (ctx) => 
+            jump.Begin();
             onFoot.Jump.canceled += (ctx) => jump.End();
             onFoot.Crouch.performed += (ctx) => crouch.Start();
             onFoot.Crouch.canceled += (ctx) => crouch.End();
@@ -202,6 +210,8 @@ public class Player : Entity
         {
             jump.Reset();
         }
+        animator.SetBool("grounded", grounded);
+        animator.SetBool("falling", rigidbody.velocity.y < 0);
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
