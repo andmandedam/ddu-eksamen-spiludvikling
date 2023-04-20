@@ -124,15 +124,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0196a58ae8140f643874dacadd192d8b
-      internalID: 1173060828
+      spriteID: 7cf59d2c01a21f0418538a0fdc30242d
+      internalID: 1857791355
       vertices: []
       indices: 
       edges: []
@@ -145,15 +145,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6ee3c56a5b7feb41ad0ea9a18770a3e
-      internalID: 1604773412
+      spriteID: 1dedba0d40b30354f880f6e1bcefa205
+      internalID: -69181687
       vertices: []
       indices: 
       edges: []
@@ -166,15 +166,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eeedbb494431c56478578fa005717442
-      internalID: 67333401
+      spriteID: 2f1bfb92ebc51b341b0c4c3d96b8f7c4
+      internalID: -2130661576
       vertices: []
       indices: 
       edges: []
@@ -187,15 +187,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb60149b5655c7342b1f8a32ce73bcb5
-      internalID: -1652412144
+      spriteID: 362fe43bf677edb46b54e289259082d2
+      internalID: -588410828
       vertices: []
       indices: 
       edges: []
@@ -208,15 +208,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0d43c56b85aa17640a98d9f895b36b60
-      internalID: 1544620721
+      spriteID: 10cd240ee2f2fe948adeb32044ccc0df
+      internalID: -663476377
       vertices: []
       indices: 
       edges: []
@@ -229,15 +229,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f6c1467db0fb484a824177dd425b1a7
-      internalID: -144998204
+      spriteID: 120bdcfede6a9e541b695cfebea29e1b
+      internalID: -196652586
       vertices: []
       indices: 
       edges: []
@@ -250,15 +250,15 @@ TextureImporter:
         y: 4
         width: 48
         height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9bd6c28c676d805428cf24f644cdebcf
-      internalID: 1958460725
+      spriteID: 5e2339c3828a92e458aa80c5604706e4
+      internalID: -1631423050
       vertices: []
       indices: 
       edges: []
@@ -274,13 +274,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      EnemyBlobIdleSequence_0: 1173060828
-      EnemyBlobIdleSequence_4: 1544620721
-      EnemyBlobIdleSequence_5: -144998204
-      EnemyBlobIdleSequence_6: 1958460725
-      EnemyBlobIdleSequence_1: 1604773412
-      EnemyBlobIdleSequence_2: 67333401
-      EnemyBlobIdleSequence_3: -1652412144
+      EnemyBlobIdleSequence_0: 1857791355
+      EnemyBlobIdleSequence_4: -663476377
+      EnemyBlobIdleSequence_5: -196652586
+      EnemyBlobIdleSequence_6: -1631423050
+      EnemyBlobIdleSequence_1: -69181687
+      EnemyBlobIdleSequence_2: -2130661576
+      EnemyBlobIdleSequence_3: -588410828
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1

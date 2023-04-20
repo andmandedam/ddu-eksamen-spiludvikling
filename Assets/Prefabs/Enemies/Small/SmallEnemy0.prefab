@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -3193459405259638563}
   - component: {fileID: 3149790529674819176}
   - component: {fileID: 8978385076675252461}
+  - component: {fileID: 3477417982986646871}
   m_Layer: 0
   m_Name: SmallEnemy0
   m_TagString: Untagged
@@ -141,3 +142,23 @@ MonoBehaviour:
   _feetCollider: {fileID: 3149790529674819176}
   _maxHealth: 100
   _curHealth: 50
+--- !u!95 &3477417982986646871
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539378388184951660}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9a2674b9be662664c8c949842102b21e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

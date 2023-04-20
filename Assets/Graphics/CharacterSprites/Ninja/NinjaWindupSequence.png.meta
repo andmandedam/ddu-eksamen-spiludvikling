@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e4e42fbba6c4eb7468449747a1809a08
+guid: ee3158b5f3dbfed4aa8d4b5252f42410
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,106 +117,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EnemyBlobWalkSequence_0
+      name: NinjaWindupSequence_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 4
-        width: 48
-        height: 53
-      alignment: 8
-      pivot: {x: 1, y: 0}
+        x: 20
+        y: 0
+        width: 27
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 59485b6541a6b5e46b55405a5f0e108f
-      internalID: -1064667778
+      spriteID: c6f22c891576dbd4daf0cd1bb31462ff
+      internalID: -177821393
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemyBlobWalkSequence_1
+      name: NinjaWindupSequence_1
       rect:
         serializedVersion: 2
-        x: 73
-        y: 4
-        width: 45
-        height: 51
-      alignment: 8
-      pivot: {x: 1, y: 0}
+        x: 83
+        y: 0
+        width: 28
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 240f4630c3ed38f4cbbeeafd20fc84b5
-      internalID: 1415767144
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: EnemyBlobWalkSequence_2
-      rect:
-        serializedVersion: 2
-        x: 138
-        y: 4
-        width: 44
-        height: 51
-      alignment: 8
-      pivot: {x: 1, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ce04c36e332d3664e865fa150dc2105f
-      internalID: 872675449
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: EnemyBlobWalkSequence_3
-      rect:
-        serializedVersion: 2
-        x: 201
-        y: 4
-        width: 45
-        height: 51
-      alignment: 8
-      pivot: {x: 1, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1f355a7fd2a050646a15fd9c9401356f
-      internalID: 1734506807
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: EnemyBlobWalkSequence_4
-      rect:
-        serializedVersion: 2
-        x: 264
-        y: 4
-        width: 48
-        height: 53
-      alignment: 8
-      pivot: {x: 1, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a910efa01ec40c4eb074affa004b22f
-      internalID: 887300013
+      spriteID: 8a21587a082c8ba4cb671d16483f011a
+      internalID: 664116544
       vertices: []
       indices: 
       edges: []
@@ -232,11 +169,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      EnemyBlobWalkSequence_1: 1415767144
-      EnemyBlobWalkSequence_3: 1734506807
-      EnemyBlobWalkSequence_2: 872675449
-      EnemyBlobWalkSequence_4: 887300013
-      EnemyBlobWalkSequence_0: -1064667778
+      NinjaWindupSequence_1: 664116544
+      NinjaWindupSequence_0: -177821393
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1
