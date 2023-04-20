@@ -175,12 +175,12 @@ MonoBehaviour:
   hardRoomMultiplier: 2
   roomParent: {fileID: 1758564030}
   enemyParent: {fileID: 445553209}
-  smashableSpawnChance: 0.6
+  smashableSpawnChance: 0.4
   treasureSpawnChance: 0.02
-  hasSurfaceSpawnChance: 0.4
+  hasSurfaceSpawnChance: 1
   groundSpawnChance: 0.7
   roofSpawnChance: 0.8
-  wallSpawnChance: 0.4
+  wallSpawnChance: 0.5
   lightSpawnChance: 1
   hallwayBaseEnemyAmount: 1
   bigRoomBaseEnemyAmount: 3
@@ -200,8 +200,10 @@ MonoBehaviour:
   - {fileID: 5309051206689594624, guid: 1f6cec2efa7919e4bb2ae57b77d487ea, type: 3}
   hallways:
   - {fileID: 6714390774696507435, guid: 12a989f066c3f2446a48af9190990202, type: 3}
+  - {fileID: 6714390774696507435, guid: 21f1e30f21a6b144c9a9a6d3bc7095c7, type: 3}
   bigRooms:
   - {fileID: 156148022035249787, guid: f451c46dba2a5cc4e8bf67b186781e3f, type: 3}
+  - {fileID: 156148022035249787, guid: 6c103b1f1be0b1f468c0b926f418ddc0, type: 3}
   giantRooms:
   - {fileID: 156148022035249787, guid: 51547bcc0d15c5f44a7c25a7af9f8a05, type: 3}
   elevatorRooms:
