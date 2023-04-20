@@ -45,6 +45,17 @@ public class Player : Entity
         {
             this.player = player;
         }
+
+        public void Reset()
+        {
+            remainingJumps = _jumpCount;
+        }
+
+        protected override void OnJump()
+        {
+            base.OnJump();
+            remainingJumps--;
+        }
     }
 
     [Serializable]
@@ -149,9 +160,9 @@ public class Player : Entity
 
     void FixedUpdate()
     {
-        if (grounded && !jump.jumping && !movement.isHorizontal)
+        if (grounded && !jump.jumping)
         {
-            rigidbody.drag = staticDrag;
+            jump.Reset();
         }
     }
 
