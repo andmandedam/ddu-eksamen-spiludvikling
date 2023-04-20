@@ -84,15 +84,15 @@ public class Player : Entity
         public override void Start()
         {
             var onFoot = _player.controls.actions.NinjaOnFoot;
-            onFoot.Move.Disable();
             animator.SetBool("crouching", true);
+            _player.movement.Slow(10);
         }
 
         public override void End()
         {
             var onFoot = _player.controls.actions.NinjaOnFoot;
-            onFoot.Move.Enable();
             animator.SetBool("crouching", false);
+            _player.movement.Slow(-10);
         }
     }
 
@@ -102,7 +102,20 @@ public class Player : Entity
         private Player _player;
         public override Animator animator => _player.animator;
         public override Entity entity => _player;
-
+        public override Vector2 attackPoint
+        {
+            get
+            {
+                if (_player.movement.facingVector.y == 0)
+                {
+                    return _player.movement.facingVector + (Vector2)_player.transform.position;
+                }
+                else
+                {
+                    return 2 * _player.movement.facingVector + (Vector2)_player.transform.position;
+                }
+            }
+        }
         public void Enable(Player player)
         {
             _player = player;

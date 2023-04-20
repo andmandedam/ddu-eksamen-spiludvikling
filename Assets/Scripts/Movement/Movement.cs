@@ -3,7 +3,12 @@ using UnityEngine;
 
 public abstract class Movement
 {
-    enum State
+    public const float DEFAULT_ACCEL = 8f;
+    public const float DEFAULT_SLOW_EXPONENT = 0.3f;
+    public const float DEFAULT_MAX_SPEED = 8f;
+    public const float DEFAULT_MIN_SPEED = 4f;
+
+    public enum State
     {
         None,
         Horizontal,
@@ -12,24 +17,51 @@ public abstract class Movement
     };
 
     public abstract Entity entity { get; }
-    public abstract float moveAccel { get; }
-    public abstract float moveMaxSpeed { get; }
 
+    public virtual float moveAccel => DEFAULT_ACCEL;
+    public virtual float slowExponent => DEFAULT_SLOW_EXPONENT;
+    public virtual float moveMaxSpeed => DEFAULT_MAX_SPEED;
+    public virtual float moveMinSpeed => DEFAULT_MIN_SPEED;
+
+
+
+    private float moveSpeedFromSlow(float slowScore) => (moveMaxSpeed - moveMinSpeed) * Mathf.Exp(-slowExponent * slowScore) + moveMinSpeed;
+    public float moveSpeed
+    {
+        get
+        {
+            float actualMod;
+            if (speedModifier > 0)
+            {
+                actualMod = -moveSpeedFromSlow(speedModifier) + moveMaxSpeed;
+            } else
+            {
+                actualMod = moveSpeedFromSlow(-speedModifier) - moveMaxSpeed;
+            }
+            actualMod = moveMaxSpeed + actualMod;
+            Debug.LogFormat("Speed: {0}", actualMod);
+            return actualMod;
+        }
+    }
     public Rigidbody2D rigidbody => entity.rigidbody;
     public float staticDrag => entity.staticDrag;
     public float dynamicDrag => entity.dynamicDrag;
 
+
     public Vector2 facingVector => _facingVector;
+    public State state => _state;
     public bool isNone => state == State.None;
     public bool isHorizontal => state == State.Horizontal;
     public bool isUpwards => state == State.Upwards;
     public bool isDownwards => state == State.Downwards;
     public bool turnaround => _turnaround;
 
+
     protected HashSet<PassthroughTrigger> passthroughTriggers = new();
+    protected float speedModifier;
     private Vector2 _facingVector = Vector2.left;
     private Coroutine coroutine = null;
-    private State state = State.None;
+    private State _state = State.None;
     private bool _turnaround = false;
 
     public void Begin(Vector2 dir)
@@ -43,19 +75,19 @@ public abstract class Movement
 
         if (_facingVector.x != 0)
         {
-            state = State.Horizontal;
+            _state = State.Horizontal;
             BeginMoveHorizontal();
             coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveHorizontal));
         }
         else if (facingVector.y < 0)
         {
-            state = State.Downwards;
+            _state = State.Downwards;
             BeginMoveDownwards();
             coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveDownwards));
         }
         else
         {
-            state = State.Upwards;
+            _state = State.Upwards;
             BeginMoveUpwards();
             coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveUpwards));
         }
@@ -71,7 +103,7 @@ public abstract class Movement
         }
 
         State old = state;
-        state = State.None; // Should be set to None before end methods are called.
+        _state = State.None; // Should be set to None before end methods are called.
         switch (old)
         {
             case (State.Horizontal): EndMoveHorizontal(); break;
@@ -79,6 +111,16 @@ public abstract class Movement
             case (State.Upwards): EndMoveUpwards(); break;
             default: break;
         }
+    }
+
+    public void Slow(float x)
+    {
+        speedModifier -= x;
+    }
+
+    public void SpeedUp(float x)
+    {
+        speedModifier += x;
     }
 
     public virtual void OnTriggerEnter2D(Collider2D collider)
@@ -111,7 +153,7 @@ public abstract class Movement
     protected virtual object DuringMoveHorizontal()
     {
         Vector2 velocity = rigidbody.velocity;
-        float ratio = Mathf.Abs(velocity.x) / moveMaxSpeed; // ratio in [0, 1], 0 => speed = 0; 1 => speed = maxSpeed;
+        float ratio = Mathf.Min(1, Mathf.Abs(velocity.x) / moveSpeed); // ratio in [0, 1], 0 => speed = 0; 1 => speed = maxSpeed;
         ratio = 1 - ratio; // Mirror ratio interval, ratio now in [0, 1], 0 => speed = maxSpeed; 1 => speed = 0;
 
         Vector2 force = moveAccel * ratio * facingVector;
@@ -125,7 +167,6 @@ public abstract class Movement
     protected virtual void BeginMoveUpwards() { }
     protected virtual object DuringMoveUpwards() => null;
     protected virtual void EndMoveUpwards() { }
-
     protected virtual void BeginMoveDownwards()
     {
         foreach (var trigger in passthroughTriggers)
@@ -134,7 +175,6 @@ public abstract class Movement
             trigger.AllowPassthroughFor(entity.feetCollider);
         }
     }
-
     protected virtual object DuringMoveDownwards() => null;
     protected virtual void EndMoveDownwards() { }
 }

@@ -4,6 +4,19 @@ using UnityEngine;
 
 public static class Util
 {
+    public static Rect RectFromCenterSize(Vector2 center, Vector2 size)
+    {
+        float w = Mathf.Abs(size.x) / 2;
+        float h = Mathf.Abs(size.y) / 2;
+
+        float xMin = center.x - w;
+        float yMin = center.y - h;
+        float xMax = center.x + w;
+        float yMax = center.y + h;
+
+        return Rect.MinMaxRect(xMin, yMin, xMax, yMax);
+    }
+
     public static IEnumerator<object> TimedRoutine(float time, Func<object> during)
     {
         float start = Time.time;

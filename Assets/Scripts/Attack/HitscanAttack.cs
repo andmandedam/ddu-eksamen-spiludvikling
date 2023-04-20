@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class HitscanAttack : Attack
 {
-    [SerializeField] Rect _hitRect;
+    [SerializeField] Vector2 _hitSize;
     [SerializeField] private int _attackDamage;
     [SerializeField] private float _attackKnockback;
     [SerializeField] private LayerMask _attackLayer;
@@ -18,16 +18,7 @@ public abstract class HitscanAttack : Attack
     {
         get
         {
-            var sign = entity.transform.rotation == Quaternion.identity ? 1 : -1;
-            var pos = _hitRect.position;
-            pos.x = sign * pos.x;
-            pos = pos + (Vector2)entity.transform.position;
-
-            return
-            new(
-                pos,
-                new Vector2(sign * _hitRect.width, _hitRect.height)
-                );
+            return Util.RectFromCenterSize(attackPoint, _hitSize);
         }
     }
     public int attackDamage => _attackDamage;
@@ -58,6 +49,9 @@ public abstract class HitscanAttack : Attack
     public override void OnAttack()
     {
         base.OnAttack();
+
+        DrawRect(hitRect);
+        Debug.Log(hitRect);
 
         Vector2 min = hitRect.min, max = hitRect.max;
         var colliders = Physics2D.OverlapAreaAll(min, max, attackLayer);
