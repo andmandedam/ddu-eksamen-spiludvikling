@@ -168,10 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cae279515c93464ebf15c5435cef626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 1634604722}
   rooms: []
-  levelBorder: {fileID: 0}
-  nextLevelDoor: {fileID: 0}
+  levelBorder: {fileID: 3231183468423531149, guid: 853807e8dccfd504fb5d1756b99a0d6d, type: 3}
+  nextLevelDoor: {fileID: 4282494981674310070, guid: bc4eb5af7505adb49b10f15b097b3aaa, type: 3}
   hardRoomMultiplier: 2
   roomParent: {fileID: 1758564030}
   enemyParent: {fileID: 445553209}
@@ -206,12 +206,27 @@ MonoBehaviour:
   - {fileID: 156148022035249787, guid: 51547bcc0d15c5f44a7c25a7af9f8a05, type: 3}
   elevatorRooms:
   - {fileID: 156148022035249787, guid: 6e4543f6f0fb9fc4db073f68dc65d93b, type: 3}
-  ground: []
-  hasSurface: []
-  onSurface: []
-  roof: []
-  wall: []
-  lights: []
+  ground:
+  - {fileID: 3420164188402694565, guid: 533eff14720180442bea4e8267c6a32a, type: 3}
+  - {fileID: 6318776756614628299, guid: e9fbaea2c2339064c88fa688cabc66a4, type: 3}
+  hasSurface:
+  - {fileID: 3578852239225633035, guid: e560b2a697b38e6479c206294345dce9, type: 3}
+  onSurface:
+  - {fileID: 3713113959153941188, guid: e90c7da876661da4b83f38ee32c88368, type: 3}
+  - {fileID: 8073946117639807569, guid: 5eda84db6d289c145a8465f12afda893, type: 3}
+  - {fileID: 1489564910341251384, guid: 8558d700276c64b43acd72414cb02968, type: 3}
+  - {fileID: 8064132052161611367, guid: a3759ef831592a94283311a5959e8efe, type: 3}
+  - {fileID: 7428031616304993369, guid: 454138a4f7a5dc84790368b08b069bac, type: 3}
+  - {fileID: 1980117185383177939, guid: 0ce6e0c6a19bdd04399f2a2e64d5d4e4, type: 3}
+  - {fileID: 5521517468365891019, guid: b9a0db24c19c3c349a9820992de4268b, type: 3}
+  - {fileID: 3973112000782484802, guid: 277ec2e93ff435947afbaabea768c85e, type: 3}
+  - {fileID: 2550459385549765585, guid: d1744e1bb9062a143be9c864ae414701, type: 3}
+  roof:
+  - {fileID: 1651674042164598067, guid: 7de6d8bf78d988544ab19a7c7841e1db, type: 3}
+  wall:
+  - {fileID: 5445469041265020150, guid: aa3ba2f235b69fc4f95679dfc74acf0d, type: 3}
+  lights:
+  - {fileID: 5820136814241201506, guid: 7347fb1e47266e948a6e1fcb38b3e278, type: 3}
 --- !u!1 &72034672
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,6 +562,11 @@ MonoBehaviour:
   cameraOffset: {x: 0, y: 0, z: -1}
   cameraSpeed: 2
   resetMargin: 0
+--- !u!1 &1634604722 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8190676746574411201, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+  m_PrefabInstance: {fileID: 889119894}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1758564029
 GameObject:
   m_ObjectHideFlags: 0
