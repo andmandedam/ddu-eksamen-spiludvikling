@@ -3,7 +3,12 @@ guid: 9cae279515c93464ebf15c5435cef626
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {instanceID: 0}
+  - levelBorder: {instanceID: 0}
+  - nextLevelDoor: {fileID: 4282494981674310070, guid: bc4eb5af7505adb49b10f15b097b3aaa, type: 3}
+  - roomParent: {instanceID: 0}
+  - enemyParent: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -5,11 +5,38 @@ using UnityEngine;
 
 public abstract class HitscanAttack : Attack
 {
+    [SerializeField] Rect _hitRect;
+    [SerializeField] private int _attackDamage;
+    [SerializeField] private float _attackKnockback;
+    [SerializeField] private LayerMask _attackLayer;
+    [SerializeField] private float _windupTime;
+    [SerializeField] private float _attackTime;
+    [SerializeField] private float _cooldownTime;
+
+    public Rect hitRect
+    {
+        get
+        {
+            var sign = entity.transform.rotation == Quaternion.identity ? 1 : -1;
+            var pos = _hitRect.position;
+            pos.x = sign * pos.x;
+            pos = pos + (Vector2)entity.transform.position;
+
+            return
+            new(
+                pos,
+                new Vector2(sign * _hitRect.width, _hitRect.height)
+                );
+        }
+    }
+    public int attackDamage => _attackDamage;
+    public float attackKnockback => _attackKnockback;
+    public LayerMask attackLayer => _attackLayer;
+    public override float windupTime => _windupTime;
+    public override float attackTime => _attackTime;
+    public override float cooldownTime => _cooldownTime;
     public virtual Vector2 attackPoint => entity.transform.position;
-    public abstract Rect hitRect { get; }
-    public abstract int attackDamage { get; }
-    public abstract float attackKnockback { get; }
-    public abstract LayerMask attackLayer { get; }
+
 
     public static void DrawRect(Rect r)
     {
@@ -29,6 +56,7 @@ public abstract class HitscanAttack : Attack
     public override void OnAttack()
     {
         DrawRect(hitRect);
+
 
         Vector2 min = hitRect.min, max = hitRect.max;
         var colliders = Physics2D.OverlapAreaAll(min, max, attackLayer);
@@ -57,5 +85,10 @@ public abstract class HitscanAttack : Attack
                 hit.Knockback(entity, dir.normalized * attackKnockback, pos);
             }
         }
+    }
+
+    public override void OnCooldown()
+    {
+
     }
 }

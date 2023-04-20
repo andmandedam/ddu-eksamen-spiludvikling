@@ -3,84 +3,57 @@ using UnityEngine;
 public abstract class Jump
 {
     public abstract Entity entity { get; }
+    public abstract float jumpForce { get; }
+    public abstract float minJumpTime { get; }
+    public abstract float downForceScale { get; }
+    public abstract bool canJump { get; }
+
     public Rigidbody2D rigidbody => entity.rigidbody;
     public float dynamicDrag => entity.dynamicDrag;
     public float staticDrag => entity.staticDrag;
 
-    public abstract float jumpForce { get; }
-    public abstract float minJumpHeigth { get; }
-    public abstract float downForceScale { get; }
-    public abstract bool canJump { get; }
+    public bool jumping => _jumping;
 
-    public float initialJumpHeigth { get; private set; } // Elevation when jump started
-    public bool jumpEndRequested { get; private set; }
-    public bool jumping { get; private set; }
+    private bool _jumping = false;
+    private Coroutine coroutine = null;
 
-    // Properties
-    private float jumpHeigthDelta => Mathf.Abs(rigidbody.transform.position.y - initialJumpHeigth);
-    private bool canEndJump => minJumpHeigth < jumpHeigthDelta;
-
-    // Functions
-    private void ResetVerticalVelocity() => rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
-
-    protected virtual void OnJump() { }
-    protected virtual void Reset() { }
-
-    public virtual void Start()
+    public virtual void Begin()
     {
         if (canJump)
         {
-            rigidbody.drag = dynamicDrag;
-            DoJump();
-        }
-    }
-
-    private void DoJump()
-    {
-        OnJump();
-        initialJumpHeigth = rigidbody.transform.position.y;
-        jumping = true;
-
-        ResetVerticalVelocity();
-
-        rigidbody.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
-    }
-
-    public void FixedUpdate()
-    {
-        if (entity.grounded)
-        {
-            Reset();
-        }
-
-        if (
-            jumping &&
-            ((jumpEndRequested && canEndJump)) // || rigidbody.velocity.y < 0)
-            )
-        {
-            JumpHardEnd();
+            _jumping = true;
+            entity.SetRequestDynamic(this);
+            rigidbody.drag = dynamicDrag; OnJump();
+            var time = Time.time;
+            coroutine = entity.StartCoroutine(Util.WhileRoutine(() => !entity.grounded || (Time.time - time < minJumpTime), DuringJump));
         }
     }
 
     public virtual void End()
     {
-        jumpEndRequested = true;
-    }
-
-    private void JumpHardEnd()
-    {
+        if (coroutine != null)
+        {
+            entity.StopCoroutine(coroutine);
+            coroutine = null;
+        }
         if (jumping)
         {
-            //ResetVerticalVelocity();
-
-            // When the player jumps far the downwards force should be smaller
-            // When the player jumps low the downwards force should be greater
-            // The downwards force is inversily proportional to the heigth(jumpHeigthDelta) for the player.
-
-            var forceScale = downForceScale * jumpForce / jumpHeigthDelta;
-            rigidbody.AddForce(forceScale * Vector3.down, ForceMode2D.Impulse);
+            _jumping = false;
+                entity.SetRequestStatic(this);
+            EndJump();
         }
-        jumpEndRequested = false;
-        jumping = false;
     }
+
+    protected virtual void OnJump()
+    {
+        var velocity = rigidbody.velocity;
+        velocity.y = 0;
+        rigidbody.velocity = velocity;
+
+        rigidbody.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
+    }
+
+    protected virtual object DuringJump() => null;
+
+    protected virtual void EndJump() { }
 }

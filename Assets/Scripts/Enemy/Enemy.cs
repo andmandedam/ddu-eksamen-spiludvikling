@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
-    public override float staticDrag => throw new System.NotImplementedException();
-    public override float dynamicDrag => throw new System.NotImplementedException();
-
     public override LayerMask platformLayer => throw new System.NotImplementedException();
 
-    public override void Damage(Entity source, int damage)
+    protected class EnemyAttack : HitscanAttack
     {
-        Debug.LogFormat("{0} took {1} damage from {2}", this, damage, source);
-        base.Damage(source, damage);
+        private Enemy _enemy;
+
+        public override Entity entity => _enemy;
     }
 }
