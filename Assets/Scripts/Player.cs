@@ -72,21 +72,26 @@ public class Player : Entity
         private Player _player;
         public override Entity entity => _player;
 
-        public override void Start()
+        public void Enable(Player player)
+        {
+            _player = player;
+        }
+
+        public override void OnWindup()
         {
             var onFoot = _player.controls.actions.NinjaOnFoot;
             _player.movement.End();
             onFoot.Move.Disable();
             onFoot.Jump.Disable();
-            base.Start();
+            base.OnWindup();
         }
 
-        public override void End()
+        public override void OnCooldown()
         {
             var onFoot = _player.controls.actions.NinjaOnFoot;
             onFoot.Move.Enable();
             onFoot.Jump.Enable();
-            base.End();
+            base.OnCooldown();
         }
     }
 

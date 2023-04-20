@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class HitscanAttack : Attack
 {
-    private Entity _entity;
     [SerializeField] Rect _hitRect;
     [SerializeField] private int _attackDamage;
     [SerializeField] private float _attackKnockback;
@@ -14,7 +13,6 @@ public abstract class HitscanAttack : Attack
     [SerializeField] private float _attackTime;
     [SerializeField] private float _cooldownTime;
 
-    public override Entity entity => _entity;
     public Rect hitRect
     {
         get
@@ -53,11 +51,6 @@ public abstract class HitscanAttack : Attack
         {
             Debug.DrawLine(verticies[i % 4], verticies[(i + 1) % 4], Color.black, 1000, false);
         }
-    }
-
-    public void Enable(Entity entity)
-    {
-        _entity = entity;
     }
 
     public override void OnAttack()
