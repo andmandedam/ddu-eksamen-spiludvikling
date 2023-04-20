@@ -20,6 +20,18 @@ public class Player : Entity
         {
             this.player = player;
         }
+
+        protected override void BeginMoveHorizontal()
+        {
+            player.animator.SetBool("running", true);
+            base.BeginMoveHorizontal();
+        }
+
+        protected override void EndMoveHorizontal()
+        {
+            player.animator.SetBool("running", false);
+            base.EndMoveHorizontal();
+        }
     }
 
     [Serializable]
@@ -61,16 +73,25 @@ public class Player : Entity
     [Serializable]
     private class PlayerCrouch : Crouch
     {
-        [SerializeField] private Animator animator;
+        private Player _player;
+        public Animator animator => _player.animator;
+
+        public void Enable(Player player)
+        {
+            _player = player;
+        }
 
         public override void Start()
         {
-            Debug.Log("Crouching");
+            var onFoot = _player.controls.actions.NinjaOnFoot;
+            onFoot.Move.Disable();
             animator.SetBool("crouching", true);
         }
 
         public override void End()
         {
+            var onFoot = _player.controls.actions.NinjaOnFoot;
+            onFoot.Move.Enable();
             animator.SetBool("crouching", false);
         }
     }
@@ -79,11 +100,13 @@ public class Player : Entity
     private class PlayerAttack : HitscanAttack
     {
         private Player _player;
+        public override Animator animator => _player.animator;
         public override Entity entity => _player;
 
         public void Enable(Player player)
         {
             _player = player;
+            base.Enable();
         }
 
         public override void OnWindup()
@@ -135,6 +158,7 @@ public class Player : Entity
     [SerializeField] private float _staticDrag;
     [SerializeField] private float _dynamicDrag;
     [SerializeField] private LayerMask _platformLayer;
+    [SerializeField] private Animator _animator;
 
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerJump jump;
@@ -145,7 +169,7 @@ public class Player : Entity
 
     public override float staticDrag => _staticDrag;
     public override float dynamicDrag => _dynamicDrag;
-
+    public Animator animator => _animator;
 
     public override LayerMask platformLayer => _platformLayer;
 
@@ -156,6 +180,7 @@ public class Player : Entity
         controls.Enable(this);
         jump.Enable(this);
         attack.Enable(this);
+        crouch.Enable(this);
     }
 
     void FixedUpdate()

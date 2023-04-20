@@ -5,35 +5,46 @@ using UnityEngine;
 
 public abstract class Attack
 {
-    enum State
+    public enum State
     {
-        Ready,
-        Windup,
-        Attack,
-        Cooldown
+        Ready = 0,
+        Windup = 1,
+        Attack = 2,
+        Cooldown = 3
     };
+
+    public static int StateAsInt(State state) => (int)state;
 
     public abstract Entity entity { get; }
     public abstract float windupTime { get; }
     public abstract float attackTime { get; }
     public abstract float cooldownTime { get; }
+    public abstract Animator animator { get; }
 
     public bool isReady => state == State.Ready;
     public bool isInWindup => state == State.Windup;
     public bool isAttacking => state == State.Attack;
     public bool isOnCooldown => state == State.Cooldown;
+    public State state => _state;
 
     private Coroutine currentRoutine = null;
-    private State state = State.Ready;
+    private State _state = State.Ready;
 
-    public virtual void OnReady() { }
-    public virtual void OnWindup() { }
-    public virtual void OnAttack() { }
-    public virtual void OnCooldown() { }
+    public virtual void OnReady() => animator.SetInteger("attackState", StateAsInt(State.Ready));
+    public virtual void OnWindup() => animator.SetInteger("attackState", StateAsInt(State.Windup));
+    public virtual void OnAttack() => animator.SetInteger("attackState", StateAsInt(State.Attack));
+    public virtual void OnCooldown() => animator.SetInteger("attackState", StateAsInt(State.Cooldown));
 
     public virtual object DuringWindup() => null;
     public virtual object DuringAttack() => null;
     public virtual object DuringCooldown() => null;
+
+    public virtual void Enable()
+    {
+        animator.SetFloat("windupTime", 1 / windupTime);
+        animator.SetFloat("attackTime", 1 / attackTime);
+        animator.SetFloat("cooldownTime", 1 / cooldownTime);
+    }
 
     public virtual void Start()
     {
@@ -64,7 +75,7 @@ public abstract class Attack
 
     private IEnumerator WindupRoutine()
     {
-        state = State.Windup;
+        _state = State.Windup;
         OnWindup();
         var enumerator = Util.TimedRoutine(windupTime, DuringWindup);
         while (enumerator.MoveNext()) yield return enumerator.Current;
@@ -73,7 +84,7 @@ public abstract class Attack
 
     private IEnumerator AttackRoutine()
     {
-        state = State.Attack;
+        _state = State.Attack;
         OnAttack();
         var enumerator = Util.TimedRoutine(attackTime, DuringAttack);
         while (enumerator.MoveNext()) yield return enumerator.Current;
@@ -82,12 +93,12 @@ public abstract class Attack
 
     private IEnumerator CooldownRoutine()
     {
-        state = State.Cooldown;
+        _state = State.Cooldown;
         OnCooldown();
         var enumerator = Util.TimedRoutine(cooldownTime, DuringCooldown);
         while (enumerator.MoveNext()) yield return enumerator.Current;
         currentRoutine = null;
-        state = State.Ready;
+        _state = State.Ready;
         End();
         OnReady();
     }
