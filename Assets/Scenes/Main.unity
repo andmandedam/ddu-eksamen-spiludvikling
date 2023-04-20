@@ -177,11 +177,11 @@ MonoBehaviour:
   enemyParent: {fileID: 445553209}
   smashableSpawnChance: 0.6
   treasureSpawnChance: 0.02
-  hasSurfaceSpawnChance: 0
-  groundSpawnChance: 0
-  roofSpawnChance: 0
-  wallSpawnChance: 0
-  lightSpawnChance: 0
+  hasSurfaceSpawnChance: 0.4
+  groundSpawnChance: 0.7
+  roofSpawnChance: 0.8
+  wallSpawnChance: 0.4
+  lightSpawnChance: 1
   hallwayBaseEnemyAmount: 1
   bigRoomBaseEnemyAmount: 3
   giantRoomBaseEnemyAmount: 6
@@ -354,6 +354,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1634604723}
     - target: {fileID: 2834096476515186683, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
       propertyPath: jump._iterForce
       value: 1
@@ -565,6 +569,11 @@ MonoBehaviour:
 --- !u!1 &1634604722 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8190676746574411201, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+  m_PrefabInstance: {fileID: 889119894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1634604723 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8175518094923376424, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
   m_PrefabInstance: {fileID: 889119894}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1758564029

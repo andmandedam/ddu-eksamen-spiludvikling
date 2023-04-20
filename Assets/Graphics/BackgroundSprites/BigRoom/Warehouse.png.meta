@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: ad6e2eb63be454e40806f4813ca27c17
-=======
-guid: 27bdf7c49d4455b4b97c012b1ff2a886
->>>>>>> de7f346ef0968643295b2f9eec915bdf5cbac9eb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -37,11 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-<<<<<<< HEAD
-    filterMode: 1
-=======
     filterMode: 0
->>>>>>> de7f346ef0968643295b2f9eec915bdf5cbac9eb
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -53,19 +45,11 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-<<<<<<< HEAD
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
-=======
   alignment: 6
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
->>>>>>> de7f346ef0968643295b2f9eec915bdf5cbac9eb
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -84,13 +68,8 @@ TextureImporter:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
-<<<<<<< HEAD
-    resizeAlgorithm: 0
-    textureFormat: -1
-=======
     resizeAlgorithm: 1
     textureFormat: 4
->>>>>>> de7f346ef0968643295b2f9eec915bdf5cbac9eb
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -122,8 +101,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
-=======
   - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
@@ -136,7 +113,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
->>>>>>> de7f346ef0968643295b2f9eec915bdf5cbac9eb
   spriteSheet:
     serializedVersion: 2
     sprites: []
@@ -153,11 +129,7 @@ TextureImporter:
     nameFileIdTable: {}
   spritePackingTag: 
   pSDRemoveMatte: 0
-<<<<<<< HEAD
-  pSDShowRemoveMatteOption: 0
-=======
   pSDShowRemoveMatteOption: 1
->>>>>>> de7f346ef0968643295b2f9eec915bdf5cbac9eb
   userData: 
   assetBundleName: 
   assetBundleVariant: 

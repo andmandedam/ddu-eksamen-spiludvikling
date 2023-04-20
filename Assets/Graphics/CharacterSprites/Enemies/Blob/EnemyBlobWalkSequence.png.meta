@@ -120,19 +120,19 @@ TextureImporter:
       name: EnemyBlobWalkSequence_0
       rect:
         serializedVersion: 2
-        x: 9
+        x: 8
         y: 4
-        width: 44
-        height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 53
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 66d24c3171b56f9499152f927a5c7b22
-      internalID: 286618219
+      spriteID: 59485b6541a6b5e46b55405a5f0e108f
+      internalID: -1064667778
       vertices: []
       indices: 
       edges: []
@@ -145,15 +145,15 @@ TextureImporter:
         y: 4
         width: 45
         height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0584590f575b5045ab7bde009cb014b
-      internalID: -939523953
+      spriteID: 240f4630c3ed38f4cbbeeafd20fc84b5
+      internalID: 1415767144
       vertices: []
       indices: 
       edges: []
@@ -162,19 +162,19 @@ TextureImporter:
       name: EnemyBlobWalkSequence_2
       rect:
         serializedVersion: 2
-        x: 135
+        x: 138
         y: 4
-        width: 48
-        height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 44
+        height: 51
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: db4f88bdd2989504b9c1c30d9493bf2c
-      internalID: -1659435782
+      spriteID: ce04c36e332d3664e865fa150dc2105f
+      internalID: 872675449
       vertices: []
       indices: 
       edges: []
@@ -187,15 +187,15 @@ TextureImporter:
         y: 4
         width: 45
         height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60024e59e64bbf743b51726a95c48500
-      internalID: -14836690
+      spriteID: 1f355a7fd2a050646a15fd9c9401356f
+      internalID: 1734506807
       vertices: []
       indices: 
       edges: []
@@ -204,19 +204,19 @@ TextureImporter:
       name: EnemyBlobWalkSequence_4
       rect:
         serializedVersion: 2
-        x: 266
+        x: 264
         y: 4
-        width: 44
-        height: 51
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 53
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 26a1bc5f30d7a154d8669fc8382a482c
-      internalID: 361645579
+      spriteID: 5a910efa01ec40c4eb074affa004b22f
+      internalID: 887300013
       vertices: []
       indices: 
       edges: []
@@ -232,11 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      EnemyBlobWalkSequence_1: -939523953
-      EnemyBlobWalkSequence_3: -14836690
-      EnemyBlobWalkSequence_2: -1659435782
-      EnemyBlobWalkSequence_4: 361645579
-      EnemyBlobWalkSequence_0: 286618219
+      EnemyBlobWalkSequence_1: 1415767144
+      EnemyBlobWalkSequence_3: 1734506807
+      EnemyBlobWalkSequence_2: 872675449
+      EnemyBlobWalkSequence_4: 887300013
+      EnemyBlobWalkSequence_0: -1064667778
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1
