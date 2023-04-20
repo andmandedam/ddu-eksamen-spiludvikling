@@ -81,7 +81,7 @@ public abstract class Movement
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collider)
+    public virtual void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out PassthroughTrigger trigger))
         {
@@ -89,7 +89,7 @@ public abstract class Movement
         }
     }
 
-    public void OnTriggerExit2D(Collider2D collider)
+    public virtual void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out PassthroughTrigger trigger))
         {

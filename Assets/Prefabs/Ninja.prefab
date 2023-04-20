@@ -110,24 +110,29 @@ MonoBehaviour:
   _rigidbody: {fileID: 4184654677827663853}
   _bodyCollider: {fileID: 3514577322202598437}
   _feetCollider: {fileID: 6350582238541827462}
+  _maxHealth: 10
+  _curHealth: 10
   _staticDrag: 10
   _dynamicDrag: 0
   _platformLayer:
     serializedVersion: 2
     m_Bits: 64
-  _maxHealth: 10
-  _curHealth: 10
   movement:
     _moveAcceleration: 20
     _moveMaxSpeed: 12
   jump:
+    iteration: 0
+    yvel: 0
+    remainingJumps: 0
     _jumpCount: 1
     _jumpForce: 8
-    _minJumpHeigth: 2
+    _minJumpTime: 0
     _downForceScale: 0.7
+    _maxIteration: 0
   crouch:
     animator: {fileID: 8175518094923376424}
   attack:
+    _animator: {fileID: 8175518094923376424}
     _hitRect:
       serializedVersion: 2
       x: 1
