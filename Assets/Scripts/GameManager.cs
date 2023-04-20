@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
- 
-public class GameManager : MonoBehaviour
+
+public partial class GameManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject[] rooms;
@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] float bigRoomBaseEnemyAmount;
     [SerializeField] float giantRoomBaseEnemyAmount;
     [SerializeField] float elevatorRoomBaseEnemyAmount;
-    
-
 
     [Header("  Enemies")]
     [SerializeField] GameObject[] smallEnemies;
@@ -92,52 +90,6 @@ public class GameManager : MonoBehaviour
 
         HouseFactory.GenerateHouse(this);
     }
-
-    public class RoomObject
-    {
-        public Vector2Int placement;
-        public GameObject enemyPrefab;
-        public int enemyAmount;
-        public GameObject roomPrefab;
-        public RoomTag tags;
-        public GameManager.RoomType roomType;
-
-        public RoomObject(RoomType roomType, RoomTag flag, Vector2Int placement, GameManager gameManager)
-        {
-            this.roomType = roomType;
-            this.tags = flag;
-            this.placement = placement;
-
-            this.roomPrefab = ChooseRandomElement(gameManager.prefabDictionary[roomType]);
-            this.enemyAmount = (int)gameManager.enemySpawnStatsDictionary[roomType];
-            if ((this.tags & RoomTag.Hard) != 0)
-            {
-                this.enemyAmount = (int)(gameManager.hardRoomMultiplier * this.enemyAmount) + 1;
-            }
-
-            if ((this.tags & RoomTag.BigEnemies) != 0)
-            {
-                this.enemyPrefab = ChooseRandomElement(gameManager.prefabDictionary[EnemyType.Big]);
-                this.enemyAmount = (int)(this.enemyAmount * 0.5);
-            } else {
-                this.enemyPrefab = ChooseRandomElement(gameManager.prefabDictionary[EnemyType.Small]);            
-            }
-        }
-    }
-    
-    public static T ChooseRandomElement<T>(T[] array)
-    {
-        return array[UnityEngine.Random.Range(0, array.Length)];
-    }
-    class RandomEnum
-    {
-       static System.Random _R = new System.Random();
-       public  static T RandomEnumValue<T>()
-        {
-            var v = Enum.GetValues(typeof(T));
-            return (T)v.GetValue(_R.Next(v.Length));
-        }
-    }
     public void NextLevel()
     {
         Destroy(roomParent.gameObject);
@@ -148,192 +100,6 @@ public class GameManager : MonoBehaviour
         HouseFactory.GenerateHouse(this);
         player.transform.position = new Vector3(2, 0, 0);
     }
-    class HouseFactory
-    {
-        private const float EnemyEdgeMargin = 1f; //The minimum distance an enemy can be placed from edge of a room
-        private const float SmashableSpawnRate = 0.6f; // F.x. Barrels or vases
-        private const float WallWidth = 4f / 32f;
-
-        public static void GenerateHouse(GameManager gameManager)
-        {
-            HouseTemplate houseTemplate = RandomEnum.RandomEnumValue<HouseTemplate>();
-            RoomObject[] rooms = GetRoomsInHouseTemplate(houseTemplate, gameManager); // Chose random HouseTemplate
-            gameManager.rooms = new GameObject[rooms.Length];
-
-            for (int i = 0; i < rooms.Length; i++)
-            {
-                gameManager.rooms[i] = CreateRoom(rooms[i], gameManager);
-            }
-
-            Vector2 houseSize = GetHouseTemplateSize(houseTemplate);
-            GameObject leftEdge = Instantiate(gameManager.levelBorder, gameManager.roomParent);
-            leftEdge.transform.localScale = new Vector3(1, houseSize.y, 1);
-            leftEdge.transform.position = new Vector3(-1f, houseSize.y/2, 0);
-
-            GameObject rightEdge = Instantiate(gameManager.levelBorder, gameManager.roomParent);
-            rightEdge.transform.localScale = new Vector3(1, houseSize.y, 1);
-            rightEdge.transform.position = new Vector3(houseSize.x + 1, houseSize.y / 2, 0);
-
-            GameObject topEdge = Instantiate(gameManager.levelBorder, gameManager.roomParent);
-            topEdge.transform.localScale = new Vector3(houseSize.x, 1, 1);
-            topEdge.transform.position = new Vector3(houseSize.x / 2, houseSize.y + 1, 0);
-
-            GameObject bottomEdge = Instantiate(gameManager.levelBorder, gameManager.roomParent);
-            bottomEdge.transform.localScale = new Vector3(houseSize.x, 2, 1);
-            bottomEdge.transform.position = new Vector3(houseSize.x / 2, -1, 1);
-        }
-
-        public static GameObject CreateRoom(RoomObject room, GameManager gameManager)
-        {
-            var roomObject = Instantiate(room.roomPrefab, gameManager.roomParent, true);
-            roomObject.transform.position = (Vector3Int)room.placement;
-            PlaceEnemies(room, gameManager);
-
-            if ((room.tags & RoomTag.Exit) != 0)
-            {
-                GameObject nextLevelDoor = Instantiate(gameManager.nextLevelDoor, roomObject.transform);
-                nextLevelDoor.transform.localPosition = new Vector3(GetRoomTypeSize(room.roomType).x - WallWidth, nextLevelDoor.transform.localScale.y/2); //
-                
-                nextLevelDoor.TryGetComponent<NextLevelScript>(out var script);
-                script.gameManager = gameManager;
-            }
-
-            RoomInfo roomInfo;
-            
-            if (!roomObject.TryGetComponent<RoomInfo>(out roomInfo))
-            {
-                return roomObject;
-                throw new Exception("No RoomInfo on: " + roomObject + " Created from: " + room);
-            }
-            
-            for (int i = 0; i < roomInfo.placeableSpawnPoint.Length; i++)
-            {
-                if ((room.tags & RoomTag.Loot) != 0)
-                {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Treasure]), roomObject.transform).transform.position =
-                        roomInfo.placeableSpawnPoint[i].position;
-                    room.tags ^= RoomTag.Loot;
-                    continue;
-                }
-                if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[PlaceableType.Treasure])
-                {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Treasure]), roomObject.transform).transform.position =
-                        roomInfo.placeableSpawnPoint[i].position;
-                    continue;
-                }
-                if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[PlaceableType.Smashable])
-                {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Smashable]), roomObject.transform).transform.position = 
-                        roomInfo.placeableSpawnPoint[i].position;
-                }
-            }
-
-            for (int i = 0; i < roomInfo.hasSurfaceSpawnPoint.Length; i++)
-            {
-                if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[DecorationType.HasSurface])
-                {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.HasSurface]), roomObject.transform).transform.position =
-                    roomInfo.hasSurfaceSpawnPoint[i].position;
-
-                    for (int j = 0; j < roomInfo.onSurfaceSpawnPoint.Length; j++)
-                    {
-                        Instantiate(ChooseRandomElement(gameManager.prefabDictionary[DecorationType.OnSurface]), roomObject.transform).transform.position =
-                            roomInfo.onSurfaceSpawnPoint[j].position;
-                    }
-                }
-            }
-
-            PlaceSpawnables(DecorationType.Ground, roomInfo.groundDecorationSpawnPoint, roomObject, gameManager);
-            PlaceSpawnables(DecorationType.Wall, roomInfo.wallDecorationSpawnPoint, roomObject, gameManager);
-            PlaceSpawnables(DecorationType.Roof, roomInfo.roofDecorationSpawnPoint, roomObject, gameManager);
-            PlaceSpawnables(DecorationType.Light, roomInfo.lightSpawnPoint, roomObject, gameManager);
-
-            return roomObject;
-        }
-        private static void PlaceSpawnables(Enum @enum, Transform[] decorationSpawnPoint, GameObject roomObject, GameManager gameManager)
-        {
-            for (int i = 0; i < decorationSpawnPoint.Length; i++)
-            {
-                if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[@enum])
-                {
-                    Instantiate(ChooseRandomElement(gameManager.prefabDictionary[@enum]), roomObject.transform).transform.position =
-                    decorationSpawnPoint[i].position;
-                }
-            }
-        }
-        private static void PlaceEnemies(RoomObject room, GameManager gameManager)
-        {
-            var roomSize = GetRoomTypeSize(room.roomType);
-
-            for (int i = 0; i < room.enemyAmount; i++)
-            {
-                var enemyPosition = new Vector3(
-                    Math.Clamp(UnityEngine.Random.value * roomSize.x, EnemyEdgeMargin, roomSize.x - EnemyEdgeMargin),
-                    Math.Clamp(UnityEngine.Random.value * roomSize.y, EnemyEdgeMargin, roomSize.y - EnemyEdgeMargin)
-                        );
-
-                Instantiate(room.enemyPrefab, gameManager.enemyParent, true).transform.position = (Vector3Int)room.placement + enemyPosition;
-            }
-        }
-    }
-    public static Vector2 GetRoomTypeSize(RoomType roomType)
-    {
-        switch (roomType)
-        {
-            case RoomType.Hallway:
-                return new Vector2(8, 4);
-
-            case RoomType.BigRoom:
-                return new Vector2(16, 8);
-
-            case RoomType.GiantRoom:
-                return new Vector2(32, 16);
-
-            case RoomType.ElevatorRoom:
-                return new Vector2(2, 4);
-        }
-        throw new ArgumentException("Invalid RoomType");
-    }    
-    public static Vector2 GetHouseTemplateSize(HouseTemplate template)
-    {
-        switch (template)
-        {
-            case HouseTemplate.RegularHouse:
-                return new Vector2(34f, 12f);
-
-            case HouseTemplate.Outside:
-                return new Vector2(32f, 16f);
-        }
-        throw new ArgumentException("Invalid RoomType");
-    }
-    public static RoomObject[] GetRoomsInHouseTemplate(HouseTemplate template, GameManager gameManager)
-    {
-        switch (template)
-        {
-            case HouseTemplate.RegularHouse:
-                return new RoomObject[]
-                {
-                    new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(0,0), gameManager),
-                    new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(8,0), gameManager),
-                    new RoomObject(RoomType.ElevatorRoom, RoomTag.None, new Vector2Int(16,0), gameManager),
-                    new RoomObject(RoomType.ElevatorRoom, RoomTag.None, new Vector2Int(16,4), gameManager),
-                    new RoomObject(RoomType.ElevatorRoom, RoomTag.None, new Vector2Int(16,8), gameManager),
-                    new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(0,4), gameManager),
-                    new RoomObject(RoomType.Hallway, RoomTag.Hard, new Vector2Int(18,8), gameManager),
-                    new RoomObject(RoomType.Hallway, RoomTag.Loot | RoomTag.Hard, new Vector2Int(26,8), gameManager),
-                    new RoomObject(RoomType.BigRoom, RoomTag.Exit, new Vector2Int(18,0), gameManager),
-                };
-                
-            case HouseTemplate.Outside:
-                return new RoomObject[]
-                {
-                    new RoomObject(RoomType.GiantRoom, RoomTag.Exit, new Vector2Int(0,0), gameManager),
-                };
-                
-        }
-        throw new ArgumentException("Invalid HouseTemplate");
-    }
-
 
     public enum RoomTag
     {
@@ -377,5 +143,4 @@ public class GameManager : MonoBehaviour
         Roof,
         Light,
     }
-
 }
