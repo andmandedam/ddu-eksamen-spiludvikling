@@ -11,10 +11,29 @@ public abstract class HitscanAttack : Attack
     public abstract float attackKnockback { get; }
     public abstract LayerMask attackLayer { get; }
 
+    public static void DrawRect(Rect r)
+    {
+        Vector2[] verticies =
+        {
+            new Vector2(r.xMin, r.yMin),
+            new Vector2(r.xMin, r.yMax),
+            new Vector2(r.xMax, r.yMax),
+            new Vector2(r.xMax, r.yMin)
+        };
+        for (int i = 0; i < verticies.Length; i++)
+        {
+            Debug.DrawLine(verticies[i % 4], verticies[(i + 1) % 4], Color.black, 1000, false);
+        }
+    }
+
     public override void OnAttack()
     {
+        DrawRect(hitRect);
+
         Vector2 min = hitRect.min, max = hitRect.max;
         var colliders = Physics2D.OverlapAreaAll(min, max, attackLayer);
+        Debug.Log(colliders);
+
         foreach (var collider in colliders)
         {
             if (collider.TryGetComponent(out Entity hit))

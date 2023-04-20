@@ -21,7 +21,7 @@ public abstract class Attack
 
     public bool isReady => state == Phase.Ready;
     public bool isInWindup => state == Phase.Windup;
-    public bool isAttacing => state == Phase.Attack;
+    public bool isAttacking => state == Phase.Attack;
     public bool isOnCooldown => state == Phase.Cooldown;
     
     private Coroutine currentRoutine = null;
@@ -35,15 +35,21 @@ public abstract class Attack
     public virtual CustomYieldInstruction DuringAttack() => null;
     public virtual CustomYieldInstruction DuringCooldown() => null;
 
-    public void Start()
+    public virtual void Start()
     {
         if (isReady)
         {
+            if (!entity.grounded)
+            {
+                entity.rigidbody.gravityScale = 0;
+                entity.rigidbody.velocity = Vector3.zero;
+            }
+
             entity.StartCoroutine(WindupRoutine());
         }
     }
 
-    public void Cancel()
+    public virtual void Cancel()
     {
         if (entity != null)
         {
@@ -51,10 +57,15 @@ public abstract class Attack
         }
     }
 
+    public virtual void End()
+    {
+        entity.rigidbody.gravityScale = entity.grav;
+    }
+
     private IEnumerator TimedCoroutine(float time, Func<CustomYieldInstruction> during)
     {
         float start = Time.time;
-        Func<bool> timedout = () => Time.time - start >= time;
+        Func<bool> timedout = () => Time.time - start >= time / 1000;
         while(!timedout())
         {
             var x = during();
@@ -89,6 +100,7 @@ public abstract class Attack
         while (enumerator.MoveNext()) yield return enumerator.Current;
         currentRoutine = null;
         state = Phase.Ready;
+        End();
         OnReady();
     }
 }

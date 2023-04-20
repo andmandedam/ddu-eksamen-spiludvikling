@@ -12,6 +12,7 @@ public abstract class Movement
     public abstract float moveAccel { get; }
     public abstract float moveMaxSpeed { get; }
 
+    public bool paused { get; set; }
     public bool moving => movementVector != Vector2.zero;
     public Vector2 movementVector { get; private set; }
 
@@ -25,7 +26,7 @@ public abstract class Movement
 
     public void FixedUpdate()
     {
-        if (moving)
+        if (!paused && moving)
         {
             Vector2 velocity = rigidbody.velocity;
             float ratio = Mathf.Abs(velocity.x) / moveMaxSpeed; // ratio in [0, 1], 0 => speed = 0; 1 => speed = maxSpeed;
@@ -36,6 +37,7 @@ public abstract class Movement
             rigidbody.AddForce(force);
         }
     }
+
 
     public void End()
     {
