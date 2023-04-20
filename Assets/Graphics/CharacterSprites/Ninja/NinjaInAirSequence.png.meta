@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6d54f7ad8c636554790871317717ed5f
+guid: 991aea6f21f94ce48b02df3ff771e0c5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -120,7 +120,7 @@ TextureImporter:
       name: NinjaInAirSequence_0
       rect:
         serializedVersion: 2
-        x: 20
+        x: 18
         y: 0
         width: 22
         height: 68
@@ -131,8 +131,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49c117d63bfb6754babc5f60f9a9c6da
-      internalID: 1633346047
+      spriteID: d1d01bc0217b84e45a881497ec21a758
+      internalID: -1376330356
       vertices: []
       indices: 
       edges: []
@@ -141,7 +141,7 @@ TextureImporter:
       name: NinjaInAirSequence_1
       rect:
         serializedVersion: 2
-        x: 85
+        x: 82
         y: 0
         width: 22
         height: 68
@@ -152,8 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e89ec30ba7ffd5f40a924b23cf7d7fb3
-      internalID: 1028148656
+      spriteID: 58de5fb07bce9a3469c8e559d086d04c
+      internalID: 1091305413
       vertices: []
       indices: 
       edges: []
@@ -162,7 +162,7 @@ TextureImporter:
       name: NinjaInAirSequence_2
       rect:
         serializedVersion: 2
-        x: 149
+        x: 146
         y: 0
         width: 22
         height: 68
@@ -173,8 +173,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da6e9b7d1d0e79441831299731a4ed83
-      internalID: -1379163018
+      spriteID: 8bcd904469e30414299c48424f6d0511
+      internalID: 1773330016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NinjaInAirSequence_3
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 0
+        width: 22
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9136cf09ea3d76743a5e22ed5af473a0
+      internalID: 990561401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NinjaInAirSequence_4
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 0
+        width: 22
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6ef0150b505bfe4e83b0e09b16f9e24
+      internalID: 169623225
       vertices: []
       indices: 
       edges: []
@@ -190,9 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      NinjaInAirSequence_2: -1379163018
-      NinjaInAirSequence_1: 1028148656
-      NinjaInAirSequence_0: 1633346047
+      NinjaInAirSequence_2: 1773330016
+      NinjaInAirSequence_3: 990561401
+      NinjaInAirSequence_4: 169623225
+      NinjaInAirSequence_1: 1091305413
+      NinjaInAirSequence_0: -1376330356
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1

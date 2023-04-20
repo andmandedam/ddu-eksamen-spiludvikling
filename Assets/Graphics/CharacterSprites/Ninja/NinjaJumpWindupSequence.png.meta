@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 45e04de31fa3ab94989b4b52154c197e
+guid: 3b8e21a9bd86346448131772f80d8f76
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NinjaJumpSequence_0
+      name: NinjaJumpWindupSequence_0
       rect:
         serializedVersion: 2
         x: 19
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c2bdb1b5484d014e8fe509aefb65cb1
-      internalID: 1559283379
+      spriteID: 4c414e33b42af6c4e8d79faeeec0c53a
+      internalID: 126824951
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: NinjaJumpSequence_1
+      name: NinjaJumpWindupSequence_1
       rect:
         serializedVersion: 2
         x: 82
@@ -152,113 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 812549ce370aded4e985391a8d7863ce
-      internalID: -520404795
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NinjaJumpSequence_2
-      rect:
-        serializedVersion: 2
-        x: 149
-        y: 0
-        width: 22
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 528341cde57293b4ebb97fb9795d48af
-      internalID: 1010113982
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NinjaJumpSequence_3
-      rect:
-        serializedVersion: 2
-        x: 213
-        y: 0
-        width: 22
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8ac72fc53b8f8ff42b702e707f1452c8
-      internalID: -253587426
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NinjaJumpSequence_4
-      rect:
-        serializedVersion: 2
-        x: 277
-        y: 0
-        width: 22
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 03ca0b4b288d140449e1a70ed7395798
-      internalID: 1410239547
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NinjaJumpSequence_5
-      rect:
-        serializedVersion: 2
-        x: 341
-        y: 0
-        width: 22
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8da6ed92b780bd49971296e91570bf3
-      internalID: 1447592729
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: NinjaJumpSequence_6
-      rect:
-        serializedVersion: 2
-        x: 405
-        y: 0
-        width: 22
-        height: 68
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5f33a0a90afe0b43a09b448aa0e8b24
-      internalID: 506283607
+      spriteID: 1418f0e1e49c4c74fb723e3cf6cb5cab
+      internalID: -635132969
       vertices: []
       indices: 
       edges: []
@@ -274,13 +169,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      NinjaJumpSequence_0: 1559283379
-      NinjaJumpSequence_2: 1010113982
-      NinjaJumpSequence_6: 506283607
-      NinjaJumpSequence_4: 1410239547
-      NinjaJumpSequence_3: -253587426
-      NinjaJumpSequence_5: 1447592729
-      NinjaJumpSequence_1: -520404795
+      NinjaJumpWindupSequence_0: 126824951
+      NinjaJumpWindupSequence_1: -635132969
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1
