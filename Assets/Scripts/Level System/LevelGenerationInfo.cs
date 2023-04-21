@@ -32,6 +32,9 @@ public partial class GameManager
 
             case HouseTemplate.Outside:
                 return new Vector2(32f, 16f);
+
+            case HouseTemplate.LargeHouse:
+                return new Vector2(82f, 16f);
         }
         throw new ArgumentException("Invalid RoomType");
     }
