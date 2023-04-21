@@ -44,15 +44,15 @@ public class Player : Entity
         [SerializeField] private float _jumpForce;
         [SerializeField] private float _minJumpTime;
         [SerializeField] private float _windupTime;
-        [SerializeField] private float _downForceScale;
+        [SerializeField] private float _downForce;
         [SerializeField] private int _maxIteration;
 
         public override Entity entity => player;
         public override float jumpForce => _jumpForce;
-        public override float minJumpTime => _minJumpTime;
         public override float windupTime => _windupTime;
-        public override float downForceScale => _downForceScale;
         public override bool canJump => remainingJumps > 0;
+        public override float downForce => _downForce;
+        public override float minJumpTime => _minJumpTime;
         public override int maxIteration => _maxIteration;
 
 
@@ -67,10 +67,30 @@ public class Player : Entity
             remainingJumps = _jumpCount;
         }
 
+        public override void WindupEntry()
+        {
+            Debug.Log("WindupEntry");
+            base.WindupEntry();
+        }
+
+        public override void WindupExit()
+        {
+            Debug.Log("WindupExit");
+            base.WindupExit();
+        }
+
         public override void JumpingEntry()
         {
+            Debug.Log("JumpingEntry");
             base.JumpingEntry();
             remainingJumps--;
+        }
+
+        public override void JumpingExit()
+        {
+            base.JumpingExit();
+            Debug.Log("JumpingExit");
+            Debug.Log("Heigth" + player.transform.position);
         }
     }
 
@@ -78,6 +98,8 @@ public class Player : Entity
     private class PlayerCrouch : Crouch
     {
         private Player _player;
+
+        public override Entity entity => _player;
         public Animator animator => _player.animator;
 
         public void Enable(Player player)
@@ -85,16 +107,16 @@ public class Player : Entity
             _player = player;
         }
 
-        public override void Start()
+        public override void CrouchEntry()
         {
-            var onFoot = _player.controls.actions.NinjaOnFoot;
+            base.CrouchEntry();
             animator.SetBool("crouching", true);
             _player.movement.Slow(10);
         }
 
-        public override void End()
+        public override void CrouchExit()
         {
-            var onFoot = _player.controls.actions.NinjaOnFoot;
+            base.CrouchExit();
             animator.SetBool("crouching", false);
             _player.movement.Slow(-10);
         }
@@ -105,7 +127,7 @@ public class Player : Entity
     {
         Player player;
 
-        public override Animator animator => player.animator;
+        public Animator animator => player.animator;
         public override Entity entity => player;
         public override Vector2 attackPoint
         {
@@ -142,7 +164,7 @@ public class Player : Entity
             base.CooldownEntry();
             var onFoot = player.controls.actions.NinjaOnFoot;
             onFoot.Move.Enable();
-            onFoot.Move.Enable();
+            onFoot.Jump.Enable();
         }
     }
 
@@ -166,7 +188,7 @@ public class Player : Entity
             onFoot.Move.canceled += (ctx) => movement.End();
             onFoot.Jump.performed += (ctx) => jump.Begin();
             onFoot.Jump.canceled += (ctx) => jump.End();
-            onFoot.Crouch.performed += (ctx) => crouch.Start();
+            onFoot.Crouch.performed += (ctx) => crouch.Begin();
             onFoot.Crouch.canceled += (ctx) => crouch.End();
             onFoot.Attack.performed += (ctx) => attack.Start();
         }
@@ -203,7 +225,7 @@ public class Player : Entity
 
     void FixedUpdate()
     {
-        if (grounded && !jump.isRunning)
+            if (grounded && !jump.isRunning)
         {
             jump.Reset();
         }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-    public abstract class HitscanAttack : Attack
+public abstract class HitscanAttack : Attack
 {
     [SerializeField] Vector2 _hitSize;
     [SerializeField] int _attackDamage;
@@ -24,12 +24,12 @@ using UnityEngine;
     public override void AttackEntry()
     {
         base.AttackEntry();
-        Debug.Log(hitRect);
-        Util.DrawRect(hitRect);
+        // Debug.Log(hitRect);
+        // Util.DrawRect(hitRect);
 
         Vector2 min = hitRect.min, max = hitRect.max;
         var colliders = Physics2D.OverlapAreaAll(min, max, attackLayer);
-        Debug.Log(colliders);
+        // Debug.Log(colliders);
 
         foreach (var collider in colliders)
         {

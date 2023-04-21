@@ -1,11 +1,17 @@
 using UnityEngine;
 
-public abstract class InteractiveJump : Jump
+    public abstract class InteractiveJump : Jump
 {
     public abstract int maxIteration { get; }
+    public abstract float downForce { get; }
 
-    private int iteration = 0;
-    private float yvel = 0;
+    [SerializeField] private int iteration = 0;
+    [SerializeField] private float yvel = 0;
+
+    public override bool JumpShouldEnd()
+    {
+        return base.JumpShouldEnd() || iteration == maxIteration;
+    }
 
     public override void JumpingEntry()
     {
@@ -30,6 +36,7 @@ public abstract class InteractiveJump : Jump
     public override void JumpingExit()
     {
         base.JumpingExit();
+        rigidbody.AddForce(Vector2.down * downForce, ForceMode2D.Impulse);
         iteration = 0;
     }
 }

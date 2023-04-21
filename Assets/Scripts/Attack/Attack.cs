@@ -6,15 +6,10 @@ using UnityEngine;
 public abstract class Attack
 {
     public abstract Entity entity { get; }
-    public abstract Animator animator { get; }
 
     public abstract float windupTime { get; }
     public abstract float attackTime { get; }
     public abstract float cooldownTime { get; }
-
-    // public abstract WindupHandler windupHandler { get; }
-    // public abstract AttackHandler attackHandler { get; }
-    // public abstract CooldownHandler cooldownHandler { get; }
 
     public bool isRunning => machine.running;
     public bool isInWindup => machine.current == windupState;
@@ -46,25 +41,17 @@ public abstract class Attack
         windupState.After(windupTime, attackState);
         attackState.After(attackTime, cooldownState);
         cooldownState.After(cooldownTime, null);
-
-        // animator.SetFloat("windupTime", 1 / windupHandler.duration);
-        // animator.SetFloat("attackTime", 1 / attackHandler.duration);
-        // animator.SetFloat("cooldownTime", 1 / cooldownHandler.duration);
-        // stateManager.Relax(State.Relaxed)
-        //             .Add(windupHandler)
-        //             .Add(attackHandler)
-        //             .Add(cooldownHandler);
     }
 
     public virtual void Start()
     {
         if (!machine.running)
         {
-            if (!entity.grounded)
-            {
-                entity.rigidbody.gravityScale = 0;
-                entity.rigidbody.velocity = Vector3.zero;
-            }
+            // if (!entity.grounded)
+            // {
+            // entity.rigidbody.gravityScale = 0;
+            // entity.rigidbody.velocity = Vector3.zero;
+            // }
             machine.Run(windupState);
         }
     }

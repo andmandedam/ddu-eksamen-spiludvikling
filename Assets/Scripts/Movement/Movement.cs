@@ -7,13 +7,17 @@ public abstract class Movement
     public const float DEFAULT_SLOW_EXPONENT = 0.3f;
     public const float DEFAULT_MAX_SPEED = 8f;
     public const float DEFAULT_MIN_SPEED = 4f;
+    public const float DEFAULT_GROUNDED_TURNAROUND_MULTIPLIER = 0.25f;
+    public const float DEFAULT_AIRBORNE_TURNAROUND_MULTIPLIER = 0.75f;
 
-    public abstract Entity entity { get; }
+        public abstract Entity entity { get; }
+
 
     public virtual float moveAccel => DEFAULT_ACCEL;
     public virtual float slowExponent => DEFAULT_SLOW_EXPONENT;
     public virtual float moveMaxSpeed => DEFAULT_MAX_SPEED;
     public virtual float moveMinSpeed => DEFAULT_MIN_SPEED;
+    // public virtual float turnAroundMultiplier => DEFAULT_TURNAROUND_MULTIPLIER;
 
     private float moveSpeedFromSlow(float slowScore) => (moveMaxSpeed - moveMinSpeed) * Mathf.Exp(-slowExponent * slowScore) + moveMinSpeed;
     public float moveSpeed
@@ -58,10 +62,17 @@ public abstract class Movement
     {
         entity.RequestDynamicDrag(this);
 
-        if (turnaround && entity.grounded)
+        if (turnaround)
         {
             var vel = rigidbody.velocity;
-            vel.x = 0;
+            if (entity.grounded)
+            {
+                vel.x *= DEFAULT_GROUNDED_TURNAROUND_MULTIPLIER;
+            }
+            else
+            {
+                vel.x *= DEFAULT_AIRBORNE_TURNAROUND_MULTIPLIER;
+            }
             rigidbody.velocity = vel;
         }
         entity.transform.rotation = Quaternion.Euler(0, facingVector.x < 0 ? 180 : 0, 0);
@@ -81,7 +92,8 @@ public abstract class Movement
         return new WaitForEndOfFrame();
     }
 
-    public virtual void HorizontalExit() {
+    public virtual void HorizontalExit()
+    {
         entity.RequestStaticDrag(this);
     }
     public virtual void UpwardsEntry() { }
@@ -92,7 +104,7 @@ public abstract class Movement
     {
         foreach (var trigger in passthroughTriggers)
         {
-            trigger.AllowPassthroughFor(entity.bodyCollider);
+                trigger.AllowPassthroughFor(entity.bodyCollider);
             trigger.AllowPassthroughFor(entity.feetCollider);
         }
     }
@@ -119,7 +131,7 @@ public abstract class Movement
 
         if (_facingVector.x != 0)
         {
-                machine.Run(horizontalState);
+            machine.Run(horizontalState);
         }
         else if (facingVector.y < 0)
         {
