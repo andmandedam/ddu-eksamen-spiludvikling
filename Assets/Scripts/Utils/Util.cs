@@ -73,5 +73,19 @@ public static class Util
     {
         return WhileRoutine(() => !condition(), during, atEnd);
     }
+    public static T ChooseRandomElement<T>(T[] array)
+    {
+        return array[UnityEngine.Random.Range(0, array.Length)];
+    }
+
+    public class RandomEnum
+    {
+        static System.Random _R = new System.Random();
+        public static T RandomEnumValue<T>()
+        {
+            var v = Enum.GetValues(typeof(T));
+            return (T)v.GetValue(_R.Next(v.Length));
+        }
+    }
 }
 
