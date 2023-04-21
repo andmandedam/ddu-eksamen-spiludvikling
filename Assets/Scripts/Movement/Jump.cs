@@ -2,13 +2,6 @@ using UnityEngine;
 
 public abstract class Jump
 {
-    enum State
-    {
-        None, 
-        Windup,
-        Jumping,
-    }
-
     public abstract Entity entity { get; }
     public abstract float jumpForce { get; }
     public abstract float minJumpTime { get; }
@@ -20,70 +13,51 @@ public abstract class Jump
     public float dynamicDrag => entity.dynamicDrag;
     public float staticDrag => entity.staticDrag;
 
-    public bool jumping => state == State.Jumping;
-    public bool jumpWindup => state == State.Windup;
+    public bool isRunning => machine.running;
+    public bool isInWindup => machine.current == windupState;
+    public bool isJumping => machine.current == jumpingState;
 
+    private State windupState;
+    private State jumpingState;
+    private State.Machine machine;
 
-    private State state = State.None;
-    private Coroutine coroutine = null;
+    public virtual void WindupEntry() { }
+    public virtual object WindupDuring() => null;
+    public virtual void WindupExit() { }
 
-    public virtual void Begin()
-    {
-        if (canJump)
-        {
-            state = State.Windup;
-            entity.StartCoroutine(Util.TimedRoutine(
-                windupTime,
-                DuringWindup,
-                () =>
-                {
-                    state = State.Jumping;
-                    entity.StartCoroutine(Util.TimedWhileRoutine(
-                        minJumpTime,
-                        () => !entity.grounded,
-                        DuringJump,
-                        End
-                    ));
-                })
-            );
-        }
-    }
-
-    public virtual void End()
-    {
-        if (coroutine != null)
-        {
-            entity.StopCoroutine(coroutine);
-            coroutine = null;
-        }
-        if (jumping)
-        {
-            state = State.None;
-            entity.SetRequestStatic(this);
-            EndJump();
-        }
-    }
-
-    protected virtual void OnWindup(){}
-    protected virtual object DuringWindup() => null;
-
-    protected virtual void OnJump()
-    {
+    public virtual void JumpingEntry() {
+        entity.RequestDynamicDrag(this);
         var velocity = rigidbody.velocity;
         velocity.y = 0;
         rigidbody.velocity = velocity;
 
         rigidbody.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
     }
-
-    protected virtual object DuringJump()
-    {
-        if (entity.rigidbody.velocity.y < 0)
-        {
-            End();
-        }
-        return new WaitForEndOfFrame();
+    public virtual object JumpingDuring() => null;
+    public virtual void JumpingExit() {
+        entity.RequestStaticDrag(this);
     }
 
-    protected virtual void EndJump() { }
+    public virtual void Enable()
+    {
+        machine = new(entity);
+        windupState = new(WindupEntry, WindupExit, WindupDuring);
+        jumpingState = new(JumpingEntry, JumpingExit, JumpingDuring);
+
+        windupState.After(windupTime, jumpingState);
+        jumpingState.AddTransition(() => entity.rigidbody.velocity.y < 0, null);
+    }
+
+    public virtual void Begin()
+    {
+        if (canJump)
+        {
+            machine.Run(windupState);
+        }
+    }
+
+    public virtual void End()
+    {
+        machine.Abort();
+    }
 }

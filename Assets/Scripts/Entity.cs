@@ -32,13 +32,13 @@ public abstract class Entity : MonoBehaviour
 
     private HashSet<object> _wantDynamic = new();
 
-    public void SetRequestDynamic(object obj)
+    public void RequestDynamicDrag(object obj)
     {
         _wantDynamic.Add(obj);
         UpdateDragState();
     }
 
-    public void SetRequestStatic(object obj)
+    public void RequestStaticDrag(object obj)
     {
         _wantDynamic.Remove(obj);
         UpdateDragState();

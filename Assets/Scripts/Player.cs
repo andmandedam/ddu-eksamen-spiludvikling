@@ -5,32 +5,33 @@ using UnityEngine;
 public class Player : Entity
 {
     [Serializable]
-    private class PlayerMovement : Movement
+        private class PlayerMovement : Movement
     {
         private Player player;
+
         [SerializeField] private float _moveAcceleration;
         [SerializeField] private float _moveMaxSpeed;
 
         public override Entity entity => player;
-        public override float moveAccel =>
-                        _moveAcceleration * (player.grounded ? 1f : 0.5f);
+        public override float moveAccel => _moveAcceleration * (player.grounded ? 1f : 0.5f);
         public override float moveMaxSpeed => _moveMaxSpeed;
 
         public void Enable(Player player)
         {
             this.player = player;
+            base.Enable();
         }
 
-        protected override void BeginMoveHorizontal()
+        public override void HorizontalEntry()
         {
+            base.HorizontalEntry();
             player.animator.SetBool("running", true);
-            base.BeginMoveHorizontal();
         }
 
-        protected override void EndMoveHorizontal()
+        public override void HorizontalExit()
         {
+            base.HorizontalExit();
             player.animator.SetBool("running", false);
-            base.EndMoveHorizontal();
         }
     }
 
@@ -58,6 +59,7 @@ public class Player : Entity
         public void Enable(Player player)
         {
             this.player = player;
+            base.Enable();
         }
 
         public void Reset()
@@ -65,15 +67,10 @@ public class Player : Entity
             remainingJumps = _jumpCount;
         }
 
-        protected override void OnJump()
+        public override void JumpingEntry()
         {
-            base.OnJump();
+            base.JumpingEntry();
             remainingJumps--;
-        }
-
-        protected override void EndJump()
-        {
-            base.EndJump();
         }
     }
 
@@ -106,44 +103,46 @@ public class Player : Entity
     [Serializable]
     private class PlayerAttack : HitscanAttack
     {
-        private Player _player;
-        public override Animator animator => _player.animator;
-        public override Entity entity => _player;
+        Player player;
+
+        public override Animator animator => player.animator;
+        public override Entity entity => player;
         public override Vector2 attackPoint
         {
             get
             {
-                if (_player.movement.facingVector.y == 0)
+                if (player.movement.facingVector.y == 0)
                 {
-                    return _player.movement.facingVector + (Vector2)_player.transform.position;
+                    return player.movement.facingVector + (Vector2)player.transform.position;
                 }
                 else
                 {
-                    return 2 * _player.movement.facingVector + (Vector2)_player.transform.position;
+                    return 2 * player.movement.facingVector + (Vector2)player.transform.position;
                 }
             }
         }
+
         public void Enable(Player player)
         {
-            _player = player;
+            this.player = player;
             base.Enable();
         }
 
-        public override void OnWindup()
+        public override void WindupEntry()
         {
-            var onFoot = _player.controls.actions.NinjaOnFoot;
-            _player.movement.End();
+            base.WindupEntry();
+            var onFoot = player.controls.actions.NinjaOnFoot;
+            player.movement.End();
             onFoot.Move.Disable();
             onFoot.Jump.Disable();
-            base.OnWindup();
         }
 
-        public override void OnCooldown()
+        public override void CooldownEntry()
         {
-            var onFoot = _player.controls.actions.NinjaOnFoot;
+            base.CooldownEntry();
+            var onFoot = player.controls.actions.NinjaOnFoot;
             onFoot.Move.Enable();
-            onFoot.Jump.Enable();
-            base.OnCooldown();
+            onFoot.Move.Enable();
         }
     }
 
@@ -165,8 +164,7 @@ public class Player : Entity
 
             onFoot.Move.performed += (ctx) => movement.Begin(ctx.ReadValue<Vector2>());
             onFoot.Move.canceled += (ctx) => movement.End();
-            onFoot.Jump.performed += (ctx) => 
-            jump.Begin();
+            onFoot.Jump.performed += (ctx) => jump.Begin();
             onFoot.Jump.canceled += (ctx) => jump.End();
             onFoot.Crouch.performed += (ctx) => crouch.Start();
             onFoot.Crouch.canceled += (ctx) => crouch.End();
@@ -194,7 +192,6 @@ public class Player : Entity
 
     public override LayerMask platformLayer => _platformLayer;
 
-
     void Start()
     {
         movement.Enable(this);
@@ -206,12 +203,12 @@ public class Player : Entity
 
     void FixedUpdate()
     {
-        if (grounded && !jump.jumping)
+        if (grounded && !jump.isRunning)
         {
             jump.Reset();
         }
-        animator.SetBool("grounded", grounded);
-        animator.SetBool("falling", rigidbody.velocity.y < 0);
+        // animator.SetBool("grounded", grounded);
+        // animator.SetBool("falling", rigidbody.velocity.y < 0);
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

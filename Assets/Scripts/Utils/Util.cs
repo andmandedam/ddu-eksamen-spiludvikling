@@ -17,6 +17,21 @@ public static class Util
         return Rect.MinMaxRect(xMin, yMin, xMax, yMax);
     }
 
+    public static void DrawRect(Rect r)
+    {
+        Vector2[] verticies =
+        {
+            new Vector2(r.xMin, r.yMin),
+            new Vector2(r.xMin, r.yMax),
+            new Vector2(r.xMax, r.yMax),
+            new Vector2(r.xMax, r.yMin)
+        };
+        for (int i = 0; i < verticies.Length; i++)
+        {
+            Debug.DrawLine(verticies[i % 4], verticies[(i + 1) % 4], Color.blue, 1000, false);
+        }
+    }
+
     public static IEnumerator<object> TimedRoutine(float time, Func<object> during, Action end)
     {
         float start = Time.time;

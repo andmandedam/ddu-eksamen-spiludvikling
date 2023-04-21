@@ -7,13 +7,13 @@ public abstract class InteractiveJump : Jump
     private int iteration = 0;
     private float yvel = 0;
 
-    protected override void OnJump()
+    public override void JumpingEntry()
     {
-        base.OnJump();
+        base.JumpingEntry();
         yvel = rigidbody.velocity.y;
     }
 
-    protected override object DuringJump()
+    public override object JumpingDuring()
     {
         if (iteration < maxIteration)
         {
@@ -24,11 +24,12 @@ public abstract class InteractiveJump : Jump
 
             return new WaitForFixedUpdate();
         }
-        return base.DuringJump();
+        return base.JumpingDuring();
     }
 
-    protected override void EndJump()
+    public override void JumpingExit()
     {
+        base.JumpingExit();
         iteration = 0;
     }
 }
