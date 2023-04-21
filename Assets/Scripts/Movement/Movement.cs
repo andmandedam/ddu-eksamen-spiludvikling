@@ -77,39 +77,30 @@ public abstract class Movement
         {
             _state = State.Horizontal;
             BeginMoveHorizontal();
-            coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveHorizontal));
+            coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveHorizontal, EndMoveUpwards));
         }
         else if (facingVector.y < 0)
         {
             _state = State.Downwards;
             BeginMoveDownwards();
-            coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveDownwards));
+            coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveDownwards, EndMoveDownwards));
         }
         else
         {
             _state = State.Upwards;
             BeginMoveUpwards();
-            coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveUpwards));
+            coroutine = entity.StartCoroutine(Util.TillNullRoutine(DuringMoveUpwards, EndMoveUpwards));
         }
     }
 
     public void End()
     {
         entity.SetRequestStatic(this);
+        _state = State.None;
         if (coroutine != null)
         {
             entity.StopCoroutine(coroutine);
             coroutine = null;
-        }
-
-        State old = state;
-        _state = State.None; // Should be set to None before end methods are called.
-        switch (old)
-        {
-            case (State.Horizontal): EndMoveHorizontal(); break;
-            case (State.Downwards): EndMoveDownwards(); break;
-            case (State.Upwards): EndMoveUpwards(); break;
-            default: break;
         }
     }
 
