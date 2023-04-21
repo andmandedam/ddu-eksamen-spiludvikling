@@ -58,6 +58,23 @@ public partial class GameManager
                 {
                     new RoomObject(RoomType.GiantRoom, RoomTag.Exit, new Vector2Int(0,0), gameManager),
                 };
+
+            case HouseTemplate.LargeHouse:
+                return new RoomObject[]
+                {
+                    new RoomObject(RoomType.ElevatorRoom, RoomTag.None, new Vector2Int(0,4), gameManager),
+                    new RoomObject(RoomType.ElevatorRoom, RoomTag.None, new Vector2Int(0,8), gameManager),
+                    new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(2,0), gameManager),
+                    new RoomObject(RoomType.Hallway, RoomTag.Loot, new Vector2Int(2,4), gameManager),
+                    new RoomObject(RoomType.BigRoom, RoomTag.Hard, new Vector2Int(2,8), gameManager),
+                    new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(10,0), gameManager),
+                    new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(18,8), gameManager),
+                    new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(18,12), gameManager),
+                    new RoomObject(RoomType.GiantRoom, RoomTag.None, new Vector2Int(26,0), gameManager),
+                    new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(58,0), gameManager),
+                    new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(58,8), gameManager),
+                    new RoomObject(RoomType.Hallway, RoomTag.Exit, new Vector2Int(74,0), gameManager),
+                };
                 
         }
         throw new ArgumentException("Invalid HouseTemplate");

@@ -114,6 +114,7 @@ public partial class GameManager : MonoBehaviour
     {
         RegularHouse,
         Outside,
+        LargeHouse,
         //TreasureTrove,
         //EnemyNest
     }
