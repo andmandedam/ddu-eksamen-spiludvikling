@@ -22,6 +22,7 @@ public class Player : Actor
         {
             base.OnWindup();
             Debug.Log("OnWindup");
+            AudioManager.instance.PlaySound("NinjaJump");
         }
 
         public override void AfterWindup()
@@ -42,6 +43,11 @@ public class Player : Actor
             base.AfterJump();
             Debug.Log("AfterJump");
         }
+    }
+
+    public override void OnLand()
+    {
+        AudioManager.instance.PlaySound("NinjaLand");
     }
 
     [Serializable]

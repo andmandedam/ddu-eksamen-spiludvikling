@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: Punch
-    clip: {fileID: 8300000, guid: 1210eba09d4b2ca469fde58332f7e056, type: 3}
+    clip: {fileID: 8300000, guid: 75163fe8ec306a749acd15d817aefc83, type: 3}
     volume: 0.193
     volumeVariance: 0
     pitch: 1
@@ -55,6 +55,22 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Windup
     clip: {fileID: 8300000, guid: ed9940b33beff5d4aaad8d6bf4b09861, type: 3}
+    volume: 0.257
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: NinjaJump
+    clip: {fileID: 8300000, guid: 9e954aae969afb6409f6660d1dd131cc, type: 3}
+    volume: 0.257
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: NinjaLand
+    clip: {fileID: 8300000, guid: 7da1a50254da46b48816d5906081bd30, type: 3}
     volume: 0.257
     volumeVariance: 0
     pitch: 1
