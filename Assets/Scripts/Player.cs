@@ -75,7 +75,7 @@ public class Player : Actor
         }
     }
 
-    private class PlayerControls : Controls
+    public class PlayerControls : Controls
     {
         public PlayerInputActions actions;
         public void Enable(Player player)
@@ -128,7 +128,8 @@ public class Player : Actor
     public Movement movement => _movement;
     public Jump jump => _jump;
     public Attack attack => _attack;
-    private PlayerControls controls = new();
+
+    public PlayerControls controls = new();
 
     void Start()
     {
