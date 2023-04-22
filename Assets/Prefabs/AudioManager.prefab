@@ -77,3 +77,11 @@ MonoBehaviour:
     pitchVariance: 0.2
     loop: 0
     source: {fileID: 0}
+  - name: ElevatorArrival
+    clip: {fileID: 8300000, guid: ab3511830d0ab484fb465d52cf20de6a, type: 3}
+    volume: 0.1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
