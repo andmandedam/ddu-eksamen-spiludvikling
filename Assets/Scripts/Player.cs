@@ -105,8 +105,9 @@ public class Player : Actor
             {
                 player.animator.SetBool("crouch", true);
             };
-            onFoot.Crouch.canceled += (ctx) => {
-              player.animator.SetBool("crouch", false);  
+            onFoot.Crouch.canceled += (ctx) =>
+            {
+                player.animator.SetBool("crouch", false);
             };
             onFoot.Attack.performed += (ctx) => attack.Start();
         }

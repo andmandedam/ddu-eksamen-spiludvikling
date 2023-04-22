@@ -76,9 +76,10 @@ public class Jump : Actor.Extension
     }
 
     public virtual object DuringWindup() => null;
-    public virtual void AfterWindup() {
-		actor.animator.SetBool("jumpWindup", false);
- }
+    public virtual void AfterWindup()
+    {
+        actor.animator.SetBool("jumpWindup", false);
+    }
     public virtual bool ExitWindup()
     {
         float passed = Time.time - _windupStartTime;

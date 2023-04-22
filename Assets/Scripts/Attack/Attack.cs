@@ -72,12 +72,12 @@ public class Attack : Actor.Extension
     {
         _startTime = Time.time;
         actor.animator.SetInteger("attackState", 0);
-        actor.animator.SetBool("attackOnCooldown", true);
+        // actor.animator.SetBool("attackOnCooldown", true);
     }
     public virtual object DuringCooldown() => null;
     public virtual void AfterCooldown()
     {
-        actor.animator.SetBool("attackOnCooldown", false);
+        // actor.animator.SetBool("attackOnCooldown", false);
     }
     public virtual bool ExitCooldown() => Time.time - _startTime > cooldownTime;
 }
