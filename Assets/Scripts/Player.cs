@@ -53,6 +53,7 @@ public class Player : Actor
         public override void OnWindup()
         {
             base.OnWindup();
+            AudioManager.instance.PlaySound("Windup");
             var onFoot = player.controls.actions.NinjaOnFoot;
             player.movement.End();
             onFoot.Move.Disable();

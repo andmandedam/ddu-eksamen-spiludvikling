@@ -45,9 +45,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - name: punch
-    clip: {fileID: 8300000, guid: d4a3b9b481d30804bbaa567170bbf6f8, type: 3}
-    volume: 0.5
+  - name: Punch
+    clip: {fileID: 8300000, guid: 1210eba09d4b2ca469fde58332f7e056, type: 3}
+    volume: 0.193
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: Windup
+    clip: {fileID: 8300000, guid: ed9940b33beff5d4aaad8d6bf4b09861, type: 3}
+    volume: 0.257
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0.2

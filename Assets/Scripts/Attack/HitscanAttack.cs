@@ -21,16 +21,21 @@ public class HitscanAttack : Attack
     public override void OnAttack()
     {
         base.OnAttack();
-        Debug.LogFormat(
-            "HitRect: {0}"
-            , hitRect
-        );
+        //Debug.LogFormat(
+        //    "HitRect: {0}"
+        //    , hitRect
+        //);
         Util.DrawRect(hitRect);
 
         Vector2 min = hitRect.min, max = hitRect.max;
         var colliders = Physics2D.OverlapAreaAll(min, max, attackLayer);
 
-        Debug.Log(colliders);
+        Debug.Log("Hitscan attack against: " + colliders);
+
+        if ( colliders.Length != 0) 
+        {
+            AudioManager.instance.PlaySound("Punch");
+        }
 
         foreach (var collider in colliders)
         {
