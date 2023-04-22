@@ -176,7 +176,7 @@ MonoBehaviour:
   roomParent: {fileID: 1758564030}
   enemyParent: {fileID: 445553209}
   smashableSpawnChance: 0.4
-  treasureSpawnChance: 0.02
+  treasureSpawnChance: 0.01
   hasSurfaceSpawnChance: 1
   groundSpawnChance: 0.7
   roofSpawnChance: 0.8
@@ -212,7 +212,7 @@ MonoBehaviour:
   elevatorRooms:
   - {fileID: 156148022035249787, guid: 6e4543f6f0fb9fc4db073f68dc65d93b, type: 3}
   ground:
-  - {fileID: 3420164188402694565, guid: 533eff14720180442bea4e8267c6a32a, type: 3}
+  - {fileID: 7084983294011803625, guid: a91bd80ef928c5e47a4c1b57482a886f, type: 3}
   - {fileID: 6318776756614628299, guid: e9fbaea2c2339064c88fa688cabc66a4, type: 3}
   hasSurface:
   - {fileID: 3578852239225633035, guid: e560b2a697b38e6479c206294345dce9, type: 3}
