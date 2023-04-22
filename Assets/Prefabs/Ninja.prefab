@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5248656439999304243}
   - component: {fileID: 6350582238541827462}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4184654677827663853}
   - component: {fileID: 3514577322202598437}
   - component: {fileID: 8175518094923376424}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ninja
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,38 +109,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 4184654677827663853}
   _bodyCollider: {fileID: 3514577322202598437}
-  _feetCollider: {fileID: 6350582238541827462}
   _maxHealth: 10
   _curHealth: 10
+  _animator: {fileID: 8175518094923376424}
+  _feetCollider: {fileID: 6350582238541827462}
   _staticDrag: 10
   _dynamicDrag: 0
   _platformLayer:
     serializedVersion: 2
     m_Bits: 64
-  _animator: {fileID: 0}
-  movement:
-    _moveAcceleration: 20
-    _moveMaxSpeed: 12
-  jump:
-    iteration: 0
-    yvel: 0
-    remainingJumps: 0
-    _jumpCount: 1
+  _movement:
+    _minMoveAccel: 25
+    _maxMoveAccel: 35
+    _minMoveSpeed: 10
+    _maxMoveSpeed: 20
+    _groundedAccelMult: 1
+    _airborneAccelMult: 0.75
+    _groundedTurnMult: 0.25
+    _airborneTurnMult: 0.75
+  _jump:
     _jumpForce: 8
-    _minJumpTime: 0
-    _windupTime: 0
-    _downForce: 0
-    _maxIteration: 0
-  attack:
-    _hitSize: {x: 0, y: 0}
-    _attackDamage: 10
-    _attackKnockback: 10
+    _downForce: 4
+    _minWindupTime: 0.1
+    _maxWindupTime: 0.2
+    _minJumpTime: 0.1
+    _maxIteration: 20
+    _jumpCount: 2
+  _attack:
+    _windupTime: 0.1
+    _attackTime: 0.1
+    _cooldownTime: 1
+    _hitSize: {x: 1, y: 1}
     _attackLayer:
       serializedVersion: 2
       m_Bits: 1
-    _windupTime: 300
-    _attackTime: 200
-    _cooldownTime: 500
+    _attackDamage: 10
+    _attackKnockback: 1000
 --- !u!212 &2560287754202576149
 SpriteRenderer:
   m_ObjectHideFlags: 0

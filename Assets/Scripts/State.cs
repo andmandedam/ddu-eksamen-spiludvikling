@@ -17,7 +17,7 @@ public class State
         return () => Time.time - start > duration;
     }
 
-    public State(Action entry, Action exit, Func<object> during)
+    public State(Action entry, Func<object> during, Action exit)
     {
         this.entry = entry;
         this.exit = exit;
@@ -65,19 +65,7 @@ public class State
     {
         var timeoutfunc = CreateBoundTimeoutFunction(duration);
         When(
-            () =>
-{
-    bool cond = condition();
-    bool timeout = timeoutfunc();
-    Debug.LogFormat(
-        "cond: {0}\n" +
-        "timeout: {1}"
-        , cond
-        , timeout
-    );
-
-    return cond && timeout;
-},
+            () => condition() && timeoutfunc(),
             state,
             action
         );
@@ -90,20 +78,8 @@ public class State
         transitions.AddLast(new Transition(action, condition, state));
     }
 
-    private void TransitionTo(State state, Action<Machine> action)
-    {
-        Transition transition = null;
-        transition = new Transition((machine) =>
-        {
-            Debug.LogFormat("Transition: {0}\nWas Null: {1}", transition, transition == null);
-            machine.current.transitions.RemoveFirst();
-            action(machine);
-        },
-            () => true,
-            state
-        );
-        transitions.AddFirst(transition);
-    }
+    public void ExitWhen(Func<bool> condition) => When(condition, null);
+    public void ExitWhen(Func<bool> condition, Action<Machine> action) => When(condition, null, action);
 
 #nullable enable
     // #pragma warning disable CS8618
@@ -122,44 +98,30 @@ public class State
     }
 #nullable disable
 
-    public class Machine
+    public abstract class Machine
     {
-        private MonoBehaviour runner;
-        private Coroutine routine;
+        private Coroutine _routine;
+        private State _current;
 
-        public State current { get; private set; }
-        public bool running => current != null;
+        public abstract MonoBehaviour runner { get; }
+        public State current => _current;
+        public bool isInProgress => current != null;
 
-        public Machine(MonoBehaviour runner)
-        {
-            this.runner = runner;
-            this.routine = null;
-        }
-
-        public void Run(State state)
+        protected void Run(State state)
         {
             Abort();
-            current = state;
-            routine = runner.StartCoroutine(AsRoutine());
+            _current = state;
+            _routine = runner.StartCoroutine(AsRoutine());
         }
 
-        public void TransitionTo(State state) => TransitionTo(state, (_) => { });
-        public void TransitionTo(State state, Action<Machine> action)
-        {
-            if (running)
-            {
-                current.TransitionTo(state, action);
-            }
-        }
-
-        public void Abort()
+        protected void Abort()
         {
             if (current != null) current.exit();
-            if (routine != null)
+            if (_routine != null)
             {
-                var r = routine;
-                current = null;
-                routine = null;
+                var r = _routine;
+                _current = null;
+                _routine = null;
                 runner.StopCoroutine(r);
             }
         }
@@ -189,7 +151,7 @@ public class State
                 else
                 {
                     current.exit();
-                    current = next.to;
+                    _current = next.to;
                 }
             }
         }

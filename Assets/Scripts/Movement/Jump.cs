@@ -1,82 +1,131 @@
+using System;
 using UnityEngine;
 
-public abstract class Jump
+[Serializable]
+public class Jump : Actor.Extension
 {
-    public abstract Entity entity { get; }
-    public abstract float jumpForce { get; }
-    public abstract bool canJump { get; }
-    public abstract float windupTime { get; }
-    public abstract float minJumpTime { get; }
+    // Customization fields
+    [Header("Jump")]
+    [SerializeField] float _jumpForce;
+    [SerializeField] float _downForce;
+    [SerializeField] float _minWindupTime;
+    [SerializeField] float _maxWindupTime;
+    [SerializeField] float _minJumpTime;
+    [SerializeField] int _maxIteration;
 
-    public Rigidbody2D rigidbody => entity.rigidbody;
-    public float dynamicDrag => entity.dynamicDrag;
-    public float staticDrag => entity.staticDrag;
+    // State fields
+    private Actor _actor;
+    private State _windup;
+    private State _jump;
+    private float _windupStartTime = 0;
+    private float _jumpStartTime = 0;
+    private bool _endRequest = false;
+    private int _currentIteration = 0;
+    private float _yVelocity = 0;
 
-    public bool isRunning => machine.running;
-    public bool isInWindup => machine.current == windupState;
-    public bool isJumping => machine.current == jumpingState;
+    public override Actor actor => _actor;
+    public State windup => _windup;
+    public State jump => _jump;
+    public bool isInWindup => current == windup;
+    public bool isInJump => current == jump;
 
-    private State windupState;
-    private State jumpingState;
-    private State.Machine machine;
-    protected bool _ongoing = false;
+    //  public int maxIteration => _maxIteration;
+    public float jumpForce => _jumpForce;
+    public float downForce => _downForce;
+    public float minWindupTime => _minWindupTime;
+    public float maxWindupTime => _maxWindupTime;
+    public float minJumpTime => _minJumpTime;
 
-    public virtual void WindupEntry() { }
-    public virtual object WindupDuring() => null;
-    public virtual void WindupExit() { }
+    public virtual bool canJump => actor.grounded;
 
-    public virtual void JumpingEntry()
+    public void Enable(Actor actor)
     {
-        entity.RequestDynamicDrag(this);
+        _actor = actor;
+        _windup = new(OnWindup, DuringWindup, AfterWindup);
+        _jump = new(OnJump, DuringJump, AfterJump);
+
+        _windup.When(ExitWindup, jump);
+        _jump.ExitWhen(ExitJump);
+    }
+
+    public void Begin()
+    {
+        if (canJump)
+        {
+            _endRequest = false;
+            if (actor.grounded)
+            {
+                Run(windup);
+            }
+            else
+            {
+                Run(jump);
+            }
+        }
+    }
+
+    public void End()
+    {
+        _endRequest = true;
+    }
+
+    public virtual void OnWindup()
+    {
+        _windupStartTime = Time.time;
+        actor.animator.SetBool("jumpWindup", true);
+    }
+
+    public virtual object DuringWindup() => null;
+    public virtual void AfterWindup() {
+		actor.animator.SetBool("jumpWindup", false);
+ }
+    public virtual bool ExitWindup()
+    {
+        float passed = Time.time - _windupStartTime;
+        bool minPassed = passed > minWindupTime;
+        bool maxPassed = passed > maxWindupTime;
+        return maxPassed || (minPassed && _endRequest);
+    }
+
+    public virtual void OnJump()
+    {
+        _jumpStartTime = Time.time;
+        _currentIteration = 0;
+
+        actor.RequestDynamicDrag(this);
+
         var velocity = rigidbody.velocity;
         velocity.y = 0;
         rigidbody.velocity = velocity;
 
         rigidbody.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
-    }
-    public virtual object JumpingDuring() => null;
-    public virtual void JumpingExit()
-    {
-        entity.RequestStaticDrag(this);
-    }
-    public virtual bool JumpShouldEnd() => !_ongoing || entity.rigidbody.velocity.y <= 0;
-
-    public virtual void Enable()
-    {
-        machine = new(entity);
-        windupState = new(WindupEntry, WindupExit, WindupDuring);
-        jumpingState = new(JumpingEntry, JumpingExit, JumpingDuring);
-
-        windupState.AfterOrWhen(windupTime, () => !_ongoing, jumpingState);
-        jumpingState.AfterAndWhen(minJumpTime, JumpShouldEnd, null);
+        _yVelocity = rigidbody.velocity.y;
     }
 
-    public virtual void Begin()
+    public virtual object DuringJump()
     {
-        if (canJump)
+        if (_currentIteration < _maxIteration)
         {
-            _ongoing = true;
-                if (!entity.grounded)
-            {
-                machine.Run(jumpingState);
-            }
-            else
-            {
-                machine.Run(windupState);
-            }
+            _currentIteration++;
+
+            var vel = rigidbody.velocity;
+            vel.y = _yVelocity;
+            rigidbody.velocity = vel;
         }
+        return new WaitForEndOfFrame();
     }
 
-    public virtual void End()
+    public virtual void AfterJump()
     {
-        _ongoing = false;
-        // if (isInWindup)
-        // {
-        // machine.TransitionTo(jumpingState);
-        // }
-        // else
-        // {
-        // machine.Abort();
-        // }
+        rigidbody.AddForce(downForce * Vector2.down, ForceMode2D.Impulse);
+        actor.RequestStaticDrag(this);
+    }
+
+    public virtual bool ExitJump()
+    {
+        bool minPassed = Time.time - _jumpStartTime > minJumpTime;
+        bool falling = actor.falling;
+        bool doneIterating = _currentIteration == _maxIteration;
+        return minPassed && (doneIterating || falling || _endRequest);
     }
 }

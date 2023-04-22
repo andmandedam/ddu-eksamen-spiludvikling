@@ -3,62 +3,81 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Attack
+[Serializable]
+public class Attack : Actor.Extension
 {
-    public abstract Entity entity { get; }
+    [Header("Attack")]
+    [SerializeField] float _windupTime;
+    [SerializeField] float _attackTime;
+    [SerializeField] float _cooldownTime;
 
-    public abstract float windupTime { get; }
-    public abstract float attackTime { get; }
-    public abstract float cooldownTime { get; }
+    private Actor _actor;
+    private State _windup;
+    private State _attack;
+    private State _cooldown;
+    private float _startTime;
 
-    public bool isRunning => machine.running;
-    public bool isInWindup => machine.current == windupState;
-    public bool isAttacking => machine.current == attackState;
-    public bool isOnCooldown => machine.current == cooldownState;
+    public override Actor actor => _actor;
+    public State windup => _windup;
+    public State attack => _attack;
+    public State cooldown => _cooldown;
 
-    private State.Machine machine;
-    private State windupState;
-    private State attackState;
-    private State cooldownState;
+    public float windupTime => _windupTime;
+    public float attackTime => _attackTime;
+    public float cooldownTime => _cooldownTime;
+    public bool isInWindup => current == windup;
+    public bool isInAttack => current == attack;
+    public bool isInCooldown => current == cooldown;
 
-    public virtual void WindupEntry() { }
-    public virtual object WindupDuring() => null;
-    public virtual void WindupExit() { }
-    public virtual void AttackEntry() { }
-    public virtual object AttackDuring() => null;
-    public virtual void AttackExit() { }
-    public virtual void CooldownEntry() { }
-    public virtual object CooldownDuring() => null;
-    public virtual void CooldownExit() { }
-
-    public virtual void Enable()
+    public void Enable(Actor actor)
     {
-        machine = new(entity);
-        windupState = new(WindupEntry, WindupExit, WindupDuring);
-        attackState = new(AttackEntry, AttackExit, AttackDuring);
-        cooldownState = new(CooldownEntry, CooldownExit, CooldownDuring);
+        _actor = actor;
+        _windup = new(OnWindup, DuringWindup, AfterWindup);
+        _attack = new(OnAttack, DuringAttack, AfterAttack);
+        _cooldown = new(OnCooldown, DuringCooldown, AfterCooldown);
 
-        windupState.After(windupTime, attackState);
-        attackState.After(attackTime, cooldownState);
-        cooldownState.After(cooldownTime, null);
+        _windup.When(ExitWindup, attack);
+        _attack.When(ExitAttack, cooldown);
+        _cooldown.ExitWhen(ExitCooldown);
     }
 
-    public virtual void Start()
+    public void Start()
     {
-        if (!machine.running)
+        if (!isInProgress)
         {
-            // if (!entity.grounded)
-            // {
-            // entity.rigidbody.gravityScale = 0;
-            // entity.rigidbody.velocity = Vector3.zero;
-            // }
-            machine.Run(windupState);
+            Run(windup);
         }
     }
 
-    public virtual void End()
+    public virtual void OnWindup()
     {
-        // entity.rigidbody.gravityScale = entity.grav;
-        machine.Abort();
+        _startTime = Time.time;
+        actor.animator.SetInteger("attackState", 1);
     }
+    public virtual object DuringWindup() => null;
+    public virtual void AfterWindup() { }
+    public virtual bool ExitWindup() => Time.time - _startTime > windupTime;
+
+    public virtual void OnAttack()
+    {
+        _startTime = Time.time;
+        actor.animator.SetInteger("attackState", 2);
+    }
+
+    public virtual object DuringAttack() => null;
+    public virtual void AfterAttack() { }
+    public virtual bool ExitAttack() => Time.time - _startTime > attackTime;
+
+    public virtual void OnCooldown()
+    {
+        _startTime = Time.time;
+        actor.animator.SetInteger("attackState", 0);
+        actor.animator.SetBool("attackOnCooldown", true);
+    }
+    public virtual object DuringCooldown() => null;
+    public virtual void AfterCooldown()
+    {
+        actor.animator.SetBool("attackOnCooldown", false);
+    }
+    public virtual bool ExitCooldown() => Time.time - _startTime > cooldownTime;
 }
