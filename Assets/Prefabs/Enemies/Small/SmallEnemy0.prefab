@@ -122,10 +122,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: -3193459405259638563}
-  _bodyCollider: {fileID: 0}
-  _feetCollider: {fileID: 0}
+  _bodyCollider: {fileID: 4904633435300266522}
   _maxHealth: 100
   _curHealth: 50
+  _animator: {fileID: 3477417982986646871}
+  _feetCollider: {fileID: 4904633435300266522}
+  _staticDrag: 10
+  _dynamicDrag: 0
+  _platformLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!95 &3477417982986646871
 Animator:
   serializedVersion: 4

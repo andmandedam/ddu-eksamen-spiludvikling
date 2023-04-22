@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IncreasePlayerJump : PowerUpPayload
 {
-    public void ActivatePayload(Player.PlayerJump player)
-    {
-        player.jumpCount += 1;
-    }
+    // public void ActivatePayload(Player.PlayerJump player)
+    // {
+    // player.jumpCount += 1;
+    // }
 }
