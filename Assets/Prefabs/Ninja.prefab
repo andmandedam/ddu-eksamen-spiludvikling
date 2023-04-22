@@ -133,18 +133,18 @@ MonoBehaviour:
     _minWindupTime: 0.1
     _maxWindupTime: 0.2
     _minJumpTime: 0.1
-    _maxIteration: 20
+    _maxIteration: 25
     _jumpCount: 2
   _attack:
     _windupTime: 0.1
     _attackTime: 0.1
-    _cooldownTime: 1
+    _cooldownTime: 0.1
     _hitSize: {x: 1, y: 1}
     _attackLayer:
       serializedVersion: 2
       m_Bits: 1
     _attackDamage: 10
-    _attackKnockback: 1000
+    _attackKnockback: 10
 --- !u!212 &2560287754202576149
 SpriteRenderer:
   m_ObjectHideFlags: 0

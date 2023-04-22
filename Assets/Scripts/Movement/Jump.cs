@@ -38,7 +38,7 @@ public class Jump : Actor.Extension
 
     public virtual bool canJump => actor.grounded;
 
-    public void Enable(Actor actor)
+    public virtual void Enable(Actor actor)
     {
         _actor = actor;
         _windup = new(OnWindup, DuringWindup, AfterWindup);

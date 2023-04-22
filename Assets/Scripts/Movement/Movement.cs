@@ -29,9 +29,7 @@ public class Movement : Actor.Extension
     public override Actor actor => _actor;
     public State horizontal => _horizontal;
     public Vector2 moveDirection => new Vector2(_moveDirection, 0);
-    public bool turnaround => _turnaround;
     public float speedModifier => _speedModifier;
-
     private float turnMultiplier => actor.grounded ? _groundedTurnMult : _airborneTurnMult;
 
     public void Enable(Actor actor)
@@ -43,15 +41,15 @@ public class Movement : Actor.Extension
         _speedModifier = 0;
     }
 
-    public void Begin(Vector2 dir)
+    public void Begin(int dir)
     {
-        int newMoveDirection = Mathf.RoundToInt(dir.x);
-        if (newMoveDirection != 0)
+        if (
+            (dir != 0) &&
+            !(dir == _moveDirection && isInProgress) // not already in the process of moving in the direction
+        )
         {
-            actor.RequestDynamicDrag(this);
-
-            _turnaround = _moveDirection == -newMoveDirection;
-            _moveDirection = newMoveDirection;
+            _turnaround = _moveDirection == -dir;
+            _moveDirection = dir;
 
             Run(horizontal);
         }
@@ -65,22 +63,27 @@ public class Movement : Actor.Extension
     }
 
     // Returns the speed the actor "would like to" go.
-    private float GetCurrentMaxMoveSpeed() => LogisticInInterval(speedModifier, _minMoveSpeed, _maxMoveSpeed);
+    public float GetCurrentMaxMoveSpeed() => LogisticInInterval(speedModifier, _minMoveSpeed, _maxMoveSpeed);
 
-    private float GetCurrentMoveAccel() =>
+    public float GetCurrentMoveAccel() =>
                 (actor.grounded ? _groundedAccelMult : _airborneAccelMult) *
                 LogisticInInterval(speedModifier, _minMoveAccel, _maxMoveAccel);
+
+    public bool HasAccelerated() => 0.9f < rigidbody.velocity.x / GetCurrentMaxMoveSpeed();
 
     public virtual void OnHorizontal()
     {
         actor.RequestDynamicDrag(this);
         actor.animator.SetBool("moving", true);
-        if (turnaround)
-        {
-            var vel = rigidbody.velocity;
-            vel.x *= turnMultiplier;
-            rigidbody.velocity = vel;
-        }
+
+        // The turnaround multiplier is always applied.
+        // Either we are tuning around, which is when this is relevant
+        // Otherwise the actor wasn't moving before this was called, so the velocity is zero.
+        // In that case it's doesn't matter wheter we apply the multiplier since 0 * x == 0
+        var vel = rigidbody.velocity;
+        vel.x *= turnMultiplier;
+        rigidbody.velocity = vel;
+
         actor.transform.rotation = Quaternion.Euler(0, _moveDirection < 0 ? 180 : 0, 0);
     }
 

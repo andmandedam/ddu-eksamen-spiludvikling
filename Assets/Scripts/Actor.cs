@@ -64,8 +64,12 @@ public class Actor : Entity
     {
         _falling = rigidbody.velocity.y < 0;
         _grounded = feetCollider.IsTouchingLayers(platformLayer);
-		animator.SetBool("falling", _falling);
-		animator.SetBool("grounded", _grounded);
+
+        if (_falling) RequestDynamicDrag(this);
+        else RequestStaticDrag(this);
+
+        animator.SetBool("falling", _falling);
+        animator.SetBool("grounded", _grounded);
     }
 
     public virtual void OnTriggerEnter2D(Collider2D collider)

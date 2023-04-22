@@ -90,7 +90,7 @@ public class Player : Actor
                 switch (input.y)
                 {
                     case (-1): player.Passthrough(); break;
-                    case (0): movement.Begin(input); break;
+                    case (0): movement.Begin((int)input.x); break;
                     case (1): player.animator.SetBool("lookUp", true); break;
                 }
             };
@@ -103,10 +103,17 @@ public class Player : Actor
             onFoot.Jump.canceled += (ctx) => jump.End();
             onFoot.Crouch.performed += (ctx) =>
             {
+                if (player.movement.isInProgress && player.movement.HasAccelerated())
+                {
+                    player.rigidbody.AddForce(movement.moveDirection * player._crouchDashForce, ForceMode2D.Impulse);
+                }
+
+                player.movement.Slow(100);
                 player.animator.SetBool("crouch", true);
             };
             onFoot.Crouch.canceled += (ctx) =>
             {
+                player.movement.SpeedUp(100);
                 player.animator.SetBool("crouch", false);
             };
             onFoot.Attack.performed += (ctx) => attack.Start();
@@ -117,6 +124,7 @@ public class Player : Actor
     [SerializeField] private Movement _movement;
     [SerializeField] private PlayerJump _jump;
     [SerializeField] private PlayerAttack _attack;
+    [SerializeField] private float _crouchDashForce;
 
     public Movement movement => _movement;
     public Jump jump => _jump;
