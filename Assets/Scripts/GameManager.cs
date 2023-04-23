@@ -6,15 +6,40 @@ using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
-    public GameObject player;
+    public static GameManager instance;
+
+    private void Awake()
+    {
+
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        player = Instantiate(playerPrefab);
+        roomParent = new GameObject("House").transform;
+        enemyParent = new GameObject("EnemyParent").transform;
+        mainCameraScript = Instantiate(mainCameraPrefab).GetComponent<GenericCamera>();
+        mainCameraScript.targets = new Transform[] { player.transform };
+
+    }
+
+    public Camera mainCameraPrefab;
+    public GenericCamera mainCameraScript;
+    public GameObject playerPrefab;
+    [NonSerialized] public GameObject player;
     public GameObject[] rooms;
     public GameObject levelBorder;
     public GameObject nextLevelDoor;
 
     [Header("  Spawning")]
     public float hardRoomMultiplier;
-    [SerializeField] Transform roomParent;
-    [SerializeField] Transform enemyParent;
+    Transform roomParent;
+    Transform enemyParent;
 
     [SerializeField] float smashableSpawnChance;
     [SerializeField] float treasureSpawnChance;
@@ -60,6 +85,9 @@ public partial class GameManager : MonoBehaviour
 
     void Start()
     {
+        PersistantObject.instance.playerControls.actions.HUD.Disable();
+        PersistantObject.instance.playerControls.actions.NinjaOnFoot.Enable();
+
         Physics2D.IgnoreLayerCollision(3, 3, true);
 
         prefabDictionary.Add(EnemyType.Small, smallEnemies);

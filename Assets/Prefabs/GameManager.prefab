@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &482076805793820221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 482076805793820222}
+  - component: {fileID: 482076805793820223}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &482076805793820222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482076805793820221}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &482076805793820223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482076805793820221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cae279515c93464ebf15c5435cef626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCameraPrefab: {fileID: 8074551526666110100, guid: 3026a21a2588e6248a606f44448e3534, type: 3}
+  mainCameraScript: {fileID: 0}
+  playerPrefab: {fileID: 8190676746574411201, guid: 28b1b4c4c52de6a4384a0c347146e6ac, type: 3}
+  rooms: []
+  levelBorder: {fileID: 3231183468423531149, guid: 853807e8dccfd504fb5d1756b99a0d6d, type: 3}
+  nextLevelDoor: {fileID: 4282494981674310070, guid: bc4eb5af7505adb49b10f15b097b3aaa, type: 3}
+  hardRoomMultiplier: 2
+  smashableSpawnChance: 0.4
+  treasureSpawnChance: 0.01
+  hasSurfaceSpawnChance: 1
+  groundSpawnChance: 0.7
+  roofSpawnChance: 0.8
+  wallSpawnChance: 0.5
+  lightSpawnChance: 1
+  hallwayBaseEnemyAmount: 1
+  bigRoomBaseEnemyAmount: 3
+  giantRoomBaseEnemyAmount: 6
+  elevatorRoomBaseEnemyAmount: 0
+  smallEnemies:
+  - {fileID: 8539378388184951660, guid: 7ecc182178e21cc47a080a5641918c39, type: 3}
+  bigEnemies:
+  - {fileID: 1599416105598667078, guid: 65741c23bf140be4faaae963c4c619a2, type: 3}
+  treasures:
+  - {fileID: 1817867383233115173, guid: 9b844e115e77dd743a7200e16cb824e5, type: 3}
+  - {fileID: 2896818715872353878, guid: 91651d59e3f9f6e4f98c12e0e0a38d71, type: 3}
+  - {fileID: 8366560203618428077, guid: d1dd009d9263ece44a5156abac36e1ae, type: 3}
+  - {fileID: 3645057876885656217, guid: 3b7a9079f17153643ae424685dc8bd95, type: 3}
+  smashables:
+  - {fileID: 8441004542790893918, guid: 7ff8ce76b440e634bb8bfbc5fb5f2ae0, type: 3}
+  - {fileID: 5309051206689594624, guid: 1f6cec2efa7919e4bb2ae57b77d487ea, type: 3}
+  colliders:
+  - {fileID: 5421323922845070364, guid: 5117a3c0aaf800a4fb562987aedd4377, type: 3}
+  hallways:
+  - {fileID: 6714390774696507435, guid: 12a989f066c3f2446a48af9190990202, type: 3}
+  - {fileID: 6714390774696507435, guid: 21f1e30f21a6b144c9a9a6d3bc7095c7, type: 3}
+  bigRooms:
+  - {fileID: 156148022035249787, guid: f451c46dba2a5cc4e8bf67b186781e3f, type: 3}
+  - {fileID: 156148022035249787, guid: 6c103b1f1be0b1f468c0b926f418ddc0, type: 3}
+  giantRooms:
+  - {fileID: 156148022035249787, guid: 51547bcc0d15c5f44a7c25a7af9f8a05, type: 3}
+  - {fileID: 156148022035249787, guid: 1396f8c2e372a0743bbb735b677fb03c, type: 3}
+  elevatorRooms:
+  - {fileID: 156148022035249787, guid: 6e4543f6f0fb9fc4db073f68dc65d93b, type: 3}
+  ground:
+  - {fileID: 7084983294011803625, guid: a91bd80ef928c5e47a4c1b57482a886f, type: 3}
+  - {fileID: 6318776756614628299, guid: e9fbaea2c2339064c88fa688cabc66a4, type: 3}
+  hasSurface:
+  - {fileID: 3578852239225633035, guid: e560b2a697b38e6479c206294345dce9, type: 3}
+  onSurface:
+  - {fileID: 3713113959153941188, guid: e90c7da876661da4b83f38ee32c88368, type: 3}
+  - {fileID: 8073946117639807569, guid: 5eda84db6d289c145a8465f12afda893, type: 3}
+  - {fileID: 1489564910341251384, guid: 8558d700276c64b43acd72414cb02968, type: 3}
+  - {fileID: 8064132052161611367, guid: a3759ef831592a94283311a5959e8efe, type: 3}
+  - {fileID: 7428031616304993369, guid: 454138a4f7a5dc84790368b08b069bac, type: 3}
+  - {fileID: 1980117185383177939, guid: 0ce6e0c6a19bdd04399f2a2e64d5d4e4, type: 3}
+  - {fileID: 5521517468365891019, guid: b9a0db24c19c3c349a9820992de4268b, type: 3}
+  - {fileID: 3973112000782484802, guid: 277ec2e93ff435947afbaabea768c85e, type: 3}
+  - {fileID: 2550459385549765585, guid: d1744e1bb9062a143be9c864ae414701, type: 3}
+  roof:
+  - {fileID: 1651674042164598067, guid: 7de6d8bf78d988544ab19a7c7841e1db, type: 3}
+  wall:
+  - {fileID: 5445469041265020150, guid: aa3ba2f235b69fc4f95679dfc74acf0d, type: 3}
+  lights:
+  - {fileID: 5820136814241201506, guid: 7347fb1e47266e948a6e1fcb38b3e278, type: 3}

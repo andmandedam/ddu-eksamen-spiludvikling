@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 
 public class Player : Actor
@@ -72,12 +73,16 @@ public class Player : Actor
     public class PlayerControls : Controls
     {
         public PlayerInputActions actions;
-        public void Enable(Player player)
+        private float lookUpAmount = 5;
 
+        public void Initialize()
         {
             actions = new PlayerInputActions();
             actions.Enable();
+        }
 
+        public void Enable(Player player)
+        {
             var movement = player.movement;
             var jump = player.jump;
             var attack = player.attack;
@@ -89,12 +94,7 @@ public class Player : Actor
                 Vector2 input = ctx.ReadValue<Vector2>();
                 input.Round();
                 player._facing = input;
-                switch (input.y)
-                {
-                    case (-1): player.Passthrough(); break;
-                    case (0): movement.Begin((int)input.x); break;
-                    case (1): player.animator.SetBool("lookUp", true); break;
-                }
+                movement.Begin((int)input.x);
             };
             onFoot.Move.canceled += (ctx) =>
             {
@@ -119,6 +119,24 @@ public class Player : Actor
                 player.animator.SetBool("crouch", false);
             };
             onFoot.Attack.performed += (ctx) => attack.Begin();
+
+            onFoot.Passthrough.performed += player.Passthrough;
+
+            onFoot.LookUp.performed += (ctx) => { LookUp(ctx); player.animator.SetBool("lookUp", true); };
+            onFoot.LookUp.canceled += (ctx) => { LookUp(ctx); player.animator.SetBool("lookUp", false); };
+        }
+
+        private void LookUp(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        {
+            Debug.Log("LookUp" + ctx);
+            if (ctx.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
+            {
+                GameManager.instance.mainCameraScript.cameraOffset.y = 0;
+            }
+            else
+            {
+                GameManager.instance.mainCameraScript.cameraOffset.y = lookUpAmount;
+            }
         }
     }
 
@@ -135,10 +153,18 @@ public class Player : Actor
     public Attack attack => _attack;
     public override Vector2 facing => _facing;
 
-    public PlayerControls controls = new();
+    public PlayerControls controls;
+        private float lookUpAmount;
 
-    void Start()
+        void Start()
     {
+        var persistantObject = FindObjectOfType<PersistantObject>();
+        if (persistantObject.playerControls == null)
+        {
+            persistantObject.playerControls = new PlayerControls();
+            persistantObject.playerControls.Initialize();
+        }
+        controls = persistantObject.playerControls;
         controls.Enable(this);
         _movement.Enable(this);
         _jump.Enable(this);

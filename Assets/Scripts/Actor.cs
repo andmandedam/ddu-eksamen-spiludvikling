@@ -52,7 +52,7 @@ public class Actor : Entity
         }
     }
 
-    public void Passthrough()
+    public void Passthrough(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
     {
         foreach (var trigger in _passthroughTriggers)
         {

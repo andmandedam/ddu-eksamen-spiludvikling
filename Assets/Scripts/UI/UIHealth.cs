@@ -7,12 +7,12 @@ public class UIHealth : MonoBehaviour
 {
     public static UIHealth instance;
 
-    [SerializeField]
     private Entity player;
 
     private UIHeart[] uIHearts;
     private void Start()
     {
+        player = GameManager.instance.player.GetComponent<Player>();
         uIHearts = GetComponentsInChildren<UIHeart>();
         UpdateHealth();
         instance = this;
