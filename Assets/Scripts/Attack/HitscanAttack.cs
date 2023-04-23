@@ -32,11 +32,6 @@ public class HitscanAttack : Attack
 
         Debug.Log("Hitscan attack against: " + colliders);
 
-        if ( colliders.Length != 0) 
-        {
-            AudioManager.instance.PlaySound("Punch");
-        }
-
         foreach (var collider in colliders)
         {
             Debug.Log(collider);

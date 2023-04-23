@@ -167,5 +167,9 @@ public class Player : Actor
         _jump.Reset();
             AudioManager.instance.PlaySound("NinjaLand");
     }
-
+    public override void Damage(Entity source, int damage)
+    {
+        base.Damage(source, damage);
+        AudioManager.instance.PlaySound("NinjaTakeDamage");
+    }
 }

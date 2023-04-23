@@ -77,11 +77,43 @@ MonoBehaviour:
     pitchVariance: 0.2
     loop: 0
     source: {fileID: 0}
+  - name: NinjaTakeDamage
+    clip: {fileID: 8300000, guid: 9b191177288f1cd48a70c72589d52aaf, type: 3}
+    volume: 0.337
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
   - name: ElevatorArrival
     clip: {fileID: 8300000, guid: ab3511830d0ab484fb465d52cf20de6a, type: 3}
     volume: 0.1
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: BlobTakeDamage
+    clip: {fileID: 8300000, guid: 7922c01c410e41e4e8602d111f640124, type: 3}
+    volume: 0.6
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.534
+    loop: 0
+    source: {fileID: 0}
+  - name: BlobWindup
+    clip: {fileID: 8300000, guid: e54390f2686a44b40a4cd5052d33c2cf, type: 3}
+    volume: 0.6
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.534
+    loop: 0
+    source: {fileID: 0}
+  - name: BlobDoDamage
+    clip: {fileID: 8300000, guid: 9d6fdf9e4bae62c499af90e0e9726642, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.534
     loop: 0
     source: {fileID: 0}

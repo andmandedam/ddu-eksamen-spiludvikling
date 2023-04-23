@@ -107,13 +107,22 @@ public class Enemy : Actor
         {
             enemy.movement.End();
         }
-        public void OnAttack() { }
+        public void OnAttack() { AudioManager.instance.PlaySound("BlobWindup"); }
         public object DuringAttack()
         {
+            Debug.Log("DuringAttack");
+            
             enemy.attack.Begin();
             return null;
         }
         public void AfterAttack() { }
+    }
+
+    public override void Damage(Entity source, int damage)
+    {
+        base.Damage(source, damage);
+        AudioManager.instance.PlaySound("Punch");
+        AudioManager.instance.PlaySound("BlobTakeDamage");
     }
 
     //protected class EnemyAttack : HitscanAttack
