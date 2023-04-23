@@ -171,5 +171,6 @@ public class Player : Actor
     {
         base.Damage(source, damage);
         AudioManager.instance.PlaySound("NinjaTakeDamage");
+        UIHealth.instance.UpdateHealth();
     }
 }

@@ -110,8 +110,6 @@ public class Enemy : Actor
         public void OnAttack() { AudioManager.instance.PlaySound("BlobWindup"); }
         public object DuringAttack()
         {
-            Debug.Log("DuringAttack");
-            
             enemy.attack.Begin();
             return null;
         }

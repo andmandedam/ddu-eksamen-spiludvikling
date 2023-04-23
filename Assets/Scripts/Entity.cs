@@ -29,7 +29,7 @@ public class Entity : MonoBehaviour
         if (source == this) return;
 
         curHealth = curHealth - damage;
-        if (curHealth < 0)
+        if (curHealth <= 0)
         {
             Die();
         }
