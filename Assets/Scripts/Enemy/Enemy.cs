@@ -12,13 +12,13 @@ public class Enemy : Actor
     [SerializeField] GameObject _player;
 
     public Vector2 toPlayer { get; private set; }
-        HitscanAttack attack => _attack;
+    HitscanAttack attack => _attack;
     Movement movement => _movement;
     Behavior behavior => _behavior;
 
     public void Start()
     {
-        // _player = GameObject.Find("GameManager").GetComponent<GameManager>().player;
+        _player = GameObject.Find("GameManager").GetComponent<GameManager>().player;
         attack.Enable(this);
         movement.Enable(this);
         behavior.Enable(this);
@@ -110,7 +110,7 @@ public class Enemy : Actor
         public void OnAttack() { }
         public object DuringAttack()
         {
-                    enemy.attack.Begin();
+            enemy.attack.Begin();
             return null;
         }
         public void AfterAttack() { }

@@ -165,7 +165,7 @@ public class Player : Actor
     public override void OnLand()
     {
         _jump.Reset();
-        AudioManager.instance.PlaySound("NinjaLand");
+            AudioManager.instance.PlaySound("NinjaLand");
     }
 
 }

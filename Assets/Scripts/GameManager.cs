@@ -36,7 +36,7 @@ public partial class GameManager : MonoBehaviour
     [Header("  Placeables")]
     [SerializeField] GameObject[] treasures;
     [SerializeField] GameObject[] smashables;
-    
+
     [Header("  Rooms")]
     [SerializeField] GameObject[] colliders;
     [SerializeField] GameObject[] hallways;
@@ -60,6 +60,8 @@ public partial class GameManager : MonoBehaviour
 
     void Start()
     {
+        Physics2D.IgnoreLayerCollision(3, 3, true);
+
         prefabDictionary.Add(EnemyType.Small, smallEnemies);
         prefabDictionary.Add(EnemyType.Big, bigEnemies);
         prefabDictionary.Add(PlaceableType.Treasure, treasures);
@@ -127,12 +129,12 @@ public partial class GameManager : MonoBehaviour
     {
         Small,
         Big,
-    }        
+    }
     public enum PlaceableType
     {
         Treasure,
         Smashable,
-    }    
+    }
     public enum RoomType
     {
         Collider,

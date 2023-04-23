@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8978385076675252461}
   - component: {fileID: 3477417982986646871}
   - component: {fileID: 4904633435300266522}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SmallEnemy0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8978385076675252461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,14 +132,16 @@ MonoBehaviour:
   _platformLayer:
     serializedVersion: 2
     m_Bits: 64
-  _aggroRange: {x: 0, y: 0}
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
   _attack:
-    _windupTime: 0
-    _attackTime: 0
-    _cooldownTime: 0
+    _windupTime: 1
+    _attackTime: 1
+    _cooldownTime: 1
+    _hitSize: {x: 1, y: 1}
+    _attackLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    _attackDamage: 1
+    _attackKnockback: 10
   _movement:
     _minMoveAccel: 5
     _maxMoveAccel: 10
@@ -149,6 +151,10 @@ MonoBehaviour:
     _airborneAccelMult: 0.75
     _groundedTurnMult: 0.25
     _airborneTurnMult: 0.75
+  _behavior:
+    _aggroRange: {x: 10, y: 2}
+    _attackRange: {x: 2.5, y: 2}
+  _player: {fileID: 0}
 --- !u!95 &3477417982986646871
 Animator:
   serializedVersion: 4
