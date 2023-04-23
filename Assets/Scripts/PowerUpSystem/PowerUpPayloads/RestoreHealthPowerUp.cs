@@ -13,6 +13,7 @@ public class RestoreHealthPowerUp : PowerUp
 
     public void RestoreHealth(Player player)
     {
+        if (player == null) return;
         if (player.curHealth + HealthRestored >= player.maxHealth) 
         { 
             player.curHealth = player.maxHealth;

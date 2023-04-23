@@ -128,7 +128,7 @@ MonoBehaviour:
     _groundedTurnMult: 0.25
     _airborneTurnMult: 0.75
   _jump:
-    _jumpForce: 8
+    _jumpForce: 9
     _downForce: 4
     _minWindupTime: 0.1
     _maxWindupTime: 0.2
