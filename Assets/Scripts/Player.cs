@@ -21,7 +21,7 @@ public class Player : Actor
         public override void OnWindup()
         {
             base.OnWindup();
-            // Debug.Log("OnWindup");
+            AudioManager.instance.PlaySound("NinjaJump");
         }
 
         public override void AfterWindup()
@@ -53,6 +53,7 @@ public class Player : Actor
         public override void OnWindup()
         {
             base.OnWindup();
+            // AudioManager.instance.PlaySound("Windup");
             var onFoot = player.controls.actions.NinjaOnFoot;
             player.movement.End();
             onFoot.Move.Disable();
@@ -68,7 +69,7 @@ public class Player : Actor
         }
     }
 
-    private class PlayerControls : Controls
+    public class PlayerControls : Controls
     {
         public PlayerInputActions actions;
         public void Enable(Player player)
@@ -133,7 +134,8 @@ public class Player : Actor
     public Jump jump => _jump;
     public Attack attack => _attack;
     public override Vector2 facing => _facing;
-    private PlayerControls controls = new();
+
+    public PlayerControls controls = new();
 
     void Start()
     {
@@ -148,7 +150,6 @@ public class Player : Actor
         if (grounded)
         {
             // Grounded
-            if (!jump.isInProgress) _jump.Reset();
         }
         else if (falling)
         {
@@ -160,4 +161,11 @@ public class Player : Actor
 
         }
     }
+
+    public override void OnLand()
+    {
+        _jump.Reset();
+        AudioManager.instance.PlaySound("NinjaLand");
+    }
+
 }

@@ -18,6 +18,7 @@ public partial class GameManager
             for (int i = 0; i < rooms.Length; i++)
             {
                 gameManager.rooms[i] = CreateRoom(rooms[i], gameManager);
+                gameManager.rooms[i].name = (i + 1).ToString();
             }
             CreateHouseBorder(houseTemplate, gameManager);
         }
@@ -48,6 +49,7 @@ public partial class GameManager
             roomObject.transform.position = (Vector3Int)room.placement;
             PlaceEnemies(room, gameManager);
 
+            // Handle Room tags
             if ((room.tags & RoomTag.Exit) != 0)
             {
                 GameObject nextLevelDoor = Instantiate(gameManager.nextLevelDoor, roomObject.transform);
@@ -56,7 +58,20 @@ public partial class GameManager
                 nextLevelDoor.TryGetComponent<NextLevelScript>(out var script);
                 script.gameManager = gameManager;
             }
+
+            if ((room.tags & RoomTag.ElevatorBottom) != 0)
+            {
+                roomObject.TryGetComponent<Elevator>(out var elevatorScript);
+                elevatorScript.isBottom = true;
+            }
+
+            if ((room.tags & RoomTag.ElevatorTop) != 0)
+            {
+                roomObject.TryGetComponent<Elevator>(out var elevatorScript);
+                elevatorScript.isTop = true;
+            }
             
+            // Handle Spawnables
             if (!roomObject.TryGetComponent<RoomInfo>(out var roomInfo))
             {
                 return roomObject;

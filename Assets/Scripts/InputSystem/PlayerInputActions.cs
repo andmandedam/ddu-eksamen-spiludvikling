@@ -80,6 +80,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LookUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""5d31435a-73ca-4e21-a924-d235f9276a3b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -210,7 +219,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Passthrough"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -223,6 +232,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04b8bee1-9c59-43ff-b3d0-b354a1238175"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""LookUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -262,6 +282,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_NinjaOnFoot_Crouch = m_NinjaOnFoot.FindAction("Crouch", throwIfNotFound: true);
         m_NinjaOnFoot_Passthrough = m_NinjaOnFoot.FindAction("Passthrough", throwIfNotFound: true);
         m_NinjaOnFoot_Attack = m_NinjaOnFoot.FindAction("Attack", throwIfNotFound: true);
+        m_NinjaOnFoot_LookUp = m_NinjaOnFoot.FindAction("LookUp", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -327,6 +348,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_NinjaOnFoot_Crouch;
     private readonly InputAction m_NinjaOnFoot_Passthrough;
     private readonly InputAction m_NinjaOnFoot_Attack;
+    private readonly InputAction m_NinjaOnFoot_LookUp;
     public struct NinjaOnFootActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -337,6 +359,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_NinjaOnFoot_Crouch;
         public InputAction @Passthrough => m_Wrapper.m_NinjaOnFoot_Passthrough;
         public InputAction @Attack => m_Wrapper.m_NinjaOnFoot_Attack;
+        public InputAction @LookUp => m_Wrapper.m_NinjaOnFoot_LookUp;
         public InputActionMap Get() { return m_Wrapper.m_NinjaOnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -364,6 +387,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnAttack;
+                @LookUp.started -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnLookUp;
+                @LookUp.performed -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnLookUp;
+                @LookUp.canceled -= m_Wrapper.m_NinjaOnFootActionsCallbackInterface.OnLookUp;
             }
             m_Wrapper.m_NinjaOnFootActionsCallbackInterface = instance;
             if (instance != null)
@@ -386,6 +412,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @LookUp.started += instance.OnLookUp;
+                @LookUp.performed += instance.OnLookUp;
+                @LookUp.canceled += instance.OnLookUp;
             }
         }
     }
@@ -416,5 +445,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnPassthrough(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnLookUp(InputAction.CallbackContext context);
     }
 }

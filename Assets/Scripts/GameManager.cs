@@ -38,6 +38,7 @@ public partial class GameManager : MonoBehaviour
     [SerializeField] GameObject[] smashables;
     
     [Header("  Rooms")]
+    [SerializeField] GameObject[] colliders;
     [SerializeField] GameObject[] hallways;
     [SerializeField] GameObject[] bigRooms;
     [SerializeField] GameObject[] giantRooms;
@@ -63,6 +64,7 @@ public partial class GameManager : MonoBehaviour
         prefabDictionary.Add(EnemyType.Big, bigEnemies);
         prefabDictionary.Add(PlaceableType.Treasure, treasures);
         prefabDictionary.Add(PlaceableType.Smashable, smashables);
+        prefabDictionary.Add(RoomType.Collider, colliders);
         prefabDictionary.Add(RoomType.Hallway, hallways);
         prefabDictionary.Add(RoomType.BigRoom, bigRooms);
         prefabDictionary.Add(RoomType.GiantRoom, giantRooms);
@@ -74,6 +76,7 @@ public partial class GameManager : MonoBehaviour
         prefabDictionary.Add(DecorationType.Roof, roof);
         prefabDictionary.Add(DecorationType.Light, lights);
 
+        enemySpawnStatsDictionary.Add(RoomType.Collider, 0f); //Not an actual room, therefore 0 enemies should spawn.
         enemySpawnStatsDictionary.Add(RoomType.Hallway, hallwayBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.BigRoom, bigRoomBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.GiantRoom, giantRoomBaseEnemyAmount);
@@ -109,6 +112,8 @@ public partial class GameManager : MonoBehaviour
         Hard = 1 << 2,
         BigEnemies = 1 << 3,
         Exit = 1 << 4,
+        ElevatorTop = 1 << 5,
+        ElevatorBottom = 1 << 6,
     }
     public enum HouseTemplate
     {
@@ -130,6 +135,7 @@ public partial class GameManager : MonoBehaviour
     }    
     public enum RoomType
     {
+        Collider,
         Hallway,
         BigRoom,
         GiantRoom,

@@ -17,6 +17,7 @@ public class Actor : Entity
     private HashSet<PassthroughTrigger> _passthroughTriggers = new();
     private bool _falling;
     private bool _grounded;
+    private bool _wasGrounded;
 
     public Animator animator => _animator;
     public Collider2D feetCollider => _feetCollider;
@@ -63,6 +64,7 @@ public class Actor : Entity
     public virtual void FixedUpdate()
     {
         _falling = rigidbody.velocity.y < 0;
+        _wasGrounded = _grounded;
         _grounded = feetCollider.IsTouchingLayers(platformLayer);
 
         if (_falling) RequestDynamicDrag(this);
@@ -70,6 +72,15 @@ public class Actor : Entity
 
         animator.SetBool("falling", _falling);
         animator.SetBool("grounded", _grounded);
+        if (_grounded && !_wasGrounded)
+        {
+            OnLand();
+        }
+    }
+
+    public virtual void OnLand()
+    {
+
     }
 
     public virtual void OnTriggerEnter2D(Collider2D collider)
