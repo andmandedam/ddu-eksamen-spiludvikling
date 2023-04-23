@@ -142,7 +142,7 @@ MonoBehaviour:
     _hitSize: {x: 1, y: 1}
     _attackLayer:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 8
     _attackDamage: 10
     _attackKnockback: 10
   _crouchDashForce: 0
