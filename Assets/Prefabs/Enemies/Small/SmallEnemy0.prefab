@@ -132,6 +132,23 @@ MonoBehaviour:
   _platformLayer:
     serializedVersion: 2
     m_Bits: 64
+  _aggroRange: {x: 0, y: 0}
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _attack:
+    _windupTime: 0
+    _attackTime: 0
+    _cooldownTime: 0
+  _movement:
+    _minMoveAccel: 5
+    _maxMoveAccel: 10
+    _minMoveSpeed: 3
+    _maxMoveSpeed: 5
+    _groundedAccelMult: 1
+    _airborneAccelMult: 0.75
+    _groundedTurnMult: 0.25
+    _airborneTurnMult: 0.75
 --- !u!95 &3477417982986646871
 Animator:
   serializedVersion: 4

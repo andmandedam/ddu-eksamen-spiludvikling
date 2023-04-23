@@ -1,35 +1,119 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Actor
 {
-    [SerializeField] Vector2 _viewRange;
-    [SerializeField] LayerMask _playerLayer;
+    [SerializeField] HitscanAttack _attack;
+    [SerializeField] Movement _movement;
+    [SerializeField] Behavior _behavior;
 
-    private GameObject target;
+    [SerializeField] GameObject _player;
 
-    Attack attack => null;
-    Movement movement => null;
-    Rect checkRect => Util.RectFromCenterSize(transform.position, _viewRange);
-
+    public Vector2 toPlayer { get; private set; }
+        HitscanAttack attack => _attack;
+    Movement movement => _movement;
+    Behavior behavior => _behavior;
 
     public void Start()
     {
-        // attack.Enable(this);
-        // movement.Enable(this);
+        // _player = GameObject.Find("GameManager").GetComponent<GameManager>().player;
+        attack.Enable(this);
+        movement.Enable(this);
+        behavior.Enable(this);
+
+        toPlayer = _player.transform.position - transform.position;
+        behavior.Begin();
     }
 
     public void Update()
     {
-        if (target == null)
+        toPlayer = _player.transform.position - transform.position;
+    }
+
+    [Serializable]
+    class Behavior : Actor.Extension
+    {
+        [SerializeField] Vector2 _aggroRange;
+        [SerializeField] Vector2 _attackRange;
+
+        private Enemy _enemy;
+        private State _look;
+        private State _move;
+        private State _attack;
+
+        public bool inAttack => _enemy.attack.isInProgress;
+        public Enemy enemy => _enemy;
+        public override Actor actor => _enemy;
+        public Vector2 toPlayer => enemy.toPlayer;
+
+        public void Enable(Enemy enemy)
         {
-            var playerCollider = Physics2D.OverlapArea(checkRect.min, checkRect.max, _playerLayer);
-            if (playerCollider != null)
-            {
-                target = playerCollider.gameObject;
-            }
+            _enemy = enemy;
+            _look = new(OnLook, DuringLook, AfterLook);
+            _move = new(OnMove, DuringMove, AfterMove);
+            _attack = new(OnAttack, DuringAttack, AfterAttack);
+
+            _look.When(
+                () =>
+                    Mathf.Abs(toPlayer.x) < _aggroRange.x &&
+                    Mathf.Abs(toPlayer.y) < _aggroRange.y,
+                _move
+            );
+            _move.When(
+                () =>
+                    Mathf.Abs(toPlayer.x) > _aggroRange.x ||
+                    Mathf.Abs(toPlayer.y) > _aggroRange.y,
+                _look
+            );
+            _move.When(
+                () =>
+                    Mathf.Abs(toPlayer.x) < _attackRange.x &&
+                    Mathf.Abs(toPlayer.y) < _attackRange.y,
+                _attack
+            );
+            _attack.When(
+                () =>
+                    !inAttack && (
+                        Mathf.Abs(toPlayer.x) > _aggroRange.x ||
+                        Mathf.Abs(toPlayer.y) > _aggroRange.y
+                    ),
+                _look
+            );
+            _attack.When(
+                () =>
+                    !inAttack && (
+                        Mathf.Abs(toPlayer.x) > _attackRange.x ||
+                        Mathf.Abs(toPlayer.y) > _attackRange.y
+                    ),
+                _move
+            );
         }
+
+        public void Begin() => Run(_look);
+        public void End() => Abort();
+
+        public void OnLook() => Debug.Log("OnLook");
+        public object DuringLook() => null;
+        public void AfterLook() { }
+        public void OnMove()
+        {
+            Debug.Log("OnMove");
+            enemy.movement.Begin((int)toPlayer.x);
+        }
+        public object DuringMove() => null;
+        public void AfterMove()
+        {
+            enemy.movement.End();
+        }
+        public void OnAttack() { }
+        public object DuringAttack()
+        {
+                    enemy.attack.Begin();
+            return null;
+        }
+        public void AfterAttack() { }
     }
 
     //protected class EnemyAttack : HitscanAttack

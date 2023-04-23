@@ -41,7 +41,7 @@ public class Attack : Actor.Extension
         _cooldown.ExitWhen(ExitCooldown);
     }
 
-    public void Start()
+    public void Begin()
     {
         if (!isInProgress)
         {

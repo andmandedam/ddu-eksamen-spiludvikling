@@ -119,10 +119,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _movement:
-    _minMoveAccel: 25
-    _maxMoveAccel: 35
-    _minMoveSpeed: 10
-    _maxMoveSpeed: 20
+    _minMoveAccel: 10
+    _maxMoveAccel: 15
+    _minMoveSpeed: 3
+    _maxMoveSpeed: 10
     _groundedAccelMult: 1
     _airborneAccelMult: 0.75
     _groundedTurnMult: 0.25
@@ -145,6 +145,7 @@ MonoBehaviour:
       m_Bits: 1
     _attackDamage: 10
     _attackKnockback: 10
+  _crouchDashForce: 0
 --- !u!212 &2560287754202576149
 SpriteRenderer:
   m_ObjectHideFlags: 0

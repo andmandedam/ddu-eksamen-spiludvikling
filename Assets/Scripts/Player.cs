@@ -21,26 +21,26 @@ public class Player : Actor
         public override void OnWindup()
         {
             base.OnWindup();
-            Debug.Log("OnWindup");
+            // Debug.Log("OnWindup");
         }
 
         public override void AfterWindup()
         {
             base.AfterWindup();
-            Debug.Log("AfterWindup");
+            // Debug.Log("AfterWindup");
         }
 
         public override void OnJump()
         {
             base.OnJump();
             _remainingJumps--;
-            Debug.Log("OnJump");
+            // Debug.Log("OnJump");
         }
 
         public override void AfterJump()
         {
             base.AfterJump();
-            Debug.Log("AfterJump");
+            // Debug.Log("AfterJump");
         }
     }
 
@@ -87,6 +87,7 @@ public class Player : Actor
             {
                 Vector2 input = ctx.ReadValue<Vector2>();
                 input.Round();
+                player._facing = input;
                 switch (input.y)
                 {
                     case (-1): player.Passthrough(); break;
@@ -116,7 +117,7 @@ public class Player : Actor
                 player.movement.SpeedUp(100);
                 player.animator.SetBool("crouch", false);
             };
-            onFoot.Attack.performed += (ctx) => attack.Start();
+            onFoot.Attack.performed += (ctx) => attack.Begin();
         }
     }
 
@@ -126,9 +127,12 @@ public class Player : Actor
     [SerializeField] private PlayerAttack _attack;
     [SerializeField] private float _crouchDashForce;
 
+    private Vector2 _facing;
+
     public Movement movement => _movement;
     public Jump jump => _jump;
     public Attack attack => _attack;
+    public override Vector2 facing => _facing;
     private PlayerControls controls = new();
 
     void Start()
