@@ -14,8 +14,8 @@ public class Entity : MonoBehaviour
 
     public new Rigidbody2D rigidbody => _rigidbody;
 
-    public int maxHealth { get => _maxHealth; protected set => _maxHealth = value; }
-    public int curHealth { get => _curHealth; protected set => _curHealth = value; }
+    public int maxHealth { get => _maxHealth; set => _maxHealth = value; }
+    public int curHealth { get => _curHealth; set => _curHealth = value; }
 
     public Collider2D bodyCollider => _bodyCollider;
 

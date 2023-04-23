@@ -132,11 +132,13 @@ MonoBehaviour:
   _platformLayer:
     serializedVersion: 2
     m_Bits: 64
+  healthPotPrefab: {fileID: 4195646829172154048, guid: d2189aaf75bbb964bb31cbdfaa4122df, type: 3}
+  healthPotDropChance: 0.2
   _attack:
     _windupTime: 1
     _attackTime: 1
     _cooldownTime: 1
-    _hitSize: {x: 1, y: 1}
+    _hitSize: {x: 1.5, y: 2}
     _attackLayer:
       serializedVersion: 2
       m_Bits: 512

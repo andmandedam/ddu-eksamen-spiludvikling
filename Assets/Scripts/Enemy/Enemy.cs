@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class Enemy : Actor
 {
+    [Header("Droping")]
+    [SerializeField] GameObject healthPotPrefab;
+    [SerializeField] float healthPotDropChance;
+
     [SerializeField] HitscanAttack _attack;
     [SerializeField] Movement _movement;
     [SerializeField] Behavior _behavior;
-
     [SerializeField] GameObject _player;
 
     public Vector2 toPlayer { get; private set; }
@@ -123,6 +126,19 @@ public class Enemy : Actor
         AudioManager.instance.PlaySound("BlobTakeDamage");
     }
 
+    public override void Die()
+    {
+        base.Die();
+        if (UnityEngine.Random.value < healthPotDropChance)
+        {
+            OnDeathDrop(healthPotPrefab);
+        }
+    }
+
+    private void OnDeathDrop(GameObject healthPotPrefab)
+    {
+        Instantiate(healthPotPrefab).transform.position = transform.position;
+    }
     //protected class EnemyAttack : HitscanAttack
     //{
     //    private Enemy _enemy;
