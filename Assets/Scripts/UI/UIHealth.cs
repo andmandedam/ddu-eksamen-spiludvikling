@@ -39,12 +39,10 @@ public class UIHealth : MonoBehaviour
             {
                 uIHearts[i].SetHeartState((int) UIHeart.UIHeartState.Empty);
             }
-            uIHearts[i].SetHeartState((int) UIHeart.UIHeartState.Disabled);
-
-
+            if (i > heartIndexFromMaxHealth)
+            {
+                uIHearts[i].SetHeartState((int)UIHeart.UIHeartState.Disabled);
+            }
         }
-        
     }
-
-   
 }
