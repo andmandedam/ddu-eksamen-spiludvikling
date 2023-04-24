@@ -126,6 +126,7 @@ public partial class GameManager : MonoBehaviour
     public void NextLevel()
     {
         Destroy(roomParent.gameObject);
+        Destroy(enemyParent.gameObject);
         levelNumber++;
         roomParent = new GameObject("House" + levelNumber).transform;
         enemyParent = new GameObject("EnemyParent").transform;
