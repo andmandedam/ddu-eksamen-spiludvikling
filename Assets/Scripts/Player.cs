@@ -6,9 +6,9 @@ using UnityEngine;
 public class Player : Actor
 {
     [Serializable]
-    private class PlayerJump : Jump
+    public class PlayerJump : Jump
     {
-        [SerializeField] int _jumpCount;
+        public int jumpCount;
         int _remainingJumps;
 
         private Player player => actor as Player;
@@ -16,7 +16,7 @@ public class Player : Actor
 
         public void Reset()
         {
-            _remainingJumps = _jumpCount;
+            _remainingJumps = jumpCount;
         }
 
         public override void OnWindup()
@@ -142,7 +142,7 @@ public class Player : Actor
 
     [Header("Player")]
     [SerializeField] private Movement _movement;
-    [SerializeField] private PlayerJump _jump;
+    public PlayerJump _jump;
     [SerializeField] private PlayerAttack _attack;
     [SerializeField] private float _crouchDashForce;
 

@@ -67,7 +67,6 @@ MonoBehaviour:
   bigEnemies:
   - {fileID: 1599416105598667078, guid: 65741c23bf140be4faaae963c4c619a2, type: 3}
   treasures:
-  - {fileID: 1817867383233115173, guid: 9b844e115e77dd743a7200e16cb824e5, type: 3}
   - {fileID: 2896818715872353878, guid: 91651d59e3f9f6e4f98c12e0e0a38d71, type: 3}
   - {fileID: 8366560203618428077, guid: d1dd009d9263ece44a5156abac36e1ae, type: 3}
   - {fileID: 3645057876885656217, guid: 3b7a9079f17153643ae424685dc8bd95, type: 3}

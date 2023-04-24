@@ -15,17 +15,6 @@ public class OptionsMenu : MonoBehaviour
         AudioListener.volume = newVolume;
     }
 
-    public void ChangeControlScheme(Int32 controlScheme)
-    {
-        //switch (controlScheme)
-        //{
-        //    case (int)ControlSchemes.KeyboardAndMouse:
-        //        {
-
-        //        }
-        //}
-    }
-
     public enum ControlSchemes
     {
         KeyboardAndMouse = 0,
