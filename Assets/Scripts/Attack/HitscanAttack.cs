@@ -15,8 +15,7 @@ public class HitscanAttack : Attack
     public LayerMask attackLayer => _attackLayer;
     public int attackDamage => _attackDamage;
     public float attackKnockback => _attackKnockback;
-
-            public virtual Vector2 attackPoint => (Vector2)transform.position + actor.facing;
+    public virtual Vector2 attackPoint => (Vector2)transform.position + actor.facing;
 
     public override void OnAttack()
     {
