@@ -9,6 +9,7 @@ public class PowerUp : MonoBehaviour
     public bool isPermanent = false;
     public Sprite inventorySprite;
     public new string name;
+    public float displayTime = 1f;
 
     protected delegate void PowerUpPayload(Player player);
     protected PowerUpPayload powerUpPayload;
@@ -31,7 +32,7 @@ public class PowerUp : MonoBehaviour
 
         powerUpPayload(player);
 
-        InventoryUI.instance.DisplayHUDText(name);
+        InventoryUI.instance.DisplayHUDText(name, displayTime);
 
         Destroy(gameObject);
     }

@@ -8,6 +8,7 @@ public class Enemy : Actor
     [Header("Droping")]
     [SerializeField] GameObject healthPotPrefab;
     [SerializeField] float healthPotDropChance;
+    [SerializeField] int scoreValue;
 
     [SerializeField] HitscanAttack _attack;
     [SerializeField] Movement _movement;
@@ -145,11 +146,13 @@ public class Enemy : Actor
 
     public override void Die()
     {
-        base.Die();
+        Debug.Log("Enemy.Die");
+        ScoreUI.instance.IncrementScore(scoreValue);
         if (UnityEngine.Random.value < healthPotDropChance)
         {
             OnDeathDrop(healthPotPrefab);
         }
+        base.Die();
     }
 
     private void OnDeathDrop(GameObject healthPotPrefab)

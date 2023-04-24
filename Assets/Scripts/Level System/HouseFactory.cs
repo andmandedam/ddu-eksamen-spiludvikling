@@ -8,7 +8,7 @@ public partial class GameManager
         private const float EnemyEdgeMargin = 1f; //The minimum distance an enemy can be placed from edge of a room
         private const float SmashableSpawnRate = 0.6f; // F.x. Barrels or vases
         private const float WallWidth = 4f / 32f;
-
+        private static int levelNumber;
         public static void GenerateHouse(GameManager gameManager)
         {
             HouseTemplate houseTemplate = Util.RandomEnum.RandomEnumValue<HouseTemplate>();
@@ -53,8 +53,8 @@ public partial class GameManager
             if ((room.tags & RoomTag.Exit) != 0)
             {
                 GameObject nextLevelDoor = Instantiate(gameManager.nextLevelDoor, roomObject.transform);
-                nextLevelDoor.transform.localPosition = new Vector3(LevelGenerationInfo.GetRoomTypeSize(room.roomType).x - WallWidth, nextLevelDoor.transform.localScale.y/2); //
-                
+                nextLevelDoor.transform.localPosition = new Vector3(LevelGenerationInfo.GetRoomTypeSize(room.roomType).x - WallWidth, nextLevelDoor.transform.localScale.y / 2); //
+
                 nextLevelDoor.TryGetComponent<NextLevelScript>(out var script);
                 script.gameManager = gameManager;
             }
@@ -70,14 +70,14 @@ public partial class GameManager
                 roomObject.TryGetComponent<Elevator>(out var elevatorScript);
                 elevatorScript.isTop = true;
             }
-            
+
             // Handle Spawnables
             if (!roomObject.TryGetComponent<RoomInfo>(out var roomInfo))
             {
                 return roomObject;
                 throw new Exception("No RoomInfo on: " + roomObject + " Created from: " + room);
             }
-            
+
             for (int i = 0; i < roomInfo.placeableSpawnPoint.Length; i++)
             {
                 if ((room.tags & RoomTag.Loot) != 0)
@@ -95,7 +95,7 @@ public partial class GameManager
                 }
                 if (UnityEngine.Random.value < gameManager.spawnChanceDictionary[PlaceableType.Smashable])
                 {
-                    Instantiate(Util.ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Smashable]), roomObject.transform).transform.position = 
+                    Instantiate(Util.ChooseRandomElement(gameManager.prefabDictionary[PlaceableType.Smashable]), roomObject.transform).transform.position =
                         roomInfo.placeableSpawnPoint[i].position;
                 }
             }
@@ -137,7 +137,7 @@ public partial class GameManager
         {
             var roomSize = LevelGenerationInfo.GetRoomTypeSize(room.roomType);
 
-            for (int i = 0; i < room.enemyAmount; i++)
+            for (int i = 0; i < (room.enemyAmount * CalculateEnemyMultiplier(gameManager.levelNumber)); i++)
             {
                 var enemyPosition = new Vector3(
                     Math.Clamp(UnityEngine.Random.value * roomSize.x, EnemyEdgeMargin, roomSize.x - EnemyEdgeMargin),
@@ -146,6 +146,13 @@ public partial class GameManager
 
                 Instantiate(room.enemyPrefab, gameManager.enemyParent, true).transform.position = (Vector3Int)room.placement + enemyPosition;
             }
+        }
+
+        private static float CalculateEnemyMultiplier(float levelNumber)
+        {
+            float a = 0.2f;
+            float b = 0.4f;
+            return (levelNumber * a) + b;
         }
     }
 

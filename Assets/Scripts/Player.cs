@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 
 public class Player : Actor
@@ -198,5 +197,11 @@ public class Player : Actor
         base.Damage(source, damage);
         AudioManager.instance.PlaySound("NinjaTakeDamage");
         UIHealth.instance.UpdateHealth();
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        InventoryUI.instance.DisplayHUDText("You final score was: " + ScoreUI.instance.score, float.PositiveInfinity);
     }
 }
