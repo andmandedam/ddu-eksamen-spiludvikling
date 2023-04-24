@@ -45,7 +45,7 @@ public class Player : Actor
     }
 
     [Serializable]
-    private class PlayerAttack : HitscanAttack
+    public class PlayerAttack : HitscanAttack
     {
         public override Vector2 attackPoint => (actor.facing.y == 0 ? 1 : 2) * actor.facing + (Vector2)transform.position;
         private Player player => actor as Player;
@@ -148,8 +148,8 @@ public class Player : Actor
     private Vector2 _facing;
 
     public Movement movement => _movement;
-    public Jump jump => _jump;
-    public Attack attack => _attack;
+    public PlayerJump jump => _jump;
+    public PlayerAttack attack => _attack;
     public override Vector2 facing => _facing;
 
     public PlayerControls controls;
