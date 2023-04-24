@@ -117,7 +117,7 @@ MonoBehaviour:
   _dynamicDrag: 0
   _platformLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 72
   _movement:
     _minMoveAccel: 10
     _maxMoveAccel: 15
