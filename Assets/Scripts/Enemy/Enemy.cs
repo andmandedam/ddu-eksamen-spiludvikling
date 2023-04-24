@@ -39,11 +39,15 @@ public class Enemy : Actor
     [Serializable]
     class Behavior : Actor.Extension
     {
-        [SerializeField] Vector2 _aggroRange;
         [SerializeField] Vector2 _attackRange;
+        [SerializeField] Vector2 _aggroRange;
+        [SerializeField] private float _swapChance;
+        [SerializeField] private float _stopChance;
+
+        private int _movDir;
 
         private Enemy _enemy;
-        private State _look;
+        private State idle;
         private State _move;
         private State _attack;
 
@@ -55,11 +59,12 @@ public class Enemy : Actor
         public void Enable(Enemy enemy)
         {
             _enemy = enemy;
-            _look = new(OnLook, DuringLook, AfterLook);
+            idle = new(OnIdle, DuringIdle, AfterIdle);
             _move = new(OnMove, DuringMove, AfterMove);
             _attack = new(OnAttack, DuringAttack, AfterAttack);
+            _movDir = UnityEngine.Random.value > 0.5f ? 1 : -1;
 
-            _look.When(
+            idle.When(
                 () =>
                     Mathf.Abs(toPlayer.x) < _aggroRange.x &&
                     Mathf.Abs(toPlayer.y) < _aggroRange.y,
@@ -69,7 +74,7 @@ public class Enemy : Actor
                 () =>
                     Mathf.Abs(toPlayer.x) > _aggroRange.x ||
                     Mathf.Abs(toPlayer.y) > _aggroRange.y,
-                _look
+                idle
             );
             _move.When(
                 () =>
@@ -83,7 +88,7 @@ public class Enemy : Actor
                         Mathf.Abs(toPlayer.x) > _aggroRange.x ||
                         Mathf.Abs(toPlayer.y) > _aggroRange.y
                     ),
-                _look
+                idle
             );
             _attack.When(
                 () =>
@@ -95,12 +100,24 @@ public class Enemy : Actor
             );
         }
 
-        public void Begin() => Run(_look);
+        public void Begin() => Run(idle);
         public void End() => Abort();
 
-        public void OnLook() => Debug.Log("OnLook");
-        public object DuringLook() => null;
-        public void AfterLook() { }
+        public void OnIdle() {}
+        public object DuringIdle()
+        {
+            _movDir *= (UnityEngine.Random.value > _swapChance) ? -1 : 1;
+            if (UnityEngine.Random.value > _stopChance)
+            {
+                enemy.movement.End();
+            }
+            else
+            {
+                enemy.movement.Begin(_movDir);
+            }
+            return new WaitForSeconds(2.5f);
+        }
+        public void AfterIdle() { }
         public void OnMove()
         {
             Debug.Log("OnMove");

@@ -155,8 +155,10 @@ MonoBehaviour:
     _groundedTurnMult: 0.25
     _airborneTurnMult: 0.75
   _behavior:
-    _aggroRange: {x: 10, y: 2}
     _attackRange: {x: 2.5, y: 2}
+    _aggroRange: {x: 10, y: 2}
+    _swapChance: 0.1
+    _stopChance: 0.5
   _player: {fileID: 0}
 --- !u!95 &3477417982986646871
 Animator:

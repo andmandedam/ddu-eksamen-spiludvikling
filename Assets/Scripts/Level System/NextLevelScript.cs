@@ -4,8 +4,9 @@ public class NextLevelScript : MonoBehaviour
 {
     public GameManager gameManager;
     public int playerLayer = 9;
-    private void OnTriggerEnter2D(Collider2D collision)
+    
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        gameManager.NextLevel();
+        if (collider.gameObject.layer == playerLayer) gameManager.NextLevel();
     }
 }
