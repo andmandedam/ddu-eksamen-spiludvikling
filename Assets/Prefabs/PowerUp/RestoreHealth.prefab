@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPermanent: 0
   inventorySprite: {fileID: 0}
-  name: Resore Health
+  name: Restore health
 --- !u!61 &-9194380898263709589
 BoxCollider2D:
   m_ObjectHideFlags: 0

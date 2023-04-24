@@ -31,6 +31,8 @@ public class PowerUp : MonoBehaviour
 
         powerUpPayload(player);
 
+        InventoryUI.instance.DisplayHUDText(name);
+
         Destroy(gameObject);
     }
 }

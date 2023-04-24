@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
@@ -10,6 +11,9 @@ public class InventoryUI : MonoBehaviour
     public List<Sprite> powerUpSprites;
     public HUDPowerUp[] HUDPowerUps;
     private int amountOfPowerUpsDisplayed;
+    [SerializeField] private float displayTextTime = 0.5f;
+
+    [SerializeField] private TextMeshProUGUI displayText;
 
     private void Start()
     {
@@ -40,6 +44,13 @@ public class InventoryUI : MonoBehaviour
 
     public void DisplayHUDText(string text)
     {
-        throw new NotImplementedException();
+        displayText.text = text;
+        StartCoroutine(FadeOutHudText());
+    }
+
+    private IEnumerator FadeOutHudText()
+    {
+        yield return new WaitForSeconds(displayTextTime);   
+        displayText.text = "";
     }
 }

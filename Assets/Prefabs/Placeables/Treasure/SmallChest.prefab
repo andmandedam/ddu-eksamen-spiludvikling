@@ -102,6 +102,7 @@ MonoBehaviour:
   powerUpSpawnSpeed: 1
   PowerUpPrefabs:
   - {fileID: 4195646829172154048, guid: dff1600203ec7dd4e859aa59dc02f196, type: 3}
+  - {fileID: 4195646829172154048, guid: 61513b08ff4737d4ea58d8e20fedf60c, type: 3}
 --- !u!61 &4794228579643927360
 BoxCollider2D:
   m_ObjectHideFlags: 0
