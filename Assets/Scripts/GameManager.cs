@@ -35,6 +35,7 @@ public partial class GameManager : MonoBehaviour
     public GameObject[] rooms;
     public GameObject levelBorder;
     public GameObject nextLevelDoor;
+    public int levelCompletionScore;
 
     [Header("  Spawning")]
     public float hardRoomMultiplier;
@@ -128,6 +129,7 @@ public partial class GameManager : MonoBehaviour
         Destroy(roomParent.gameObject);
         Destroy(enemyParent.gameObject);
         levelNumber++;
+        ScoreUI.instance.IncrementScore(levelCompletionScore);
         roomParent = new GameObject("House" + levelNumber).transform;
         enemyParent = new GameObject("EnemyParent").transform;
         enemyParent.parent = roomParent;

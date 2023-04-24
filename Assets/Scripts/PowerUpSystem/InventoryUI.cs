@@ -11,7 +11,6 @@ public class InventoryUI : MonoBehaviour
     public List<Sprite> powerUpSprites;
     public HUDPowerUp[] HUDPowerUps;
     private int amountOfPowerUpsDisplayed;
-    [SerializeField] private float displayTextTime = 0.5f;
 
     [SerializeField] private TextMeshProUGUI displayText;
 
@@ -42,13 +41,13 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    public void DisplayHUDText(string text)
+    public void DisplayHUDText(string text, float displayTextTime)
     {
         displayText.text = text;
-        StartCoroutine(FadeOutHudText());
+        StartCoroutine(FadeOutHudText(displayTextTime));
     }
 
-    private IEnumerator FadeOutHudText()
+    private IEnumerator FadeOutHudText(float displayTextTime)
     {
         yield return new WaitForSeconds(displayTextTime);   
         displayText.text = "";

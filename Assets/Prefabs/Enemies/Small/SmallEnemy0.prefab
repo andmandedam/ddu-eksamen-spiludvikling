@@ -134,6 +134,7 @@ MonoBehaviour:
     m_Bits: 64
   healthPotPrefab: {fileID: 4195646829172154048, guid: d2189aaf75bbb964bb31cbdfaa4122df, type: 3}
   healthPotDropChance: 0.2
+  scoreValue: 100
   _attack:
     _windupTime: 1
     _attackTime: 1
