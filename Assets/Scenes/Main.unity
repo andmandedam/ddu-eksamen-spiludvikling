@@ -3730,6 +3730,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 445553209}
     - target: {fileID: 482076805793820223, guid: 5ae336ba6b41f944eaceda13796b0ee5, type: 3}
+      propertyPath: giantRooms.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 482076805793820223, guid: 5ae336ba6b41f944eaceda13796b0ee5, type: 3}
       propertyPath: treasures.Array.data[1]
       value: 
       objectReference: {fileID: 4865531138952018114, guid: 5abfd63906951ba4a9a0d7295adf215b, type: 3}
@@ -3737,6 +3741,10 @@ PrefabInstance:
       propertyPath: treasures.Array.data[2]
       value: 
       objectReference: {fileID: 8951472018564118561, guid: 2ebca6110cd21b14e8a7affbbf938a43, type: 3}
+    - target: {fileID: 482076805793820223, guid: 5ae336ba6b41f944eaceda13796b0ee5, type: 3}
+      propertyPath: giantRooms.Array.data[0]
+      value: 
+      objectReference: {fileID: 156148022035249787, guid: 1396f8c2e372a0743bbb735b677fb03c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ae336ba6b41f944eaceda13796b0ee5, type: 3}
 --- !u!1001 &2981251965948227580

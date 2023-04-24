@@ -122,13 +122,13 @@ MonoBehaviour:
     _minMoveAccel: 10
     _maxMoveAccel: 15
     _minMoveSpeed: 3
-    _maxMoveSpeed: 10
+    _maxMoveSpeed: 11
     _groundedAccelMult: 1
     _airborneAccelMult: 0.75
     _groundedTurnMult: 0.25
     _airborneTurnMult: 0.75
   _jump:
-    _jumpForce: 9.3
+    _jumpForce: 10
     _downForce: 4
     _minWindupTime: 0.1
     _maxWindupTime: 0.2
