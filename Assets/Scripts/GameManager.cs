@@ -130,6 +130,7 @@ public partial class GameManager : MonoBehaviour
         Destroy(enemyParent.gameObject);
         levelNumber++;
         ScoreUI.instance.IncrementScore(levelCompletionScore);
+
         roomParent = new GameObject("House" + levelNumber).transform;
         enemyParent = new GameObject("EnemyParent").transform;
         enemyParent.parent = roomParent;

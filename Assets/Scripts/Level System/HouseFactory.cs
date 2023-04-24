@@ -144,7 +144,9 @@ public partial class GameManager
                     Math.Clamp(UnityEngine.Random.value * roomSize.y, EnemyEdgeMargin, roomSize.y - EnemyEdgeMargin)
                         );
 
-                Instantiate(room.enemyPrefab, gameManager.enemyParent, true).transform.position = (Vector3Int)room.placement + enemyPosition;
+                var enemy = Instantiate(room.enemyPrefab, gameManager.enemyParent, true);
+                enemy.transform.position = (Vector3Int)room.placement + enemyPosition;
+                enemy.GetComponent<Enemy>().curHealth += 10 * levelNumber;
             }
         }
 
