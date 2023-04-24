@@ -37,7 +37,7 @@ public partial class GameManager
                 return new Vector2(32f, 16f);
 
             case HouseTemplate.LargeHouse:
-                return new Vector2(82f, 16f);
+                return new Vector2(84f, 16f);
         }
         throw new ArgumentException("Invalid RoomType");
     }
@@ -73,14 +73,17 @@ public partial class GameManager
                     new RoomObject(RoomType.ElevatorRoom, RoomTag.ElevatorTop, new Vector2Int(0,8), gameManager),
                     new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(2,0), gameManager),
                     new RoomObject(RoomType.Hallway, RoomTag.Loot, new Vector2Int(2,4), gameManager),
-                    new RoomObject(RoomType.BigRoom, RoomTag.Hard, new Vector2Int(2,8), gameManager),
+                    new RoomObject(RoomType.BigRoom, RoomTag.Hard | RoomTag.Loot, new Vector2Int(2,8), gameManager),
                     new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(10,0), gameManager),
                     new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(18,8), gameManager),
                     new RoomObject(RoomType.Hallway, RoomTag.None, new Vector2Int(18,12), gameManager),
                     new RoomObject(RoomType.GiantRoom, RoomTag.None, new Vector2Int(26,0), gameManager),
                     new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(58,0), gameManager),
                     new RoomObject(RoomType.BigRoom, RoomTag.None, new Vector2Int(58,8), gameManager),
-                    new RoomObject(RoomType.Hallway, RoomTag.Exit, new Vector2Int(74,0), gameManager),
+                    new RoomObject(RoomType.ElevatorRoom, RoomTag.ElevatorBottom, new Vector2Int(74,0), gameManager),
+                    new RoomObject(RoomType.ElevatorRoom, RoomTag.None, new Vector2Int(74,4), gameManager),
+                    new RoomObject(RoomType.ElevatorRoom, RoomTag.ElevatorTop, new Vector2Int(74,8), gameManager),
+                    new RoomObject(RoomType.Hallway, RoomTag.Exit, new Vector2Int(76,0), gameManager),
                 };
                 
         }
