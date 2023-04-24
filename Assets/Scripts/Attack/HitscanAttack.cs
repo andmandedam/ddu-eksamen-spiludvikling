@@ -17,6 +17,11 @@ public class HitscanAttack : Attack
     public float attackKnockback => _attackKnockback;
     public virtual Vector2 attackPoint => (Vector2)transform.position + actor.facing;
 
+    public void IncreaseDamage(int amount)
+    {
+        _attackDamage += amount;
+    }
+
     public override void OnAttack()
     {
         base.OnAttack();
