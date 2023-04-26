@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    private void Start()
+    {
+        PersistantObject.instance.playerControls.actions.HUD.Enable();
+        PersistantObject.instance.playerControls.actions.NinjaOnFoot.Disable();
+    }
     public void StartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

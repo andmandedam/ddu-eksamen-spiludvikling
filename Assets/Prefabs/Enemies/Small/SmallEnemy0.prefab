@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8978385076675252461}
   - component: {fileID: 3477417982986646871}
   - component: {fileID: 4904633435300266522}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SmallEnemy0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8978385076675252461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,10 +122,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: -3193459405259638563}
-  _bodyCollider: {fileID: 0}
-  _feetCollider: {fileID: 0}
+  _bodyCollider: {fileID: 4904633435300266522}
   _maxHealth: 100
   _curHealth: 50
+  _animator: {fileID: 3477417982986646871}
+  _feetCollider: {fileID: 4904633435300266522}
+  _staticDrag: 10
+  _dynamicDrag: 0
+  _platformLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  healthPotPrefab: {fileID: 4195646829172154048, guid: d2189aaf75bbb964bb31cbdfaa4122df, type: 3}
+  healthPotDropChance: 0.05
+  scoreValue: 100
+  _attack:
+    _windupTime: 1
+    _attackTime: 1
+    _cooldownTime: 1
+    _hitSize: {x: 1.5, y: 2}
+    _attackLayer:
+      serializedVersion: 2
+      m_Bits: 512
+    _attackDamage: 1
+    _attackKnockback: 10
+  _movement:
+    _minMoveAccel: 5
+    _maxMoveAccel: 10
+    _minMoveSpeed: 3
+    _maxMoveSpeed: 5
+    _groundedAccelMult: 1
+    _airborneAccelMult: 0.75
+    _groundedTurnMult: 0.25
+    _airborneTurnMult: 0.75
+  _behavior:
+    _attackRange: {x: 2.5, y: 2}
+    _aggroRange: {x: 10, y: 2}
+    _swapChance: 0.1
+    _stopChance: 0.5
+  _player: {fileID: 0}
 --- !u!95 &3477417982986646871
 Animator:
   serializedVersion: 4
@@ -136,7 +170,7 @@ Animator:
   m_GameObject: {fileID: 8539378388184951660}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9a2674b9be662664c8c949842102b21e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 320e137ba6a9e03ee8a0125f10bdebcd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -159,10 +193,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.75, y: 0.828125}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 1, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.5, y: 1.65625}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
@@ -170,5 +204,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.65625}
+  m_Size: {x: 1.5, y: 1.7}
   m_EdgeRadius: 0

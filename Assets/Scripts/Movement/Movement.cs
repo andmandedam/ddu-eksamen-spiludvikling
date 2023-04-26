@@ -1,164 +1,119 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public abstract class Movement
+[Serializable]
+public class Movement : Actor.Extension
 {
-    public const float DEFAULT_ACCEL = 8f;
-    public const float DEFAULT_SLOW_EXPONENT = 0.3f;
-    public const float DEFAULT_MAX_SPEED = 8f;
-    public const float DEFAULT_MIN_SPEED = 4f;
+    // Constant speed modifier is multiplied with before being input to logistic function, see {LogisticInInterval}.
+    // High values indicate that a low speedModifier is needed to approach min/max speed.
+    // Low values indicate that a high speedModifier is needed to approach min/max speed.
+    private const float SPEED_MODIFIER_IMPACT = 0.1f;
 
-    public abstract Entity entity { get; }
+    [Header("Movement")]
+    [SerializeField] float _minMoveAccel;
+    [SerializeField] float _maxMoveAccel;
+    [SerializeField] float _minMoveSpeed;
+    [SerializeField] float _maxMoveSpeed;
 
-    public virtual float moveAccel => DEFAULT_ACCEL;
-    public virtual float slowExponent => DEFAULT_SLOW_EXPONENT;
-    public virtual float moveMaxSpeed => DEFAULT_MAX_SPEED;
-    public virtual float moveMinSpeed => DEFAULT_MIN_SPEED;
+    [SerializeField] float _groundedAccelMult;
+    [SerializeField] float _airborneAccelMult;
+    [SerializeField] float _groundedTurnMult;
+    [SerializeField] float _airborneTurnMult;
 
-    private float moveSpeedFromSlow(float slowScore) => (moveMaxSpeed - moveMinSpeed) * Mathf.Exp(-slowExponent * slowScore) + moveMinSpeed;
-    public float moveSpeed
+    private Actor _actor;
+    private State _horizontal;
+    private int _moveDirection;
+    private bool _turnaround;
+    private float _speedModifier;
+
+    public override Actor actor => _actor;
+    public State horizontal => _horizontal;
+    public Vector2 moveDirection => new Vector2(_moveDirection, 0);
+    public float speedModifier => _speedModifier;
+    private float turnMultiplier => actor.grounded ? _groundedTurnMult : _airborneTurnMult;
+
+    public void Enable(Actor actor)
     {
-        get
+        _actor = actor;
+        _horizontal = new(OnHorizontal, DuringHorizontal, AfterHorizontal);
+        _moveDirection = 0;
+        _turnaround = false;
+        _speedModifier = 0;
+    }
+
+    public void Begin(int dir)
+    {
+        if (
+            (dir != 0) &&
+            !(dir == _moveDirection && isInProgress) // not already in the process of moving in the direction
+        )
         {
-            float actualMod;
-            if (speedModifier > 0)
-            {
-                actualMod = -moveSpeedFromSlow(speedModifier) + moveMaxSpeed;
-            }
-            else
-            {
-                actualMod = moveSpeedFromSlow(-speedModifier) - moveMaxSpeed;
-            }
-            actualMod = moveMaxSpeed + actualMod;
-            return actualMod;
+            _turnaround = _moveDirection == -dir;
+            _moveDirection = dir;
+
+            Run(horizontal);
         }
     }
 
-    public Rigidbody2D rigidbody => entity.rigidbody;
-    public Vector2 facingVector => _facingVector;
+    public void End() => Abort();
 
-    public bool isRunning => machine.running;
-    public bool isHorizontal => machine.current == horizontalState;
-    public bool isUpwards => machine.current == upwardsState;
-    public bool isDownwards => machine.current == downwardsState;
-    public bool turnaround => _turnaround;
-
-    protected HashSet<PassthroughTrigger> passthroughTriggers = new();
-    protected float speedModifier;
-
-    private Vector2 _facingVector = Vector2.left;
-    private bool _turnaround = false;
-
-    private State horizontalState;
-    private State upwardsState;
-    private State downwardsState;
-    private State.Machine machine;
-
-    public virtual void HorizontalEntry()
+    private static float LogisticInInterval(float x, float low, float high)
     {
-        entity.RequestDynamicDrag(this);
-
-        if (turnaround && entity.grounded)
-        {
-            var vel = rigidbody.velocity;
-            vel.x = 0;
-            rigidbody.velocity = vel;
-        }
-        entity.transform.rotation = Quaternion.Euler(0, facingVector.x < 0 ? 180 : 0, 0);
+        return low + (high - low) / (1 + Mathf.Exp(-SPEED_MODIFIER_IMPACT * x));
     }
 
-    public virtual object HorizontalDuring()
-    {
+    // Returns the speed the actor "would like to" go.
+    public float GetCurrentMaxMoveSpeed() => LogisticInInterval(speedModifier, _minMoveSpeed, _maxMoveSpeed);
 
+    public float GetCurrentMoveAccel() =>
+                (actor.grounded ? _groundedAccelMult : _airborneAccelMult) *
+                LogisticInInterval(speedModifier, _minMoveAccel, _maxMoveAccel);
+
+    public bool HasAccelerated() => 0.9f < rigidbody.velocity.x / GetCurrentMaxMoveSpeed();
+
+    public virtual void OnHorizontal()
+    {
+        actor.RequestDynamicDrag(this);
+        actor.animator.SetBool("moving", true);
+
+        // The turnaround multiplier is always applied.
+        // Either we are tuning around, which is when this is relevant
+        // Otherwise the actor wasn't moving before this was called, so the velocity is zero.
+        // In that case it's doesn't matter wheter we apply the multiplier since 0 * x == 0
+        var vel = rigidbody.velocity;
+        vel.x *= turnMultiplier;
+        rigidbody.velocity = vel;
+
+        actor.transform.rotation = Quaternion.Euler(0, _moveDirection < 0 ? 180 : 0, 0);
+    }
+
+    public virtual object DuringHorizontal()
+    {
         Vector2 velocity = rigidbody.velocity;
-        float ratio = Mathf.Min(1, Mathf.Abs(velocity.x) / moveSpeed); // ratio in [0, 1], 0 => speed = 0; 1 => speed = maxSpeed;
+        float ratio = Mathf.Min(1, Mathf.Abs(velocity.x) / GetCurrentMaxMoveSpeed()); // ratio in [0, 1], 0 => speed = 0; 1 => speed = maxSpeed;
         ratio = 1 - ratio; // Mirror ratio interval, ratio now in [0, 1], 0 => speed = maxSpeed; 1 => speed = 0;
 
-        Vector2 force = moveAccel * ratio * facingVector;
+        Vector2 force = GetCurrentMoveAccel() * ratio * moveDirection;
 
         rigidbody.AddForce(force);
 
         return new WaitForEndOfFrame();
     }
 
-    public virtual void HorizontalExit() {
-        entity.RequestStaticDrag(this);
-    }
-    public virtual void UpwardsEntry() { }
-    public virtual object UpwardsDuring() => null;
-    public virtual void UpwardsExit() { }
-
-    public virtual void DownwardsEntry()
+    public virtual void AfterHorizontal()
     {
-        foreach (var trigger in passthroughTriggers)
-        {
-            trigger.AllowPassthroughFor(entity.bodyCollider);
-            trigger.AllowPassthroughFor(entity.feetCollider);
-        }
-    }
-
-    public virtual object DownwardsDuring() => null;
-    public virtual void DownwardsExit() { }
-
-    public void Enable()
-    {
-        machine = new(entity);
-        horizontalState = new(HorizontalEntry, HorizontalExit, HorizontalDuring);
-        upwardsState = new(UpwardsEntry, UpwardsExit, UpwardsDuring);
-        downwardsState = new(DownwardsEntry, DownwardsExit, DownwardsDuring);
-    }
-
-    public void Begin(Vector2 dir)
-    {
-        if (machine.running) return;
-
-        entity.RequestDynamicDrag(this);
-        dir = new Vector2(Mathf.Round(dir.x), Mathf.Round(dir.y));
-        _turnaround = dir == -facingVector;
-        _facingVector = dir;
-
-        if (_facingVector.x != 0)
-        {
-                machine.Run(horizontalState);
-        }
-        else if (facingVector.y < 0)
-        {
-            machine.Run(downwardsState);
-        }
-        else
-        {
-            machine.Run(upwardsState);
-        }
-    }
-
-    public void End()
-    {
-        machine.Abort();
+        actor.RequestStaticDrag(this);
+        actor.animator.SetBool("moving", false);
     }
 
     public void Slow(float x)
     {
-        speedModifier -= x;
+        _speedModifier -= x;
     }
 
     public void SpeedUp(float x)
     {
-        speedModifier += x;
+        _speedModifier += x;
     }
 
-    public virtual void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.TryGetComponent(out PassthroughTrigger trigger))
-        {
-            passthroughTriggers.Add(trigger);
-        }
-    }
-
-    public virtual void OnTriggerExit2D(Collider2D collider)
-    {
-        if (collider.TryGetComponent(out PassthroughTrigger trigger))
-        {
-            passthroughTriggers.Remove(trigger);
-        }
-    }
 }

@@ -6,15 +6,41 @@ using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
-    public GameObject player;
+    public static GameManager instance;
+
+    private void Awake()
+    {
+
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        player = Instantiate(playerPrefab);
+        roomParent = new GameObject("House").transform;
+        enemyParent = new GameObject("EnemyParent").transform;
+        mainCameraScript = Instantiate(mainCameraPrefab).GetComponent<GenericCamera>();
+        mainCameraScript.targets = new Transform[] { player.transform };
+
+    }
+
+    public Camera mainCameraPrefab;
+    public GenericCamera mainCameraScript;
+    public GameObject playerPrefab;
+    [NonSerialized] public GameObject player;
     public GameObject[] rooms;
     public GameObject levelBorder;
     public GameObject nextLevelDoor;
+    public int levelCompletionScore;
 
     [Header("  Spawning")]
     public float hardRoomMultiplier;
-    [SerializeField] Transform roomParent;
-    [SerializeField] Transform enemyParent;
+    Transform roomParent;
+    Transform enemyParent;
 
     [SerializeField] float smashableSpawnChance;
     [SerializeField] float treasureSpawnChance;
@@ -36,8 +62,9 @@ public partial class GameManager : MonoBehaviour
     [Header("  Placeables")]
     [SerializeField] GameObject[] treasures;
     [SerializeField] GameObject[] smashables;
-    
+
     [Header("  Rooms")]
+    [SerializeField] GameObject[] colliders;
     [SerializeField] GameObject[] hallways;
     [SerializeField] GameObject[] bigRooms;
     [SerializeField] GameObject[] giantRooms;
@@ -59,10 +86,16 @@ public partial class GameManager : MonoBehaviour
 
     void Start()
     {
+        PersistantObject.instance.playerControls.actions.HUD.Disable();
+        PersistantObject.instance.playerControls.actions.NinjaOnFoot.Enable();
+
+        Physics2D.IgnoreLayerCollision(3, 3, true);
+
         prefabDictionary.Add(EnemyType.Small, smallEnemies);
         prefabDictionary.Add(EnemyType.Big, bigEnemies);
         prefabDictionary.Add(PlaceableType.Treasure, treasures);
         prefabDictionary.Add(PlaceableType.Smashable, smashables);
+        prefabDictionary.Add(RoomType.Collider, colliders);
         prefabDictionary.Add(RoomType.Hallway, hallways);
         prefabDictionary.Add(RoomType.BigRoom, bigRooms);
         prefabDictionary.Add(RoomType.GiantRoom, giantRooms);
@@ -74,6 +107,7 @@ public partial class GameManager : MonoBehaviour
         prefabDictionary.Add(DecorationType.Roof, roof);
         prefabDictionary.Add(DecorationType.Light, lights);
 
+        enemySpawnStatsDictionary.Add(RoomType.Collider, 0f); //Not an actual room, therefore 0 enemies should spawn.
         enemySpawnStatsDictionary.Add(RoomType.Hallway, hallwayBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.BigRoom, bigRoomBaseEnemyAmount);
         enemySpawnStatsDictionary.Add(RoomType.GiantRoom, giantRoomBaseEnemyAmount);
@@ -93,7 +127,10 @@ public partial class GameManager : MonoBehaviour
     public void NextLevel()
     {
         Destroy(roomParent.gameObject);
+        Destroy(enemyParent.gameObject);
         levelNumber++;
+        ScoreUI.instance.IncrementScore(levelCompletionScore);
+
         roomParent = new GameObject("House" + levelNumber).transform;
         enemyParent = new GameObject("EnemyParent").transform;
         enemyParent.parent = roomParent;
@@ -109,6 +146,8 @@ public partial class GameManager : MonoBehaviour
         Hard = 1 << 2,
         BigEnemies = 1 << 3,
         Exit = 1 << 4,
+        ElevatorTop = 1 << 5,
+        ElevatorBottom = 1 << 6,
     }
     public enum HouseTemplate
     {
@@ -122,14 +161,15 @@ public partial class GameManager : MonoBehaviour
     {
         Small,
         Big,
-    }        
+    }
     public enum PlaceableType
     {
         Treasure,
         Smashable,
-    }    
+    }
     public enum RoomType
     {
+        Collider,
         Hallway,
         BigRoom,
         GiantRoom,

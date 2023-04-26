@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1812352548324751106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1812352548324751104}
+  - component: {fileID: 1812352548324751107}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1812352548324751104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812352548324751106}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1812352548324751107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812352548324751106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45d70a2022ab074388af582f6863cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Punch
+    clip: {fileID: 8300000, guid: 75163fe8ec306a749acd15d817aefc83, type: 3}
+    volume: 0.193
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: Windup
+    clip: {fileID: 8300000, guid: ed9940b33beff5d4aaad8d6bf4b09861, type: 3}
+    volume: 0.257
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: NinjaJump
+    clip: {fileID: 8300000, guid: 9e954aae969afb6409f6660d1dd131cc, type: 3}
+    volume: 0.257
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: NinjaLand
+    clip: {fileID: 8300000, guid: 7da1a50254da46b48816d5906081bd30, type: 3}
+    volume: 0.257
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    source: {fileID: 0}
+  - name: NinjaTakeDamage
+    clip: {fileID: 8300000, guid: 9b191177288f1cd48a70c72589d52aaf, type: 3}
+    volume: 0.337
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ElevatorArrival
+    clip: {fileID: 8300000, guid: ab3511830d0ab484fb465d52cf20de6a, type: 3}
+    volume: 0.1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: BlobTakeDamage
+    clip: {fileID: 8300000, guid: 7922c01c410e41e4e8602d111f640124, type: 3}
+    volume: 0.6
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.534
+    loop: 0
+    source: {fileID: 0}
+  - name: BlobWindup
+    clip: {fileID: 8300000, guid: e54390f2686a44b40a4cd5052d33c2cf, type: 3}
+    volume: 0.6
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.534
+    loop: 0
+    source: {fileID: 0}
+  - name: BlobDoDamage
+    clip: {fileID: 8300000, guid: 9d6fdf9e4bae62c499af90e0e9726642, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.534
+    loop: 0
+    source: {fileID: 0}

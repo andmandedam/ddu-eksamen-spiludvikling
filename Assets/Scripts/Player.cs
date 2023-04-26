@@ -2,222 +2,206 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Entity
+public class Player : Actor
 {
     [Serializable]
-        private class PlayerMovement : Movement
+    public class PlayerJump : Jump
     {
-        private Player player;
+        public int jumpCount;
+        int _remainingJumps;
 
-        [SerializeField] private float _moveAcceleration;
-        [SerializeField] private float _moveMaxSpeed;
-
-        public override Entity entity => player;
-        public override float moveAccel => _moveAcceleration * (player.grounded ? 1f : 0.5f);
-        public override float moveMaxSpeed => _moveMaxSpeed;
-
-        public void Enable(Player player)
-        {
-            this.player = player;
-            base.Enable();
-        }
-
-        public override void HorizontalEntry()
-        {
-            base.HorizontalEntry();
-            player.animator.SetBool("running", true);
-        }
-
-        public override void HorizontalExit()
-        {
-            base.HorizontalExit();
-            player.animator.SetBool("running", false);
-        }
-    }
-
-    [Serializable]
-    private class PlayerJump : InteractiveJump
-    {
-        private Player player;
-        [SerializeField] private int remainingJumps;
-        [SerializeField] private int _jumpCount;
-        [SerializeField] private float _jumpForce;
-        [SerializeField] private float _minJumpTime;
-        [SerializeField] private float _windupTime;
-        [SerializeField] private float _downForceScale;
-        [SerializeField] private int _maxIteration;
-
-        public override Entity entity => player;
-        public override float jumpForce => _jumpForce;
-        public override float minJumpTime => _minJumpTime;
-        public override float windupTime => _windupTime;
-        public override float downForceScale => _downForceScale;
-        public override bool canJump => remainingJumps > 0;
-        public override int maxIteration => _maxIteration;
-
-
-        public void Enable(Player player)
-        {
-            this.player = player;
-            base.Enable();
-        }
+        private Player player => actor as Player;
+        public override bool canJump => _remainingJumps > 0;
 
         public void Reset()
         {
-            remainingJumps = _jumpCount;
+            _remainingJumps = jumpCount;
         }
 
-        public override void JumpingEntry()
+        public override void OnWindup()
         {
-            base.JumpingEntry();
-            remainingJumps--;
-        }
-    }
-
-    [Serializable]
-    private class PlayerCrouch : Crouch
-    {
-        private Player _player;
-        public Animator animator => _player.animator;
-
-        public void Enable(Player player)
-        {
-            _player = player;
+            base.OnWindup();
+            AudioManager.instance.PlaySound("NinjaJump");
         }
 
-        public override void Start()
+        public override void AfterWindup()
         {
-            var onFoot = _player.controls.actions.NinjaOnFoot;
-            animator.SetBool("crouching", true);
-            _player.movement.Slow(10);
+            base.AfterWindup();
+            // Debug.Log("AfterWindup");
         }
 
-        public override void End()
+        public override void OnJump()
         {
-            var onFoot = _player.controls.actions.NinjaOnFoot;
-            animator.SetBool("crouching", false);
-            _player.movement.Slow(-10);
+            base.OnJump();
+            _remainingJumps--;
+            // Debug.Log("OnJump");
+        }
+
+        public override void AfterJump()
+        {
+            base.AfterJump();
+            // Debug.Log("AfterJump");
         }
     }
 
     [Serializable]
-    private class PlayerAttack : HitscanAttack
+    public class PlayerAttack : HitscanAttack
     {
-        Player player;
+        public override Vector2 attackPoint => (actor.facing.y == 0 ? 1 : 2) * actor.facing + (Vector2)transform.position;
+        private Player player => actor as Player;
 
-        public override Animator animator => player.animator;
-        public override Entity entity => player;
-        public override Vector2 attackPoint
+        public override void OnWindup()
         {
-            get
-            {
-                if (player.movement.facingVector.y == 0)
-                {
-                    return player.movement.facingVector + (Vector2)player.transform.position;
-                }
-                else
-                {
-                    return 2 * player.movement.facingVector + (Vector2)player.transform.position;
-                }
-            }
-        }
-
-        public void Enable(Player player)
-        {
-            this.player = player;
-            base.Enable();
-        }
-
-        public override void WindupEntry()
-        {
-            base.WindupEntry();
+            base.OnWindup();
+            // AudioManager.instance.PlaySound("Windup");
             var onFoot = player.controls.actions.NinjaOnFoot;
             player.movement.End();
             onFoot.Move.Disable();
             onFoot.Jump.Disable();
         }
 
-        public override void CooldownEntry()
+        public override void AfterAttack()
         {
-            base.CooldownEntry();
+            base.AfterAttack();
             var onFoot = player.controls.actions.NinjaOnFoot;
             onFoot.Move.Enable();
-            onFoot.Move.Enable();
+            onFoot.Jump.Enable();
         }
     }
 
-    private class PlayerControls : Controls
+    public class PlayerControls : Controls
     {
         public PlayerInputActions actions;
-        public void Enable(Player player)
+        private float lookUpAmount = 5;
 
+        public void Initialize()
         {
             actions = new PlayerInputActions();
             actions.Enable();
+        }
 
+        public void Enable(Player player)
+        {
             var movement = player.movement;
             var jump = player.jump;
-            var crouch = player.crouch;
             var attack = player.attack;
 
             var onFoot = actions.NinjaOnFoot;
 
-            onFoot.Move.performed += (ctx) => movement.Begin(ctx.ReadValue<Vector2>());
-            onFoot.Move.canceled += (ctx) => movement.End();
+            onFoot.Move.performed += (ctx) =>
+            {
+                Vector2 input = ctx.ReadValue<Vector2>();
+                input.Round();
+                player._facing = input;
+                movement.Begin((int)input.x);
+            };
+            onFoot.Move.canceled += (ctx) =>
+            {
+                player.animator.SetBool("lookUp", false);
+                movement.End();
+            };
             onFoot.Jump.performed += (ctx) => jump.Begin();
             onFoot.Jump.canceled += (ctx) => jump.End();
-            onFoot.Crouch.performed += (ctx) => crouch.Start();
-            onFoot.Crouch.canceled += (ctx) => crouch.End();
-            onFoot.Attack.performed += (ctx) => attack.Start();
+            onFoot.Crouch.performed += (ctx) =>
+            {
+                if (player.movement.isInProgress && player.movement.HasAccelerated())
+                {
+                    player.rigidbody.AddForce(movement.moveDirection * player._crouchDashForce, ForceMode2D.Impulse);
+                }
+
+                player.movement.Slow(100);
+                player.animator.SetBool("crouch", true);
+            };
+            onFoot.Crouch.canceled += (ctx) =>
+            {
+                player.movement.SpeedUp(100);
+                player.animator.SetBool("crouch", false);
+            };
+            onFoot.Attack.performed += (ctx) => attack.Begin();
+
+            onFoot.Passthrough.performed += player.Passthrough;
+
+            onFoot.LookUp.performed += (ctx) => { LookUp(ctx); player.animator.SetBool("lookUp", true); };
+            onFoot.LookUp.canceled += (ctx) => { LookUp(ctx); player.animator.SetBool("lookUp", false); };
+        }
+
+        private void LookUp(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+        {
+            Debug.Log("LookUp" + ctx);
+            if (ctx.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
+            {
+                GameManager.instance.mainCameraScript.cameraOffset.y = 0;
+            }
+            else
+            {
+                GameManager.instance.mainCameraScript.cameraOffset.y = lookUpAmount;
+            }
         }
     }
-
 
     [Header("Player")]
-    [SerializeField] private float _staticDrag;
-    [SerializeField] private float _dynamicDrag;
-    [SerializeField] private LayerMask _platformLayer;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Movement _movement;
+    public PlayerJump _jump;
+    [SerializeField] private PlayerAttack _attack;
+    [SerializeField] private float _crouchDashForce;
 
-    [SerializeField] private PlayerMovement movement;
-    [SerializeField] private PlayerJump jump;
-    [SerializeField] private PlayerCrouch crouch;
-    [SerializeField] private PlayerAttack attack;
+    private Vector2 _facing;
 
-    private PlayerControls controls = new();
+    public Movement movement => _movement;
+    public PlayerJump jump => _jump;
+    public PlayerAttack attack => _attack;
+    public override Vector2 facing => _facing;
 
-    public override float staticDrag => _staticDrag;
-    public override float dynamicDrag => _dynamicDrag;
-    public Animator animator => _animator;
+    public PlayerControls controls;
+        private float lookUpAmount;
 
-    public override LayerMask platformLayer => _platformLayer;
-
-    void Start()
+        void Start()
     {
-        movement.Enable(this);
-        controls.Enable(this);
-        jump.Enable(this);
-        attack.Enable(this);
-        crouch.Enable(this);
-    }
-
-    void FixedUpdate()
-    {
-        if (grounded && !jump.isRunning)
+        var persistantObject = FindObjectOfType<PersistantObject>();
+        if (persistantObject.playerControls == null)
         {
-            jump.Reset();
+            persistantObject.playerControls = new PlayerControls();
+            persistantObject.playerControls.Initialize();
         }
-        // animator.SetBool("grounded", grounded);
-        // animator.SetBool("falling", rigidbody.velocity.y < 0);
+        controls = persistantObject.playerControls;
+        controls.Enable(this);
+        _movement.Enable(this);
+        _jump.Enable(this);
+        _attack.Enable(this);
     }
 
-    public void OnTriggerEnter2D(Collider2D collider)
+    void Update()
     {
-        movement.OnTriggerEnter2D(collider);
+        if (grounded)
+        {
+            // Grounded
+        }
+        else if (falling)
+        {
+            // Airborne, going downwards
+        }
+        else
+        {
+            // Airborne, going upwards
+
+        }
     }
 
-    public void OnTriggerExit2D(Collider2D collider)
+    public override void OnLand()
     {
-        movement.OnTriggerEnter2D(collider);
+        _jump.Reset();
+            AudioManager.instance.PlaySound("NinjaLand");
+    }
+    public override void Damage(Entity source, int damage)
+    {
+        base.Damage(source, damage);
+        AudioManager.instance.PlaySound("NinjaTakeDamage");
+        UIHealth.instance.UpdateHealth();
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        InventoryUI.instance.DisplayHUDText("You final score was: " + ScoreUI.instance.score, float.PositiveInfinity);
     }
 }

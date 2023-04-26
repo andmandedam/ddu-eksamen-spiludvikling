@@ -1,38 +1,44 @@
 using System;
 using UnityEngine;
 
-    public abstract class HitscanAttack : Attack
+[Serializable]
+public class HitscanAttack : Attack
 {
+    [Header("HitscanAttack")]
     [SerializeField] Vector2 _hitSize;
+    [SerializeField] LayerMask _attackLayer;
     [SerializeField] int _attackDamage;
     [SerializeField] float _attackKnockback;
-    [SerializeField] LayerMask _attackLayer;
-    [SerializeField] float _windupTime;
-    [SerializeField] float _attackTime;
-    [SerializeField] float _cooldownTime;
 
-    public Rect hitRect => Util.RectFromCenterSize(attackPoint, _hitSize);
+    public Rect hitRect => Util.RectFromCenterSize(attackPoint, hitSize);
+    public Vector2 hitSize => _hitSize;
+    public LayerMask attackLayer => _attackLayer;
     public int attackDamage => _attackDamage;
     public float attackKnockback => _attackKnockback;
-    public LayerMask attackLayer => _attackLayer;
-    public override float windupTime => _windupTime;
-    public override float attackTime => _attackTime;
-    public override float cooldownTime => _cooldownTime;
+    public virtual Vector2 attackPoint => (Vector2)transform.position + actor.facing;
 
-    public abstract Vector2 attackPoint { get; }
-
-    public override void AttackEntry()
+    public void IncreaseDamage(int amount)
     {
-        base.AttackEntry();
-        Debug.Log(hitRect);
+        _attackDamage += amount;
+    }
+
+    public override void OnAttack()
+    {
+        base.OnAttack();
+        //Debug.LogFormat(
+        //    "HitRect: {0}"
+        //    , hitRect
+        //);
         Util.DrawRect(hitRect);
 
         Vector2 min = hitRect.min, max = hitRect.max;
         var colliders = Physics2D.OverlapAreaAll(min, max, attackLayer);
-        Debug.Log(colliders);
+
+        Debug.Log("Hitscan attack against: " + colliders);
 
         foreach (var collider in colliders)
         {
+            Debug.Log(collider);
             if (collider.TryGetComponent(out Entity hit))
             {
                 hit.Damage(entity, attackDamage);

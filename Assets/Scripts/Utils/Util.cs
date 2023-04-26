@@ -4,6 +4,12 @@ using UnityEngine;
 
 public static class Util
 {
+    public static void Round(this Vector2 v)
+    {
+        v.x = Mathf.Round(v.x);
+        v.y = Mathf.Round(v.y);
+    }
+
     public static Rect RectFromCenterSize(Vector2 center, Vector2 size)
     {
         float w = Mathf.Abs(size.x) / 2;
