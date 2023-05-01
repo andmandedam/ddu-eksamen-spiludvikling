@@ -86,7 +86,7 @@ public partial class GameManager : MonoBehaviour
 
     void Start()
     {
-        PersistantObject.instance.playerControls.actions.HUD.Disable();
+        PersistantObject.instance.playerControls.actions.GUI.Disable();
         PersistantObject.instance.playerControls.actions.NinjaOnFoot.Enable();
 
         Physics2D.IgnoreLayerCollision(3, 3, true);
