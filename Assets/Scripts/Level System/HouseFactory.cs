@@ -58,7 +58,7 @@ public partial class GameManager
                 nextLevelDoor.TryGetComponent<NextLevelScript>(out var script);
                 script.gameManager = gameManager;
             }
-
+            /*
             if ((room.tags & RoomTag.ElevatorBottom) != 0)
             {
                 roomObject.TryGetComponent<Elevator>(out var elevatorScript);
@@ -70,7 +70,7 @@ public partial class GameManager
                 roomObject.TryGetComponent<Elevator>(out var elevatorScript);
                 elevatorScript.isTop = true;
             }
-
+            */
             // Handle Spawnables
             if (!roomObject.TryGetComponent<RoomInfo>(out var roomInfo))
             {
