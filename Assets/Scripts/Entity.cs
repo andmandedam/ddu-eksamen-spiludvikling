@@ -8,7 +8,6 @@ public class Entity : MonoBehaviour
     [Header("Entity")]
     [SerializeField] Rigidbody2D _rigidbody;
     [SerializeField] Collider2D _bodyCollider;
-    // [SerializeField] private Collider2D _feetCollider;
     [SerializeField] int _maxHealth;
     [SerializeField] int _curHealth;
 
