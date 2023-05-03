@@ -12,11 +12,9 @@ public class Entity : MonoBehaviour
     [SerializeField] int _curHealth;
 
     public new Rigidbody2D rigidbody => _rigidbody;
-
+    public Collider2D bodyCollider => _bodyCollider;
     public int maxHealth { get => _maxHealth; set => _maxHealth = value; }
     public int curHealth { get => _curHealth; set => _curHealth = value; }
-
-    public Collider2D bodyCollider => _bodyCollider;
 
     public virtual void Die()
     {
