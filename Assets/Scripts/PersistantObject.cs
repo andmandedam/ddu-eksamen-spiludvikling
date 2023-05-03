@@ -21,10 +21,4 @@ public class PersistantObject : MonoBehaviour
         playerControls = new Player.PlayerControls();
         playerControls.Initialize();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
