@@ -50,6 +50,7 @@ MonoBehaviour:
   rooms: []
   levelBorder: {fileID: 3231183468423531149, guid: 853807e8dccfd504fb5d1756b99a0d6d, type: 3}
   nextLevelDoor: {fileID: 4282494981674310070, guid: bc4eb5af7505adb49b10f15b097b3aaa, type: 3}
+  levelCompletionScore: 400
   hardRoomMultiplier: 2
   smashableSpawnChance: 0.4
   treasureSpawnChance: 0.01
@@ -68,8 +69,8 @@ MonoBehaviour:
   - {fileID: 1599416105598667078, guid: 65741c23bf140be4faaae963c4c619a2, type: 3}
   treasures:
   - {fileID: 2896818715872353878, guid: 91651d59e3f9f6e4f98c12e0e0a38d71, type: 3}
-  - {fileID: 8366560203618428077, guid: d1dd009d9263ece44a5156abac36e1ae, type: 3}
-  - {fileID: 3645057876885656217, guid: 3b7a9079f17153643ae424685dc8bd95, type: 3}
+  - {fileID: 4865531138952018114, guid: 5abfd63906951ba4a9a0d7295adf215b, type: 3}
+  - {fileID: 8951472018564118561, guid: 2ebca6110cd21b14e8a7affbbf938a43, type: 3}
   smashables:
   - {fileID: 8441004542790893918, guid: 7ff8ce76b440e634bb8bfbc5fb5f2ae0, type: 3}
   - {fileID: 5309051206689594624, guid: 1f6cec2efa7919e4bb2ae57b77d487ea, type: 3}
@@ -82,7 +83,6 @@ MonoBehaviour:
   - {fileID: 156148022035249787, guid: f451c46dba2a5cc4e8bf67b186781e3f, type: 3}
   - {fileID: 156148022035249787, guid: 6c103b1f1be0b1f468c0b926f418ddc0, type: 3}
   giantRooms:
-  - {fileID: 156148022035249787, guid: 51547bcc0d15c5f44a7c25a7af9f8a05, type: 3}
   - {fileID: 156148022035249787, guid: 1396f8c2e372a0743bbb735b677fb03c, type: 3}
   elevatorRooms:
   - {fileID: 156148022035249787, guid: 6e4543f6f0fb9fc4db073f68dc65d93b, type: 3}

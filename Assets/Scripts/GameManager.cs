@@ -29,6 +29,7 @@ public partial class GameManager : MonoBehaviour
     }
 
     public Camera mainCameraPrefab;
+    [NonSerialized]
     public GenericCamera mainCameraScript;
     public GameObject playerPrefab;
     [NonSerialized] public GameObject player;
