@@ -1426,7 +1426,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 737813639617661044, guid: eb838174356e5474a8ea08421d4a12be, type: 3}
       propertyPath: m_text
-      value: Favorite Color
+      value: Favorite color
       objectReference: {fileID: 0}
     - target: {fileID: 737813640077721467, guid: eb838174356e5474a8ea08421d4a12be, type: 3}
       propertyPath: m_Options.m_Options.Array.size
