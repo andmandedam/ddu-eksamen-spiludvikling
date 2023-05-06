@@ -73,7 +73,7 @@ public class State
 
     // When {condition} is fulfilled execute {action} and goto {state}
     public void When(Func<bool> condition, State state) => When(condition, state, (_) => { });
-    public void When(Func<bool> condition, State state, Action<Machine> action = default!)
+    public void When(Func<bool> condition, State state, Action<Machine> action)
     {
         transitions.AddLast(new Transition(action, condition, state));
     }
