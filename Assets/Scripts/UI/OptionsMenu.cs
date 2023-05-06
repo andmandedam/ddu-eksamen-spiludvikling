@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class OptionsMenu : MonoBehaviour
 {
-    private Int32 currentResolutionOption = 3;
+    private Int32 currentResolutionOption = 0;
     private bool isFullscreen = true;
     private Vector2Int[] resolutions = new Vector2Int[]
     {
-        new Vector2Int(640, 360),
-        new Vector2Int(1280, 720),
         new Vector2Int(1920, 1080),
-        new Vector2Int(800, 600),
+        new Vector2Int(1280, 720),
+        new Vector2Int(640, 360),
+        new Vector2Int(1920, 1440),
         new Vector2Int(1280, 960),
-        new Vector2Int(1920, 1440)
+        new Vector2Int(800, 600),
     };
     public void SetFullscreen(bool fullscreen)
     {
